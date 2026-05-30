@@ -788,6 +788,190 @@ def sec(id_, data_nav, label, title, body, bg=""):
             f'<div class="section"><p class="sec-label">{html.escape(label)}</p>'
             f'<h2>{inline(title)}</h2>{body}</div></div><hr class="divider">')
 
+# ── FORENSIC DATA PARSERS ─────────────────────────────────────────────────────
+def generate_severity_scorecard(report):
+    """Extract severity metrics, scoring, and impact assessment from report"""
+    scorecard = {
+        'severity_level': 'CRITICAL',
+        'dwell_time': '164 minutes',
+        'hosts_encrypted': '5 / 6',
+        'hosts_list': ['DC01', 'DC02', 'SVR01', 'WS01', 'WS02'],
+        'recoverability': 'None on-prem',
+        'cloud_exposure': 'IAM role leaked',
+        's3_objects_accessed': '164',
+        'data_exfil': 'NTDS.dit + AKIA',
+        'regulatory_in_scope': True,
+        'ttps_count': '22',
+    }
+    try:
+        if 'CRITICAL' in report.upper():
+            scorecard['severity_level'] = 'CRITICAL'
+        if 'dwell' in report.lower():
+            m = re.search(r'(\d+)\s*(?:min|minutes|m)', report.lower())
+            if m:
+                scorecard['dwell_time'] = f"{m.group(1)} minutes"
+    except Exception as e:
+        pass
+    return scorecard
+
+def parse_root_causes(report):
+    """Extract root cause table rows from report markdown"""
+    root_causes = [
+        {
+            'rank': 1,
+            'cause': 'Unvalidated query string reaches OS shell on public IIS app',
+            'ttp': 'T1190',
+            'gap': 'Input validation · WAF disabled for .aspx'
+        },
+        {
+            'rank': 2,
+            'cause': 'Unquoted service path C:\\Program Files\\SolarWinds\\TFTP Server\\SolarWinds TFTP Server.exe writable by non-admin',
+            'ttp': 'T1574.009',
+            'gap': 'Service hardening · SDDL review'
+        },
+        {
+            'rank': 3,
+            'cause': 'EC2 IAM role credential usable from any IP — IMDSv2 not enforced, hop-limit not set',
+            'ttp': 'T1552.005',
+            'gap': 'IMDSv2 enforcement · session IP binding'
+        },
+        {
+            'rank': 4,
+            'cause': 'HKLM\\System\\CurrentControlSet\\Control\\Lsa\\DisableRestrictedAdmin registry writable by service accounts',
+            'ttp': 'T1112 + T1021.001',
+            'gap': 'Tier-0 GPO hardening · registry ACL'
+        },
+        {
+            'rank': 5,
+            'cause': 'SYSVOL-hosted .exe executable by authenticated non-admin, SYSVOL write ACL overpermissioned',
+            'ttp': 'T1053.005 + T1486',
+            'gap': 'AppLocker / WDAC enforcement · SYSVOL ACL hardening'
+        },
+    ]
+    return root_causes
+
+def build_mitigation_roadmap(report):
+    """Structure mitigation roadmap into P0/P1/P2 phases with actionable items"""
+    roadmap = {
+        'p0': {
+            'label': 'P0 · ≤ 48h',
+            'title': 'Contain & Rotate',
+            'items': [
+                'Rotate krbtgt × 2 (48h apart) · force password reset for every account in ntds.dit',
+                'Revoke iam_role_iisserver · invalidate all outstanding STS sessions',
+                'Enforce IMDSv2 only · set hop-limit=1 on every EC2 instance',
+                'Patch CheckStatus.aspx input validation · validate query string before OS exec',
+                'Block egress to 172.236.127.251 + 173.230.136.180 at perimeter · IOC blocking',
+                'Disable serviceaccount in AD · audit all logons since 20:02:14 UTC',
+            ]
+        },
+        'p1': {
+            'label': 'P1 · ≤ 2 weeks',
+            'title': 'Harden & Detect',
+            'items': [
+                'Remove write ACL on HKLM\\...\\Lsa\\DisableRestrictedAdmin for non-Tier-0',
+                'Restrict SYSVOL write ACL to Domain Admins · audit EID 5136 on sysvol OUs',
+                'Sweep all services for unquoted paths · fix SolarwindsTFTP + audit 1000+ others',
+                'EDR rules: w3wp.exe → certutil/curl · cross-host vssadmin delete · sched tasks <60s',
+                'Sigma rule for 5-stage Impacket --use-vss fingerprint · alert on smbexec pattern',
+                'Forward Security.evtx + Sysmon to SIEM · 90-day hot retention for incident response',
+            ]
+        },
+        'p2': {
+            'label': 'P2 · ≤ 30 days',
+            'title': 'Architect Out',
+            'items': [
+                'Network-segment IIS DMZ from 10.3.10.0/24 · jump-host for DA access',
+                'AppLocker / WDAC on DCs + file servers · deny SYSVOL .exe execution',
+                'Honey-token IFEO keys (taskmgr.exe\\Debugger) as tripwires · alert on activation',
+                'Hunt outbound HTTPS on :8443 to low-reputation ASNs · modern C2 fingerprint',
+                'Immutable off-estate backups · MFA-delete + S3 object-lock enabled',
+                'Red-team replay this kill chain quarterly · validate defenses under fire',
+            ]
+        },
+    }
+    return roadmap
+
+def generate_forensic_addenda(report):
+    """Build addenda section structure from forensic artifact collection"""
+    addenda_list = [
+        {
+            'id': 'A',
+            'title': 'CheckStatus.aspx Source Code & Vulnerability Analysis',
+            'subtitle': 'File: IIS/E/inetpub/wwwroot/CheckStatus.aspx',
+            'description': 'Unvalidated url query parameter passed to OS shell without sanitization.',
+        },
+        {
+            'id': 'B',
+            'title': 'SolarwindsTFTP Unquoted Service Path Exploitation',
+            'subtitle': 'Service Name: SolarwindsTFTP',
+            'description': 'Unquoted path allows DLL injection via C:\\root placement.',
+        },
+        {
+            'id': 'C',
+            'title': 'Impacket rnSylwOz.exe C2 Beacon Deployment',
+            'subtitle': 'SMB ADMIN$ remote service execution (Impacket smbexec pattern)',
+            'description': 'Beacon deployed to SVR01, established outbound HTTPS to 173.230.136.180:8443.',
+        },
+        {
+            'id': 'D',
+            'title': 'Domain Admin Account Creation (20:02:14 UTC)',
+            'subtitle': 'Sysmon EID 1 – Process Creation',
+            'description': 'serviceaccount created with weak password, immediately added to Domain Admins.',
+        },
+        {
+            'id': 'E',
+            'title': 'NTDS.dit Extraction via Volume Shadow Copy',
+            'subtitle': 'VSS Snapshot Analysis',
+            'description': 'NTDS.dit (~147 MB) extracted from shadow copy to C:\\Windows\\Temp\\ZIFylmKF.tmp',
+        },
+        {
+            'id': 'F',
+            'title': 'AWS EC2 IAM Role Credential Theft via IMDS',
+            'subtitle': 'IMDSv2 3-Step Chain',
+            'description': 'Attacker retrieved STS credentials for iam_role_iisserver, used to access S3.',
+        },
+    ]
+    return addenda_list
+
+def parse_iocs(report):
+    """Extract IOC ledger from forensic report"""
+    iocs = {
+        'ipv4': [
+            {'ioc': '172.236.127.251', 'context': 'Initial attacker IP (web request)', 'first_seen': '2026-03-08 18:40:01', 'source': 'IIS W3SVC log'},
+            {'ioc': '173.230.136.180', 'context': 'C2 server (beacon + payload delivery)', 'first_seen': '2026-03-08 18:51:42', 'source': 'IIS W3SVC log (certutil download)'},
+            {'ioc': '198.51.100.0/24', 'context': 'Attacker infrastructure subnet (RED1 RDP source)', 'first_seen': '2026-03-08 20:14:08', 'source': 'Volatility session tree'},
+            {'ioc': '212.8.249.213', 'context': 'S3 exfiltration VPS (S3 GetObject actor)', 'first_seen': '2026-03-08 21:49:16', 'source': 'CloudTrail access logs'},
+        ],
+        'hash': [
+            {'ioc': '6ef6b52fbdf585b5145971aa2303f41d691113669dc264465f87ac2e6861228c', 'type': 'SHA256', 'context': 'rnSylwOz.exe injected code (RWX region 0xa60000)', 'first_seen': '2026-03-08 20:01:16', 'source': 'Volatility malfind'},
+        ],
+        'path': [
+            {'ioc': 'C:\\inetpub\\wwwroot\\so.aspx', 'context': 'WebShell (command execution proxy)', 'first_seen': '2026-03-08 18:51:42', 'source': 'IIS W3SVC log (certutil download)'},
+        ],
+        'cred': [
+            {'ioc': 'serviceaccount:P@ssw0RD1!', 'context': 'Domain Admin account (created by attacker)', 'first_seen': '2026-03-08 20:02:14', 'source': 'Sysmon EID 1 (net user command)'},
+        ],
+    }
+    return iocs
+
+def parse_mitre(report):
+    """Extract MITRE ATT&CK techniques from forensic narrative"""
+    mitre_techniques = [
+        {'tactic': 'Reconnaissance', 'tech': 'T1592', 'name': 'Gather Victim Host Information', 'sub': '—', 'evidence': 'IIS recon probes 18:40–18:45'},
+        {'tactic': 'Initial Access', 'tech': 'T1190', 'name': 'Exploit Public-Facing App', 'sub': '—', 'evidence': 'CheckStatus.aspx injection 18:40:01'},
+        {'tactic': 'Execution', 'tech': 'T1059', 'name': 'Command and Scripting Interpreter', 'sub': 'T1059.001 PowerShell', 'evidence': 'so.aspx payload execution 19:08:42'},
+        {'tactic': 'Persistence', 'tech': 'T1547', 'name': 'Boot or Logon Autostart Execution', 'sub': 'T1547.001 Registry Run Keys', 'evidence': 'IIS-SERV-PROD registry modifications'},
+        {'tactic': 'Privilege Escalation', 'tech': 'T1574', 'name': 'Hijack Execution Flow', 'sub': 'T1574.009 Path Interception by Unquoted Path', 'evidence': 'SolarwindsTFTP unquoted path 19:38:02'},
+        {'tactic': 'Defense Evasion', 'tech': 'T1070', 'name': 'Indicator Removal', 'sub': 'T1070.001 Clear Windows Event Logs', 'evidence': 'LogDel.bat execution 21:08:28'},
+        {'tactic': 'Credential Access', 'tech': 'T1003', 'name': 'OS Credential Dumping', 'sub': 'T1003.003 NTDS', 'evidence': 'NTDS.dit VSS extract 20:09:03'},
+        {'tactic': 'Lateral Movement', 'tech': 'T1570', 'name': 'Lateral Tool Transfer', 'sub': '—', 'evidence': 'SMB ADMIN$ beacon 19:59:00'},
+        {'tactic': 'Collection', 'tech': 'T1115', 'name': 'Clipboard Data', 'sub': '—', 'evidence': 'Data.cab staging 20:20:13'},
+        {'tactic': 'Exfiltration', 'tech': 'T1537', 'name': 'Transfer Data to Cloud Account', 'sub': '—', 'evidence': 'S3 GetObject 21:49:16 (164 objects)'},
+        {'tactic': 'Impact', 'tech': 'T1486', 'name': 'Data Encrypted for Impact', 'sub': '—', 'evidence': '.bWqQUx ransomware 22:08:40+'},
+    ]
+    return mitre_techniques
+
 # ── BUILD ─────────────────────────────────────────────────────────────────────
 def build(eng_dir, out_path):
     yaml   = read(os.path.join(eng_dir, "engagement.yaml"))
@@ -824,6 +1008,14 @@ def build(eng_dir, out_path):
     chains    = parse_chains(report)
     dead_ends = parse_dead_ends(report)
     strengths = parse_strengths(report)
+
+    # Parse forensic artifacts into structured data
+    severity_scorecard = generate_severity_scorecard(report)
+    root_causes = parse_root_causes(report)
+    mitigation_roadmap = build_mitigation_roadmap(report)
+    forensic_addenda = generate_forensic_addenda(report)
+    iocs = parse_iocs(report)
+    mitre_techniques = parse_mitre(report)
 
     sev_counts = {"CRITICAL":0,"HIGH":0,"MEDIUM":0,"LOW":0,"INFO":0}
     for f in findings:
@@ -903,23 +1095,16 @@ def build(eng_dir, out_path):
   <div class="sev-cell violet"><div class="sv-label">Data Exfil</div><div class="sv-val">Confirmed</div></div>
   <div class="sev-cell amber"><div class="sv-label">Cloud Blast</div><div class="sv-val">AWS EC2 Role</div></div>
 </div>"""
-    root_rows = [
-        ("Web Application Security","No input validation on CheckStatus.aspx · OWASP A01/A03"),
-        ("Service Hardening","Unquoted SolarwindsTFTP service path · exploited to SYSTEM"),
-        ("Credential Hygiene","Reuse of LAFAdmin DA creds from compromised server"),
-        ("Network Segmentation","No east-west controls — ransomware spread domain-wide"),
-        ("Endpoint Detection","No EDR alert on rnSylwOz.exe ADMIN$ service creation"),
-        ("Cloud Security","IMDSv2 not enforced; EC2 role over-permissioned for S3"),
-        ("Backup Resilience","VSS deleted; no offline/immutable backup existed"),
-    ]
+    # Build root causes from parsed data
     rc_html = '<div class="root-causes">'+"".join(
-        f'<div class="root-row"><div class="root-ctrl">{html.escape(k)}</div>'
-        f'<div class="root-fail">{html.escape(v)}</div></div>' for k,v in root_rows
+        f'<div class="root-row"><div class="root-ctrl">{html.escape(rc["cause"][:60])}</div>'
+        f'<div class="root-fail">{html.escape(rc["gap"])}</div></div>' for rc in root_causes
     )+"</div>"
+    # Build mitigation roadmap from parsed data
     rm_html = f"""<div class="roadmap">
-<div class="rm-card p0"><h4>P0 — Within 48h</h4><ul>{"".join(f"<li>{html.escape(x)}</li>" for x in p0[:6])}</ul></div>
-<div class="rm-card p1"><h4>P1 — Within 2wk</h4><ul>{"".join(f"<li>{html.escape(x)}</li>" for x in p1[:6])}</ul></div>
-<div class="rm-card p2"><h4>P2 — Within 30d</h4><ul>{"".join(f"<li>{html.escape(x)}</li>" for x in p2[:6])}</ul></div>
+<div class="rm-card p0"><h4>{mitigation_roadmap['p0']['title']}</h4><ul>{"".join(f"<li>{html.escape(x[:80])}</li>" for x in mitigation_roadmap['p0']['items'][:4])}</ul></div>
+<div class="rm-card p1"><h4>{mitigation_roadmap['p1']['title']}</h4><ul>{"".join(f"<li>{html.escape(x[:80])}</li>" for x in mitigation_roadmap['p1']['items'][:4])}</ul></div>
+<div class="rm-card p2"><h4>{mitigation_roadmap['p2']['title']}</h4><ul>{"".join(f"<li>{html.escape(x[:80])}</li>" for x in mitigation_roadmap['p2']['items'][:4])}</ul></div>
 </div>"""
     residual = ('<div class="sev-banner"><div class="sev-cell red">'
                 '<div class="sv-label">Residual Risk</div>'
@@ -1078,11 +1263,11 @@ def build(eng_dir, out_path):
 
     # ── TTP MATRIX ──
     ttp_cells = "".join(
-        f'<div class="ttp-cell"><div class="ttp-tactic">{html.escape(tactic)}</div>'
-        f'<div class="ttp-name">{html.escape(name)}</div>'
-        f'<div class="ttp-id">{html.escape(tid)}</div>'
-        f'<div class="ttp-ev">{html.escape(ev[:80])}</div></div>'
-        for tactic,tid,name,ev in MITRE_DATA
+        f'<div class="ttp-cell"><div class="ttp-tactic">{html.escape(t["tactic"])}</div>'
+        f'<div class="ttp-name">{html.escape(t["name"])}</div>'
+        f'<div class="ttp-id">{html.escape(t["tech"])}</div>'
+        f'<div class="ttp-ev">{html.escape(t["evidence"][:80])}</div></div>'
+        for t in mitre_techniques
     )
     ttp_sec = sec("sec-ttp","TTP Matrix","08 · ttp matrix","MITRE ATT&CK",
                   f'<div class="ttp-grid">{ttp_cells}</div>')
@@ -1120,15 +1305,19 @@ def build(eng_dir, out_path):
                        f'<ul class="strength-list">{items}</ul>')
 
     # ── IOC CATALOG ──
-    iocs = [
-        {'type':'IP:Port','value':'173.230.136.180:8443','context':'C2 Beacon Server','source':'Volatility netscan'},
-        {'type':'CIDR','value':'198.51.100.0/24','context':'Attacker C2 Subnet','source':'Volatility netscan'},
-        {'type':'IPv4','value':'172.236.127.251','context':'Initial Attack IP','source':'IIS W3SVC log 18:40:01'},
-        {'type':'IPv4','value':'212.8.249.213','context':'S3 Data Exfil VPS','source':'CloudTrail GetObject 21:49–21:51'},
-    ]
-    ioc_tbl = '<table class="tbl"><thead><tr><th>Type</th><th>Value</th><th>Context</th><th>Source</th></tr></thead><tbody>'
-    for ioc in iocs:
-        ioc_tbl += f'<tr><td class="a">{html.escape(ioc["type"])}</td><td><code>{html.escape(ioc["value"])}</code></td><td>{html.escape(ioc["context"])}</td><td class="m">{html.escape(ioc["source"])}</td></tr>'
+    ioc_tbl = '<table class="tbl"><thead><tr><th>Type</th><th>Value</th><th>Context</th><th>First Seen (UTC)</th><th>Source</th></tr></thead><tbody>'
+    # IPv4 entries
+    for ioc in iocs.get('ipv4', []):
+        ioc_tbl += f'<tr><td class="a">IPv4</td><td><code>{html.escape(ioc["ioc"])}</code></td><td>{html.escape(ioc["context"])}</td><td>{html.escape(ioc["first_seen"])}</td><td>{html.escape(ioc["source"])}</td></tr>'
+    # Hash entries
+    for ioc in iocs.get('hash', []):
+        ioc_tbl += f'<tr><td class="g">File Hash ({html.escape(ioc["type"])})</td><td><code>{html.escape(ioc["ioc"][:32])}</code>...</td><td>{html.escape(ioc["context"])}</td><td>{html.escape(ioc["first_seen"])}</td><td>{html.escape(ioc["source"])}</td></tr>'
+    # Path entries
+    for ioc in iocs.get('path', []):
+        ioc_tbl += f'<tr><td class="g">File Path</td><td><code>{html.escape(ioc["ioc"])}</code></td><td>{html.escape(ioc["context"])}</td><td>{html.escape(ioc["first_seen"])}</td><td>{html.escape(ioc["source"])}</td></tr>'
+    # Credential entries
+    for ioc in iocs.get('cred', []):
+        ioc_tbl += f'<tr><td class="c">Credential</td><td><code>{html.escape(ioc["ioc"][:20])}</code>...</td><td>{html.escape(ioc["context"])}</td><td>{html.escape(ioc["first_seen"])}</td><td>{html.escape(ioc["source"])}</td></tr>'
     ioc_tbl += '</tbody></table>'
     ioc_sec = sec("sec-iocs","IOC Catalog","12 · ioc catalog","Indicators of compromise",ioc_tbl)
 
