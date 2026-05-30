@@ -1,0 +1,28 @@
+-rw-rw-r-- 1 localuser localuser  428990372 May 30 16:41 /home/localuser/cases/JackofAllHacks/exports/DC01_ca_evtx.csv
+-rw-rw-r-- 1 localuser localuser   63510148 May 30 16:39 /home/localuser/cases/JackofAllHacks/exports/DC01_mft.csv
+-rw-rw-r-- 1 localuser localuser  132807601 May 30 15:36 /home/localuser/cases/JackofAllHacks/exports/DC01_security.csv
+-rw-rw-r-- 1 localuser localuser     800183 May 30 15:17 /home/localuser/cases/JackofAllHacks/exports/DC01_system.csv
+-rw-rw-r-- 1 localuser localuser 1308543301 May 30 16:43 /home/localuser/cases/JackofAllHacks/exports/DC02_ca_evtx.csv
+-rw-rw-r-- 1 localuser localuser   69903814 May 30 16:39 /home/localuser/cases/JackofAllHacks/exports/DC02_mft.csv
+-rw-rw-r-- 1 localuser localuser  263095462 May 30 15:36 /home/localuser/cases/JackofAllHacks/exports/DC02_security.csv
+-rw-rw-r-- 1 localuser localuser    1619041 May 30 15:17 /home/localuser/cases/JackofAllHacks/exports/DC02_system.csv
+-rw-rw-r-- 1 localuser localuser  584426951 May 30 16:42 /home/localuser/cases/JackofAllHacks/exports/SVR01_ca_evtx.csv
+-rw-rw-r-- 1 localuser localuser   74225492 May 30 16:39 /home/localuser/cases/JackofAllHacks/exports/SVR01_mft.csv
+-rw-rw-r-- 1 localuser localuser          0 May 30 16:42 /home/localuser/cases/JackofAllHacks/exports/WS01_ca_evtx.csv
+-rw-rw-r-- 1 localuser localuser 1283881565 May 30 16:13 /home/localuser/cases/JackofAllHacks/exports/WS01_evtx.csv
+-rw-rw-r-- 1 localuser localuser  109645789 May 30 16:39 /home/localuser/cases/JackofAllHacks/exports/WS01_mft.csv
+-rw-rw-r-- 1 localuser localuser          0 May 30 16:42 /home/localuser/cases/JackofAllHacks/exports/WS02_ca_evtx.csv
+-rw-rw-r-- 1 localuser localuser 1256001541 May 30 16:14 /home/localuser/cases/JackofAllHacks/exports/WS02_evtx.csv
+-rw-rw-r-- 1 localuser localuser  107579690 May 30 16:39 /home/localuser/cases/JackofAllHacks/exports/WS02_mft.csv
+=== svr01 ===
+
+EXIT=0
+=== ws01 ===
+
+EXIT=0
+=== ws02 ===
+
+EXIT=0
+=== dc02 ===
+
+EXIT=0

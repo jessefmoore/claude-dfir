@@ -1,0 +1,12 @@
+###### DC01 ######
+--4624 (Type3/10 or watched acct) in window [logontype,srcip,user]xN:
+--Type10 RDP logons (ts,ip,user):
+--4625 failed logons in window [type,ip,user]xN:
+--Top src IPs in 4624 (window):
+--Account/Group change events with SUBJECT (who did it):
+###### DC02 ######
+--4624 (Type3/10 or watched acct) in window [logontype,srcip,user]xN:
+--Type10 RDP logons (ts,ip,user):
+--4625 failed logons in window [type,ip,user]xN:
+--Top src IPs in 4624 (window):
+--Account/Group change events with SUBJECT (who did it):

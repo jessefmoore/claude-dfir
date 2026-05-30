@@ -1,0 +1,9 @@
+whoami=0
+net_=0
+aws=0
+iam_keys=0
+download=0
+cred=0
+persist=0
+discovery=0
+metadata169=0

@@ -1,0 +1,13 @@
+=== GuardDuty 03-08 findings detail ===
+sev8 UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS | sample=None | user=iam_role_iisserver | ip(remote)={"actionType": "AWS_API_CALL", "awsApiCallAction": {"affectedResources": {}, "api": "ListObjects", "callerType": "Remote
+sev8 UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS | sample=None | user=iam_role_iisserver | ip(remote)={"actionType": "AWS_API_CALL", "awsApiCallAction": {"affectedResources": {}, "api": "ListUsers", "callerType": "Remote I
+sev9 AttackSequence:IAM/CompromisedCredentials | sample=None | user=None | ip(remote)={}
+
+=== WS 4624 column probe (first 3 rows mentioning 198.51.100 anywhere) ===
+RemoteHost=[RED1 (198.51.100.3)] PD1=[Target: LAF\Donny] PD2=[LogonType 3] PD3=[LogonId: 0x217DEB0]
+RemoteHost=[RED1 (198.51.100.3)] PD1=[Target: LAF\Donny] PD2=[LogonType 3] PD3=[LogonId: 0x217E004]
+RemoteHost=[LAF-WS01 (198.51.100.3)] PD1=[Target: LAF\Donny] PD2=[LogonType 10] PD3=[LogonId: 0x21926BF]
+
+=== WS 4624 RemoteHost IP counts (attacker-net / SVR01) ===
+WS01: {'198.51.100.3': 19, '198.51.100.5': 6, '198.51.100.10': 5, '10.3.10.11': 1, '10.3.10.12': 1}
+WS02: {'198.51.100.3': 16, '10.3.10.12': 6, '10.3.10.11': 4, '198.51.100.10': 2}

@@ -1,0 +1,55 @@
+EvtxECmd version 2026.5.0
+
+Author: Eric Zimmerman (saericzimmerman@gmail.com)
+https://github.com/EricZimmerman/evtx
+
+Command line: -f DC02/C/Windows/System32/winevt/Logs/Microsoft-Windows-PowerShell%4Operational.evtx --csv ./exports/ --csvf DC02_ps_oper.csv --maps /opt/zimmermantools/EvtxeCmd/Maps/
+
+CSV output will be saved to ./exports/DC02_ps_oper.csv
+
+Maps loaded: 383
+
+Processing /home/localuser/cases/JackofAllHacks/DC02/C/Windows/System32/winevt/Logs/Microsoft-Windows-PowerShell%4Operational.evtx...
+Chunk count: 5,107, Iterating records...
+Record error at offset 0x148188A0, record #: 145127 error: Index was outside the bounds of the array.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at evtx.ChunkInfo.GetTemplate(Int32 startingOffset) in D:\Code\evtx\evtx\ChunkInfo.cs:line 322
+   at evtx.Tags.TemplateInstance..ctor(Int64 recordPosition, BinaryReader dataStream, ChunkInfo chunk) in D:\Code\evtx\evtx\Tags\TemplateInstance.cs:line 29
+   at evtx.Tags.TagBuilder.BuildTag(Int64 recordPosition, BinaryReader dataStream, ChunkInfo chunk) in D:\Code\evtx\evtx\Tags\TagBuilder.cs:line 253
+   at evtx.Tags.OpenStartElementTag.AsXml(List`1 substitutionEntries, Int64 parentOffset) in D:\Code\evtx\evtx\Tags\OpenStartElementTag.cs:line 154
+   at evtx.Tags.TemplateInstance.AsXml(List`1 substitutionEntries, Int64 parentOffset) in D:\Code\evtx\evtx\Tags\TemplateInstance.cs:line 87
+   at evtx.EventRecord.ConvertPayloadToXml() in D:\Code\evtx\evtx\EventRecord.cs:line 437
+   at evtx.EventRecord.BuildProperties() in D:\Code\evtx\evtx\EventRecord.cs:line 138
+   at evtx.EventRecord..ctor(BinaryReader recordData, Int32 recordPosition, ChunkInfo chunk) in D:\Code\evtx\evtx\EventRecord.cs:line 85
+   at evtx.ChunkInfo..ctor(Byte[] chunkBytes, Int64 absoluteOffset, Int32 chunkNumber) in D:\Code\evtx\evtx\ChunkInfo.cs:line 208
+
+Event log details
+Flags: IsDirty
+Chunk count: 5107
+Stored/Calculated CRC: 72E427A0/72E427A0
+Earliest timestamp: 2026-03-03 04:51:44.1486584
+Latest timestamp:   2026-03-08 22:40:26.4208652
+Total event log records found: 144,017
+
+Records included: 144,017 Errors: 1 Events dropped: 0
+
+Errors
+Record #145127: Error: Index was outside the bounds of the array.
+
+Metrics (including dropped events)
+Event ID	Count
+4100		59
+4103		118,862
+4104		3,384
+4105		10,378
+4106		10,370
+40961		321
+40962		321
+53504		322
+
+Processed 1 file in 26.7128 seconds
+
+
+Files with errors
+/home/localuser/cases/JackofAllHacks/DC02/C/Windows/System32/winevt/Logs/Microsoft-Windows-PowerShell%4Operational.evtx error count: 1
+

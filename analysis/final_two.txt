@@ -1,0 +1,71 @@
+===== GuardDuty findings NOT flagged sample =====
+2026-02-28T18:06:04 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-28T18:00:16 count=954
+2026-02-28T17:55:53 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-28T17:50:05 count=316
+2026-02-23T09:01:56 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-23T08:56:49 count=27
+2026-02-23T09:07:17 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-23T09:00:21 count=44
+2026-02-23T09:02:03 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-23T08:55:20 count=7
+2026-02-23T09:06:16 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-23T09:00:51 count=170
+2026-02-24T12:06:37 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-24T11:59:27 count=736
+2026-02-24T05:29:40 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-24T05:23:13 count=263
+2026-02-24T08:02:50 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-24T07:55:41 count=265
+2026-02-24T06:05:43 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-24T05:58:22 count=397
+2026-02-24T15:57:36 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-24T15:50:07 count=782
+2026-02-26T05:35:00 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-02-26T05:27:59 count=892
+2026-02-26T05:33:32 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-02-26T05:26:43 count=314
+2026-03-03T23:51:25 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:55:19 last=2026-03-03T23:45:04 count=327
+2026-03-03T23:55:33 | sev2 | Policy:IAMUser/RootCredentialUsage
+   user=Root  remoteIP=216.82.9.162  first=2026-02-23T08:54:49 last=2026-03-03T23:48:24 count=2453
+2026-03-08T21:57:18 | sev8 | UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS
+   user=iam_role_iisserver  remoteIP=212.8.249.213  first=2026-03-08T21:47:25 last=2026-03-08T21:49:25 count=168
+2026-03-08T22:01:10 | sev8 | UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS
+   user=iam_role_iisserver  remoteIP=212.8.249.213  first=2026-03-08T21:44:19 last=2026-03-08T21:44:19 count=1
+2026-03-08T22:14:44 | sev9 | AttackSequence:IAM/CompromisedCredentials
+   user=None  remoteIP=  first=2026-03-08T21:44:19 last=2026-03-08T21:49:25 count=1
+(total non-sample findings: 18)
+
+===== WS01 4624 logons from attacker-net/SVR01 (host|user|type = count) =====
+  198.51.100.3 | RED1 | LAF\Gilles | LogonType 3 = 7
+  198.51.100.10 | - | LAF\LAFAdmin | LogonType 3 = 3
+  198.51.100.3 | RED1 | LAF\Donny | LogonType 3 = 2
+  198.51.100.3 | LAF-WS01 | LAF\Gilles | LogonType 7 = 2
+  198.51.100.5 | 0BX-PNDR | LAF-WS01\localuser | LogonType 3 = 2
+  198.51.100.5 | 0BX-PNDR | LAF\Donny | LogonType 3 = 2
+  198.51.100.3 | RED1 | LAF\localuser | LogonType 3 = 2
+  198.51.100.3 | RED1 | LAF-WS01\localuser | LogonType 3 = 2
+  198.51.100.3 | LAF-WS01 | LAF\Donny | LogonType 10 = 1
+  198.51.100.3 | LAF-WS01 | LAF\Gilles | LogonType 10 = 1
+  198.51.100.5 | LAF-WS01 | LAF-WS01\localuser | LogonType 10 = 1
+  198.51.100.5 | LAF-WS01 | LAF\Donny | LogonType 10 = 1
+  198.51.100.10 | kali | LAF\LAFAdmin | LogonType 3 = 1
+  198.51.100.10 | - | LAF\LAFAdmin | LogonType 10 = 1
+  10.3.10.12 | - | LAF\LAFAdmin | LogonType 3 = 1
+  198.51.100.3 | LAF-WS01 | LAF\localuser | LogonType 10 = 1
+  198.51.100.3 | LAF-WS01 | LAF-WS01\localuser | LogonType 10 = 1
+
+===== WS02 4624 logons from attacker-net/SVR01 (host|user|type = count) =====
+  198.51.100.3 | RED1 | LAF\localuser | LogonType 3 = 4
+  198.51.100.3 | RED1 | LAF\Ryan | LogonType 3 = 3
+  10.3.10.12 | - | LAF\LAFAdmin | LogonType 3 = 3
+  198.51.100.3 | RED1 | LAF\Dalton | LogonType 3 = 2
+  198.51.100.3 | LAF-WS02 | LAF\localuser | LogonType 10 = 2
+  198.51.100.10 | - | LAF\LAFAdmin | LogonType 3 = 2
+  10.3.10.12 | kali | LAF\LAFAdmin | LogonType 3 = 2
+  198.51.100.3 | RED1 | LAF-WS02\localuser | LogonType 3 = 2
+  198.51.100.3 | LAF-WS02 | LAF\Dalton | LogonType 10 = 1
+  198.51.100.3 | LAF-WS02 | LAF\Ryan | LogonType 10 = 1
+  10.3.10.12 | - | LAF\LAFAdmin | LogonType 10 = 1
+  198.51.100.3 | LAF-WS02 | LAF-WS02\localuser | LogonType 10 = 1

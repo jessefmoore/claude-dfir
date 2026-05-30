@@ -1,0 +1,41 @@
+EvtxECmd version 2026.5.0
+
+Author: Eric Zimmerman (saericzimmerman@gmail.com)
+https://github.com/EricZimmerman/evtx
+
+Command line: -f DC01/C/Windows/System32/winevt/Logs/System.evtx --csv ./exports/ --csvf DC01_system.csv --maps /opt/zimmermantools/EvtxeCmd/Maps/
+
+CSV output will be saved to ./exports/DC01_system.csv
+
+Maps loaded: 383
+
+Processing /home/localuser/cases/JackofAllHacks/DC01/C/Windows/System32/winevt/Logs/System.evtx...
+Chunk count: 1, Iterating records...
+
+Event log details
+Flags: IsDirty
+Chunk count: 1
+Stored/Calculated CRC: 3B94C6FB/3B94C6FB
+Earliest timestamp: 2026-03-04 04:22:41.3942651
+Latest timestamp:   2026-03-08 22:52:32.0931262
+Total event log records found: 1,391
+
+Records included: 1,391 Errors: 0 Events dropped: 0
+
+Metrics (including dropped events)
+Event ID	Count
+1		1
+22		1
+24		1
+36		5
+104		4
+566		9
+1014		1
+6013		5
+6148		15
+7009		5
+7036		1,339
+7045		5
+
+Processed 1 file in 0.4797 seconds
+

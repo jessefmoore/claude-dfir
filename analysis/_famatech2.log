@@ -1,0 +1,13 @@
+RECmd version 2026.5.0
+
+Author: Eric Zimmerman (saericzimmerman@gmail.com)
+https://github.com/EricZimmerman/RECmd
+
+Note: Enclose all strings containing spaces (and all RegEx) with double quotes
+
+Command line: -f DC02/C/Users/LAFAdmin/NTUSER.DAT --kn Software\Famatech --csv ./exports/ --csvf DC02_famatech.csv
+
+
+Processing hive DC02/C/Users/LAFAdmin/NTUSER.DAT
+Registry hive is dirty and no transaction logs were found in the same directory! LOGs should have same base name as the hive. Aborting!!
+

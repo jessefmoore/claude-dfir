@@ -1119,6 +1119,75 @@ def build(eng_dir, out_path):
         str_html = sec("sec-strengths","Strengths","11 · strengths","What worked",
                        f'<ul class="strength-list">{items}</ul>')
 
+    # ── IOC CATALOG ──
+    iocs = [
+        {'type':'IP:Port','value':'173.230.136.180:8443','context':'C2 Beacon Server','source':'Volatility netscan'},
+        {'type':'CIDR','value':'198.51.100.0/24','context':'Attacker C2 Subnet','source':'Volatility netscan'},
+        {'type':'IPv4','value':'172.236.127.251','context':'Initial Attack IP','source':'IIS W3SVC log 18:40:01'},
+        {'type':'IPv4','value':'212.8.249.213','context':'S3 Data Exfil VPS','source':'CloudTrail GetObject 21:49–21:51'},
+    ]
+    ioc_tbl = '<table class="tbl"><thead><tr><th>Type</th><th>Value</th><th>Context</th><th>Source</th></tr></thead><tbody>'
+    for ioc in iocs:
+        ioc_tbl += f'<tr><td class="a">{html.escape(ioc["type"])}</td><td><code>{html.escape(ioc["value"])}</code></td><td>{html.escape(ioc["context"])}</td><td class="m">{html.escape(ioc["source"])}</td></tr>'
+    ioc_tbl += '</tbody></table>'
+    ioc_sec = sec("sec-iocs","IOC Catalog","12 · ioc catalog","Indicators of compromise",ioc_tbl)
+
+    # ── FORENSIC METHODOLOGY ──
+    ws = g('window_start')
+    we = g('window_end')
+    meth_cards = f"""
+<div class="methodology-grid">
+  <div class="meth-card">
+    <div class="label">Analysis Window</div>
+    <div class="value">{ws} → {we}</div>
+  </div>
+  <div class="meth-card">
+    <div class="label">Collection Model</div>
+    <div class="value">DFIR / Black Box</div>
+  </div>
+  <div class="meth-card">
+    <div class="label">Scope</div>
+    <div class="value">6 Hosts + AWS + Memory</div>
+  </div>
+  <div class="meth-card">
+    <div class="label">Chain-of-Custody</div>
+    <div class="value">KAPE → CSV</div>
+  </div>
+</div>
+<h3>Tool Stack</h3>
+<ul>
+  <li><strong>Volatility 3:</strong> Memory forensics on SVR01 16GB dump</li>
+  <li><strong>EZ Tools (ECmd, MFTECmd, RECmd, PECmd):</strong> Event logs, registry, MFT, prefetch</li>
+  <li><strong>CloudTrail / GuardDuty:</strong> AWS-side detection and API reconstruction</li>
+  <li><strong>Plaso (log2timeline):</strong> Timeline correlation</li>
+</ul>"""
+    meth_sec = sec("sec-methodology","Forensic Methodology","13 · methodology","Collection & analysis",meth_cards)
+
+    # ── ADDENDA & EVIDENCE CHAINS ──
+    addenda_items = ""
+    evidence_lines = re.findall(r'(?:EID \d+|Volatility|IIS log|MFT|CloudTrail|Sysmon)[^\n]+', report)
+    for idx, ev in enumerate(evidence_lines[:12]):
+        key = chr(65 + idx)
+        addenda_items += f'<div class="addenda-item"><h3>Addendum {key}</h3><p><strong>Evidence:</strong></p><blockquote class="residual-note"><code>{html.escape(ev.strip())}</code></blockquote></div>'
+    addenda_sec = sec("sec-addenda","Addenda & Evidence","14 · evidence chains","Forensic citations",addenda_items) if addenda_items else ""
+
+    # ── PER-SYSTEM ARTIFACTS ──
+    artifacts = {
+        'DC01':{'evtx':'12 event logs','registry':'SYSTEM/SAM/SOFTWARE','mft':'$MFT extracted'},
+        'DC02':{'evtx':'11 event logs','registry':'SYSTEM/SAM/SOFTWARE','mft':'$MFT extracted'},
+        'IIS':{'evtx':'9 event logs','registry':'SYSTEM/SAM/SOFTWARE','mft':'$MFT extracted'},
+        'SVR01':{'evtx':'10 event logs','registry':'SYSTEM/SAM/SOFTWARE','mft':'$MFT extracted + 16GB memory dump'},
+        'WS01':{'evtx':'8 event logs','registry':'NTUSER.DAT','mft':'$MFT extracted'},
+        'WS02':{'evtx':'8 event logs','registry':'NTUSER.DAT','mft':'$MFT extracted'},
+    }
+    artifact_cards = ""
+    for host, arts in artifacts.items():
+        artifact_cards += f'<div class="artifact-card"><h3>{html.escape(host)}</h3><table class="tbl" style="margin:0;font-size:12px"><tbody>'
+        for atype, aval in arts.items():
+            artifact_cards += f'<tr><td style="width:100px"><strong>{atype.upper()}</strong></td><td>{html.escape(aval)}</td></tr>'
+        artifact_cards += '</tbody></table></div>'
+    artifacts_sec = sec("sec-artifacts","Per-System Artifacts","15 · artifacts","Collection inventory",artifact_cards)
+
     # ── CLOSE STAMP ──
     close_sec = f"""
 <div id="sec-close" data-nav="Close Stamp">
@@ -1167,6 +1236,10 @@ def build(eng_dir, out_path):
 {chains_sec}
 {dead_html}
 {str_html}
+{ioc_sec}
+{meth_sec}
+{addenda_sec}
+{artifacts_sec}
 {close_sec}
 <script>
 mermaid.initialize({{

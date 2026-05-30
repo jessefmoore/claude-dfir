@@ -1,0 +1,137 @@
+---REC 1
+TIME 2026-03-08 20:02:14.0677174 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 15116, ProcessGUID: 27e06484-d5c6-69ad-89e5-000000000800 | RuleName: - | MD5=E7A6B1F51EFB405287A8048CFA4690F4,SHA256=EB71EA69DD19F728AB9240565E8C7EFB59821E19E3788E289301E1E74940C208,IMPHASH=D60B77062898DC6BFAE7FE11A0F8806C | ParentProcess: C:\Windows\explorer.exe | ParentProcessID: 1332, ParentProcessGUID: 27e06484-5aeb-69aa-9a4b-000000000800 | ParentCommandLine: C:\Windows\Explorer.EXE
+PAYCTX osoft® Windows® Operating System"},{"@Name":"Company","#text":"Microsoft Corporation"},{"@Name":"OriginalFileName","#text":"Cmd.Exe"},{"@Name":"CommandLine","#text":"C:\\Windows\\System32\\cmd.exe /c net user serviceaccount P@ssw0RD1! /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"LogonI
+---REC 2
+TIME 2026-03-08 20:02:14.1061299 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 8092, ProcessGUID: 27e06484-d5c6-69ad-8be5-000000000800 | RuleName: - | MD5=540D7FDC6B3C5B66F66188506A4E1D12,SHA256=F540747022E0D67722989765B5DB268707E4E71538AE0764110EEC7B8D9AEEF6,IMPHASH=D45C37A5C97135204AD6E116C34946C3 | ParentProcess: C:\Windows\System32\cmd.exe | ParentProcessID: 15116, ParentProcessGUID: 27e06484-d5c6-69ad-89e5-000000000800 | ParentCommandLine: C:\Windows\System32\cmd.exe /c net user serviceaccount P@ssw0RD1! /add /domain
+PAYCTX },{"@Name":"Product","#text":"Microsoft® Windows® Operating System"},{"@Name":"Company","#text":"Microsoft Corporation"},{"@Name":"OriginalFileName","#text":"net.exe"},{"@Name":"CommandLine","#text":"net  user serviceaccount P@ssw0RD1! /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"LogonId","#text":"0x5111148"},{"@Name":"TerminalSessionId","#text":"2"},{"@Name":"IntegrityLevel","#text":"High"},{"@Name":"Hashes","#text":"MD5=540D7FDC6B3C5B66F66188506A4E1D12,SHA256=F540747022E0D67722989765B5DB268707E4E71538AE0764110EEC7B8D9AEEF6,IMPHASH=D45C37A5C97135204AD6E116C34946C3"},{"@Name":"ParentProcessGuid","#text":"27e06484-d5c6-69ad-89e5-000000000800"},{"@Name":"ParentProcessId","#text":"15116"},{"@Name":"ParentImage","#text":"C:\\Windows\\System32\\cmd.exe"},{"@Name":"ParentCommandLine","#text":"C:\\Windows\\System32\\cmd.exe /c net user serviceaccount P@ssw0RD1! /add /domain"},{"@Name":"ParentUser","#text":"LAF\\LAFAdmin"}]}}
+---REC 3
+TIME 2026-03-08 20:02:14.1176162 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 8088, ProcessGUID: 27e06484-d5c6-69ad-8ce5-000000000800 | RuleName: - | MD5=36EC62D75C7B1C6C6D166995C9662DD5,SHA256=CB320DFCD6B635BD13AD840FD271E134CC5318339487894FA90E7101195FAE23,IMPHASH=76EE66A0F294EAB08DCAEF5E64FBF02F | ParentProcess: C:\Windows\System32\net.exe | ParentProcessID: 8092, ParentProcessGUID: 27e06484-d5c6-69ad-8be5-000000000800 | ParentCommandLine: net  user serviceaccount P@ssw0RD1! /add /domain
+PAYCTX ext":"Microsoft® Windows® Operating System"},{"@Name":"Company","#text":"Microsoft Corporation"},{"@Name":"OriginalFileName","#text":"net1.exe"},{"@Name":"CommandLine","#text":"C:\\Windows\\system32\\net1  user serviceaccount P@ssw0RD1! /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"LogonId","#text":"0x5111148"},{"@Name":"TerminalSessionId","#text":"2"},{"@Name":"IntegrityLevel","#text":"High"},{"@Name":"Hashes","#text":"MD5=36EC62D75C7B1C6C6D166995C9662DD5,SHA256=CB320DFCD6B635BD13AD840FD271E134CC5318339487894FA90E7101195FAE23,IMPHASH=76EE66A0F294EAB08DCAEF5E64FBF02F"},{"@Name":"ParentProcessGuid","#text":"27e06484-d5c6-69ad-8be5-000000000800"},{"@Name":"ParentProcessId","#text":"8092"},{"@Name":"ParentImage","#text":"C:\\Windows\\System32\\net.exe"},{"@Name":"ParentCommandLine","#text":"net  user serviceaccount P@ssw0RD1! /add /domain"},{"@Name":"ParentUser","#text":"LAF\\LAFAdmin"}]}}
+---REC 4
+TIME 2026-03-08 20:03:05.6283176 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 4896, ProcessGUID: 27e06484-d5f9-69ad-90e5-000000000800 | RuleName: - | MD5=2E0CCB27064856E3D55017FA2D33A7B9,SHA256=1C84C8632C5269F24876ED9F49FA810B49F77E1E92E8918FC164C34B020F9A94,IMPHASH=BF7A6E7A62C3F5B2E8E069438AC1DD3D | ParentProcess: C:\Windows\explorer.exe | ParentProcessID: 1332, ParentProcessGUID: 27e06484-5aeb-69aa-9a4b-000000000800 | ParentCommandLine: C:\Windows\Explorer.EXE
+PAYCTX crosoft Corporation"},{"@Name":"OriginalFileName","#text":"PowerShell.EXE"},{"@Name":"CommandLine","#text":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -c net group 'Domain Admins' serviceaccount /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"L
+---REC 5
+TIME 2026-03-08 20:03:05.8479616 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 4016, ProcessGUID: 27e06484-d5f9-69ad-92e5-000000000800 | RuleName: - | MD5=540D7FDC6B3C5B66F66188506A4E1D12,SHA256=F540747022E0D67722989765B5DB268707E4E71538AE0764110EEC7B8D9AEEF6,IMPHASH=D45C37A5C97135204AD6E116C34946C3 | ParentProcess: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe | ParentProcessID: 4896, ParentProcessGUID: 27e06484-d5f9-69ad-90e5-000000000800 | ParentCommandLine: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -c net group 'Domain Admins' serviceaccount /add /domain
+PAYCTX  System"},{"@Name":"Company","#text":"Microsoft Corporation"},{"@Name":"OriginalFileName","#text":"net.exe"},{"@Name":"CommandLine","#text":"\"C:\\Windows\\system32\\net.exe\" group \"Domain Admins\" serviceaccount /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"L
+---REC 6
+TIME 2026-03-08 20:03:05.8580383 EID 1 CH  COMP LAF-svr01.LAF.local
+PD ProcessID: 7064, ProcessGUID: 27e06484-d5f9-69ad-93e5-000000000800 | RuleName: - | MD5=36EC62D75C7B1C6C6D166995C9662DD5,SHA256=CB320DFCD6B635BD13AD840FD271E134CC5318339487894FA90E7101195FAE23,IMPHASH=76EE66A0F294EAB08DCAEF5E64FBF02F | ParentProcess: C:\Windows\System32\net.exe | ParentProcessID: 4016, ParentProcessGUID: 27e06484-d5f9-69ad-92e5-000000000800 | ParentCommandLine: "C:\Windows\system32\net.exe" group "Domain Admins" serviceaccount /add /domain
+PAYCTX rating System"},{"@Name":"Company","#text":"Microsoft Corporation"},{"@Name":"OriginalFileName","#text":"net1.exe"},{"@Name":"CommandLine","#text":"C:\\Windows\\system32\\net1 group \"Domain Admins\" serviceaccount /add /domain"},{"@Name":"CurrentDirectory","#text":"C:\\Windows\\system32\\"},{"@Name":"User","#text":"LAF\\LAFAdmin"},{"@Name":"LogonGuid","#text":"27e06484-5ae8-69aa-4811-110500000000"},{"@Name":"L
+---REC 7
+TIME 2026-03-08 22:12:43.8219359 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CaptureService_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k LocalService -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX Service_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k LocalService -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 8
+TIME 2026-03-08 22:12:43.8231403 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: cbdhsvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k ClipboardSvcGroup -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX vc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k ClipboardSvcGroup -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 9
+TIME 2026-03-08 22:12:43.8239767 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CDPUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX serSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 10
+TIME 2026-03-08 22:12:43.8247699 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: ConsentUxUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX ntUxUserSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 11
+TIME 2026-03-08 22:12:43.8256228 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CredentialEnrollmentManagerUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\CredentialEnrollmentManager.exe | ServiceType: Unknown code (0xD0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX serSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\CredentialEnrollmentManager.exe"},{"@Name":"ServiceType","#text":"0xD0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 12
+TIME 2026-03-08 22:12:43.8267662 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DeviceAssociationBrokerSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX rokerSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 13
+TIME 2026-03-08 22:12:43.8275596 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DevicePickerUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Disabled | ServiceAccount: LocalSystem | 
+PAYCTX ckerUserSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"4"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 14
+TIME 2026-03-08 22:12:43.8285233 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DevicesFlowUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX FlowUserSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 15
+TIME 2026-03-08 22:12:43.8292744 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: PimIndexMaintenanceSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX nceSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 16
+TIME 2026-03-08 22:12:43.8303711 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: PrintWorkflowUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k PrintWorkflow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX owUserSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k PrintWorkflow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 17
+TIME 2026-03-08 22:12:43.8315070 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UdkUserSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k UdkSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX "UdkUserSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UdkSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 18
+TIME 2026-03-08 22:12:43.8323650 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UnistoreSvc_fbf8288 | ServiceFileName: C:\Windows\System32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX oreSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\System32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 19
+TIME 2026-03-08 22:12:43.8333052 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UserDataSvc_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX ataSvc_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 20
+TIME 2026-03-08 22:12:43.8341362 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: WpnUserService_fbf8288 | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX ervice_fbf8288"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 21
+TIME 2026-03-08 22:30:22.9784014 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CaptureService_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k LocalService -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX ervice_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k LocalService -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 22
+TIME 2026-03-08 22:30:22.9792748 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: cbdhsvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k ClipboardSvcGroup -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX c_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k ClipboardSvcGroup -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 23
+TIME 2026-03-08 22:30:22.9801035 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CDPUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX erSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 24
+TIME 2026-03-08 22:30:22.9808762 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: ConsentUxUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX tUxUserSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 25
+TIME 2026-03-08 22:30:22.9816977 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: CredentialEnrollmentManagerUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\CredentialEnrollmentManager.exe | ServiceType: Unknown code (0xD0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX erSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\CredentialEnrollmentManager.exe"},{"@Name":"ServiceType","#text":"0xD0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 26
+TIME 2026-03-08 22:30:22.9824525 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DeviceAssociationBrokerSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow -p | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX okerSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow -p"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 27
+TIME 2026-03-08 22:30:22.9832970 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DevicePickerUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Disabled | ServiceAccount: LocalSystem | 
+PAYCTX kerUserSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"4"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 28
+TIME 2026-03-08 22:30:22.9843538 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: DevicesFlowUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k DevicesFlow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX lowUserSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k DevicesFlow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 29
+TIME 2026-03-08 22:30:22.9855787 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: PimIndexMaintenanceSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX ceSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 30
+TIME 2026-03-08 22:30:22.9866087 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: PrintWorkflowUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k PrintWorkflow | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX wUserSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k PrintWorkflow"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 31
+TIME 2026-03-08 22:30:22.9882129 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UdkUserSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k UdkSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX UdkUserSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UdkSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 32
+TIME 2026-03-08 22:30:22.9890071 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UnistoreSvc_10078fdb | ServiceFileName: C:\Windows\System32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX reSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\System32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 33
+TIME 2026-03-08 22:30:22.9899085 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: UserDataSvc_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Manual | ServiceAccount: LocalSystem | 
+PAYCTX taSvc_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"3"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+---REC 34
+TIME 2026-03-08 22:30:22.9907363 EID 4697 CH  COMP LAF-svr01.LAF.local
+PD ServiceName: WpnUserService_10078fdb | ServiceFileName: C:\Windows\system32\svchost.exe -k UnistackSvcGroup | ServiceType: Unknown code (0xE0) | ServiceStartType: Automatic | ServiceAccount: LocalSystem | 
+PAYCTX rvice_10078fdb"},{"@Name":"ServiceFileName","#text":"C:\\Windows\\system32\\svchost.exe -k UnistackSvcGroup"},{"@Name":"ServiceType","#text":"0xE0"},{"@Name":"ServiceStartType","#text":"2"},{"@Name":"ServiceAccount","#text":"LocalSystem"},{"@Name":"ClientProcessStartKey","#text":"2251799813685303"},{"@Name":"ClientProcessId","#text":"2580"},{"@Name":"ParentProcessId","#text":"672"}]}}
+TOTAL_MATCHES 34

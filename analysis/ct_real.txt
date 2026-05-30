@@ -1,0 +1,21 @@
+===== ALL 10 ConsoleLogin events =====
+2026-03-01T14:55:23Z | root       | ip=216.82.9.162 | mfa=Yes | result=Success
+2026-03-03T05:00:19Z | root       | ip=216.82.9.162 | mfa=Yes | result=Success
+2026-03-03T23:44:13Z | root       | ip=216.82.9.162 | mfa=Yes | result=Success
+2026-03-08T19:04:34Z | root       | ip=216.82.9.162 | mfa=Yes | result=Success
+
+===== root: 21191 total events, 23 write/sensitive =====
+  day 2026-03-01 : 11
+  day 2026-03-03 : 5
+  day 2026-03-08 : 7
+-- root write eventName counts --
+      5 TestDNSAnswer
+      5 SendMessage
+      4 ConsoleLogin
+      2 ChangeResourceRecordSets
+      2 CreateOAuth2Token
+      1 ResendContactReachabilityEmail
+      1 RunInstances
+      1 AssociateIamInstanceProfile
+      1 StopInstances
+      1 AuthorizeOAuth2Access

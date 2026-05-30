@@ -1,0 +1,11 @@
+root total: 21191
+   17623 GetObject
+    1758 ListManagedNotificationEvents
+     939 DescribeMetricFilters
+     108 DescribeInstanceTypes
+      42 GetAccountPlanState
+      38 ListObjects
+      35 DescribeInstanceStatus
+      32 DescribeInstances
+      28 GetAccountColor
+      27 GetFeatureOptInStatus

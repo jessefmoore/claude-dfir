@@ -1,0 +1,6 @@
+TOTAL EVENTS: 0
+Traceback (most recent call last):
+  File "/home/localuser/cases/JackofAllHacks/analysis/ct_analyze.py", line 36, in <module>
+    print('TIME RANGE: %s -> %s'%(events[0].get('eventTime'), events[-1].get('eventTime')))
+                                  ~~~~~~^^^
+IndexError: list index out of range

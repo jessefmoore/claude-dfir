@@ -1,0 +1,140 @@
+
+===== DC01 : 110306 total rows, 2026-03-04 04:22:40.3861238 -> 2026-03-08 22:51:57.8946185 =====
+-- interesting EID counts --
+  18433  4672 SpecialPrivs
+   6151  5145 ShareDetail
+   4269  5140 ShareAccess
+   1381  4769 TGS
+    466  4768 TGT
+    418  4648 ExplicitCreds
+     66  4776 NTLMAuth
+     11  4738 UserChanged
+     10  4724 PwReset
+      5  4697 ServiceInstalled
+      1  1102 SecurityLogCleared
+      1  4720 UserCreated
+      1  4722 UserEnabled
+      1  4728 AddToGlobalGroup
+-- detail (1102/4720/4722/4724/4728/4732/4756/4726/7045/4697) --
+  2026-03-04 04:22:41.3473892 | 1102 SecurityLogCleared | user=LAF\localuser | SID: (S-1-5-21-1470946343-1533203819-1674874602-1000) |  | 
+  2026-03-04 04:22:59.3706587 | 4738 UserChanged | user=LAF\localuser | Target: LAF\domainuser | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:22:59.3707817 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\domainuser (S-1-5-21-1470946343-1533203819-16748 | SubjectLogonId: 0xE883F0 | 
+  2026-03-04 04:23:01.7492680 | 4738 UserChanged | user=LAF\localuser | Target: LAF\domainadmin | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:23:01.7493844 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\domainadmin (S-1-5-21-1470946343-1533203819-1674 | SubjectLogonId: 0xE883F0 | 
+  2026-03-04 04:27:32.4476947 | 4738 UserChanged | user=LAF\localuser | Target: LAF\Dalton | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:32.4478223 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\Dalton (S-1-5-21-1470946343-1533203819-167487460 | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:34.8712278 | 4738 UserChanged | user=LAF\localuser | Target: LAF\Ryan | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:34.8713766 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\Ryan (S-1-5-21-1470946343-1533203819-1674874602- | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:37.2604603 | 4738 UserChanged | user=LAF\localuser | Target: LAF\Donny | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:37.2605746 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\Donny (S-1-5-21-1470946343-1533203819-1674874602 | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:39.5826044 | 4738 UserChanged | user=LAF\localuser | Target: LAF\LAFAdmin | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:39.5827376 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874 | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:41.9269827 | 4738 UserChanged | user=LAF\localuser | Target: LAF\Jason | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:41.9270772 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\Jason (S-1-5-21-1470946343-1533203819-1674874602 | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:44.3127944 | 4738 UserChanged | user=LAF\localuser | Target: LAF\Gilles | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:44.3129212 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\Gilles (S-1-5-21-1470946343-1533203819-167487460 | SubjectLogonId: 0xF0A866 | 
+  2026-03-04 04:27:46.6309780 | 4738 UserChanged | user=LAF\localuser | Target: LAF\srv_LAF | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-04 04:27:46.6311098 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\srv_LAF (S-1-5-21-1470946343-1533203819-16748746 | SubjectLogonId: 0xF0A866 | 
+  2026-03-08 20:02:14.1537453 | 4720 UserCreated | user=LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874602-1112) | Target: LAF\serviceaccount (S-1-5-21-1470946343-1533203819-1 |  | 
+  2026-03-08 20:02:14.1590033 | 4722 UserEnabled | user=LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874602-1112) | Target: LAF\serviceaccount (S-1-5-21-1470946343-1533203819-1 | SubjectLogonId: 0x3EEECE5 | 
+  2026-03-08 20:02:14.1590340 | 4724 PwReset | user=LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874602-1112) | Target: LAF\serviceaccount (S-1-5-21-1470946343-1533203819-1 | SubjectLogonId: 0x3EEECE5 | 
+  2026-03-08 20:02:14.1815001 | 4738 UserChanged | user=LAF\LAFAdmin | Target: LAF\serviceaccount | Changed Attribute SamAccountName: - DisplayName: % | 
+  2026-03-08 20:03:05.8878989 | 4728 AddToGlobalGroup | user=LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874602-1112) | Target: LAF\Domain Admins (S-1-5-21-1470946343-1533203819-16 | Member: CN=serviceaccount,CN=Users,DC=LAF,DC=local | MemberSid: S-1-5-21-1470946343-153320381
+  2026-03-08 20:08:44.8599475 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: UnmfmnOL | ServiceFileName: %COMSPEC% /Q /c echo %COMSPEC% /C | ServiceType: Win32 Own Process
+  2026-03-08 20:08:53.8975475 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: QsYyAARL | ServiceFileName: %COMSPEC% /Q /c echo %COMSPEC% /C | ServiceType: Win32 Own Process
+  2026-03-08 20:08:55.8771037 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: XCCVTGUb | ServiceFileName: %COMSPEC% /Q /c echo %COMSPEC% /C | ServiceType: Win32 Own Process
+  2026-03-08 20:09:03.5318255 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: SOUwKZNf | ServiceFileName: %COMSPEC% /Q /c echo %COMSPEC% /C | ServiceType: Win32 Own Process
+  2026-03-08 20:09:04.7402141 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: PovLjNTr | ServiceFileName: %COMSPEC% /Q /c echo %COMSPEC% /C | ServiceType: Win32 Own Process
+  2026-03-08 21:01:00.4169015 | 4738 UserChanged | user=NT AUTHORITY\ANONYMOUS LOGON | Target: LAF\serviceaccount | Changed Attribute SamAccountName: - DisplayName: - | 
+
+===== DC02 : 217091 total rows, 2026-03-03 04:36:26.5626672 -> 2026-03-08 22:41:28.2258646 =====
+-- interesting EID counts --
+  23326  4672 SpecialPrivs
+   6995  5145 ShareDetail
+   4465  5140 ShareAccess
+   1263  4648 ExplicitCreds
+   1101  4769 TGS
+    893  4768 TGT
+    473  4776 NTLMAuth
+     44  4625 LogonFail
+     43  4697 ServiceInstalled
+     14  4738 UserChanged
+      7  4724 PwReset
+      3  4722 UserEnabled
+      2  4732 AddToLocalGroup
+      1  1102 SecurityLogCleared
+      1  4728 AddToGlobalGroup
+      1  4720 UserCreated
+-- detail (1102/4720/4722/4724/4728/4732/4756/4726/7045/4697) --
+  2026-03-03 04:36:26.5626672 | 1102 SecurityLogCleared | user=LAF-DC02\localuser | SID: (S-1-5-21-1501464249-3517118487-380572148-1000) |  | 
+  2026-03-03 04:36:27.1949228 | 4738 UserChanged | user=LAF-DC02\localuser | Target: LAF-DC02\Administrator | Changed Attribute SamAccountName: Administrator Di | 
+  2026-03-03 04:36:27.1949519 | 4724 PwReset | user=LAF-DC02\localuser (S-1-5-21-1501464249-3517118487-380572148-1000) | Target: LAF-DC02\Administrator (S-1-5-21-1501464249-35171184 | SubjectLogonId: 0xEB43B | 
+  2026-03-03 04:36:27.1995397 | 4738 UserChanged | user=LAF-DC02\localuser | Target: LAF-DC02\Administrator | Changed Attribute SamAccountName: Administrator Di | 
+  2026-03-03 04:38:20.4741405 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\localuser | Changed Attribute SamAccountName: localuser Displa | 
+  2026-03-03 04:38:20.4741682 | 4724 PwReset | user=WORKGROUP\WIN-0T8587HRAFN$ (S-1-5-18) | Target: WIN-0T8587HRAFN\localuser (S-1-5-21-3310158563-21085 | SubjectLogonId: 0x3E7 | 
+  2026-03-03 04:38:20.5081831 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\Administrator | Changed Attribute SamAccountName: Administrator Di | 
+  2026-03-03 04:38:20.5082085 | 4724 PwReset | user=WORKGROUP\WIN-0T8587HRAFN$ (S-1-5-18) | Target: WIN-0T8587HRAFN\Administrator (S-1-5-21-3310158563-2 | SubjectLogonId: 0x3E7 | 
+  2026-03-03 04:38:21.0322126 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\Administrator | Changed Attribute SamAccountName: Administrator Di | 
+  2026-03-03 04:38:21.0324846 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\Administrator | Changed Attribute SamAccountName: Administrator Di | 
+  2026-03-03 04:38:21.0328410 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\Guest | Changed Attribute SamAccountName: Guest DisplayNam | 
+  2026-03-03 04:38:21.0330346 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\Guest | Changed Attribute SamAccountName: Guest DisplayNam | 
+  2026-03-03 04:38:21.0334036 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\DefaultAccount | Changed Attribute SamAccountName: DefaultAccount D | 
+  2026-03-03 04:38:21.0335958 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\DefaultAccount | Changed Attribute SamAccountName: DefaultAccount D | 
+  2026-03-03 04:38:21.0339573 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\WDAGUtilityAccount | Changed Attribute SamAccountName: WDAGUtilityAccou | 
+  2026-03-03 04:38:21.0341519 | 4738 UserChanged | user=WORKGROUP\WIN-0T8587HRAFN$ | Target: WIN-0T8587HRAFN\WDAGUtilityAccount | Changed Attribute SamAccountName: WDAGUtilityAccou | 
+  2026-03-03 04:55:48.8416545 | 4732 AddToLocalGroup | user=LAF-DC02\localuser (S-1-5-21-3310158563-2108587640-1342380045-1000) | Target: Builtin\Administrators (S-1-5-32-544) | SubjectLogonId: 0x400A1D | MemberName: -
+  2026-03-03 04:55:48.8458656 | 4732 AddToLocalGroup | user=LAF-DC02\localuser (S-1-5-21-3310158563-2108587640-1342380045-1000) | Target: Builtin\Users (S-1-5-32-545) | SubjectLogonId: 0x400A1D | MemberName: -
+  2026-03-03 04:57:12.5387304 | 4728 AddToGlobalGroup | user=NT AUTHORITY\ANONYMOUS LOGON (S-1-5-7) | Target: LAF-DC02\None (S-1-5-21-634576597-2976789294-1805187 | Member: - | MemberSid: S-1-5-21-634576597-2976789294
+  2026-03-03 04:57:12.5390561 | 4720 UserCreated | user=NT AUTHORITY\ANONYMOUS LOGON (S-1-5-7) | Target: LAF-DC02\WDAGUtilityAccount (S-1-5-21-634576597-2976 |  | 
+  2026-03-03 04:57:12.5411337 | 4738 UserChanged | user=LAF\LAF-DC02$ | Target: LAF-DC02\WDAGUtilityAccount | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-03 05:09:26.1841430 | 4722 UserEnabled | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\IIS-SERV-PROD$ (S-1-5-21-1470946343-1533203819-1 | SubjectLogonId: 0x1DDD41 | 
+  2026-03-03 05:09:26.1841501 | 4724 PwReset | user=LAF\localuser (S-1-5-21-1470946343-1533203819-1674874602-1000) | Target: LAF\IIS-SERV-PROD$ (S-1-5-21-1470946343-1533203819-1 | SubjectLogonId: 0x1DDD41 | 
+  2026-03-03 05:16:07.8817277 | 4722 UserEnabled | user=LAF\domainadmin (S-1-5-21-1470946343-1533203819-1674874602-1105) | Target: LAF\LAF-SVR01$ (S-1-5-21-1470946343-1533203819-16748 | SubjectLogonId: 0x244B1C | 
+  2026-03-03 05:16:07.8817345 | 4724 PwReset | user=LAF\domainadmin (S-1-5-21-1470946343-1533203819-1674874602-1105) | Target: LAF\LAF-SVR01$ (S-1-5-21-1470946343-1533203819-16748 | SubjectLogonId: 0x244B1C | 
+  2026-03-03 05:16:08.0437683 | 4722 UserEnabled | user=LAF\domainadmin (S-1-5-21-1470946343-1533203819-1674874602-1105) | Target: LAF\LAF-WS01$ (S-1-5-21-1470946343-1533203819-167487 | SubjectLogonId: 0x245040 | 
+  2026-03-03 05:16:08.0437816 | 4724 PwReset | user=LAF\domainadmin (S-1-5-21-1470946343-1533203819-1674874602-1105) | Target: LAF\LAF-WS01$ (S-1-5-21-1470946343-1533203819-167487 | SubjectLogonId: 0x245040 | 
+  2026-03-04 04:20:01.6741602 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CaptureService_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6749940 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: cbdhsvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6756874 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CDPUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6766723 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: ConsentUxUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6774937 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CredentialEnrollmentManagerUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\CredentialEnr | ServiceType: Unknown code (0xD0)
+  2026-03-04 04:20:01.6783649 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DeviceAssociationBrokerSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6794866 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicePickerUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6801945 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicesFlowUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6813060 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PimIndexMaintenanceSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6820048 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PrintWorkflowUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6831330 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UdkUserSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6838413 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UnistoreSvc_57ae3 | ServiceFileName: C:\Windows\System32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6845669 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UserDataSvc_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:20:01.6856280 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: WpnUserService_57ae3 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5114387 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CaptureService_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5122234 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: cbdhsvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5130267 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CDPUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5137882 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: ConsentUxUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5145184 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CredentialEnrollmentManagerUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\CredentialEnr | ServiceType: Unknown code (0xD0)
+  2026-03-04 04:42:48.5154217 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DeviceAssociationBrokerSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5161832 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicePickerUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5169289 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicesFlowUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5178544 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PimIndexMaintenanceSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5186539 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PrintWorkflowUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5196735 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UdkUserSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5203472 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UnistoreSvc_2598a1 | ServiceFileName: C:\Windows\System32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5210762 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UserDataSvc_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-04 04:42:48.5221366 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: WpnUserService_2598a1 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0065967 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CaptureService_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0073407 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: cbdhsvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0080500 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CDPUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0087499 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: ConsentUxUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0094502 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: CredentialEnrollmentManagerUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\CredentialEnr | ServiceType: Unknown code (0xD0)
+  2026-03-06 04:40:30.0104677 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DeviceAssociationBrokerSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0117628 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicePickerUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0128073 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: DevicesFlowUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0136238 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PimIndexMaintenanceSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0144017 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: PrintWorkflowUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0155145 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UdkUserSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0161956 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UnistoreSvc_4ff5aa7 | ServiceFileName: C:\Windows\System32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0168881 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: UserDataSvc_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:40:30.0176863 | 4697 ServiceInstalled | user=LAF\LAF-DC02$ | ServiceName: WpnUserService_4ff5aa7 | ServiceFileName: C:\Windows\system32\svchost.exe - | ServiceType: Unknown code (0xE0)
+  2026-03-06 04:42:44.2362525 | 4697 ServiceInstalled | user=LAF\LAFAdmin | ServiceName: MozillaMaintenance | ServiceFileName: "C:\Program Files (x86)\Mozilla M | ServiceType: Win32 Own Process
+  2026-03-06 04:48:08.2787041 | 4738 UserChanged | user=NT AUTHORITY\ANONYMOUS LOGON | Target: LAF\srv_LAF | Changed Attribute SamAccountName: - DisplayName: - | 
+  2026-03-06 04:48:08.2787610 | 4724 PwReset | user=LAF\LAFAdmin (S-1-5-21-1470946343-1533203819-1674874602-1112) | Target: LAF\srv_LAF (S-1-5-21-1470946343-1533203819-16748746 | SubjectLogonId: 0x51E014D | 

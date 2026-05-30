@@ -1,0 +1,5 @@
+ACCESS DENIED EVENTS: 237
+by actor: {'AWSService': 21, 'arn:aws:iam::464381121764:root': 2, 'resource-explorer-2': 214}
+by IP: {'guardduty.amazonaws.com': 21, '216.82.9.162': 2, 'resource-explorer-2.amazonaws.com': 214}
+by event: {'GetOutcomes': 28, 'GetModels': 23, 'HeadBucket': 21, 'GetEventTypes': 21, 'GetVariables': 21, 'GetEntityTypes': 19, 'GetLabels': 19, 'GetExternalModels': 19, 'GetDetectors': 17, 'ListEngagements': 12, 'ListEngagementInvitations': 12, 'ListOpportunities': 6, 'ListResourceSnapshotJobs': 6, 'GetAnomalyMonitors': 3, 'ListCustomDataIdentifiers': 3}
+time range: 2026-03-01T00:07:02Z -> 2026-03-08T22:15:00Z

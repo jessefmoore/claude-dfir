@@ -1,0 +1,7 @@
+###### DC01 (window 2026-03-06 13:30-15:30) ######
+-- 4624 Type3/10 [lt,ip,user]xN:
+-- Type10 RDP [ip,user]xN:
+-- privileged-acct logons [user,ip,lt]xN:
+-- top src IPs (4624):
+-- 4625 fails [lt,ip,user]xN:
+###### DC02 (window 2026-03-06 13:30-15:30) ######

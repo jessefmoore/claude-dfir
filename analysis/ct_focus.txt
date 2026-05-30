@@ -1,0 +1,5 @@
+===== 198.51.100.77 (attacker-net) — ALL events =====
+
+===== other 198.51.100.* / 173.230.136.180 =====
+
+===== root@216.82.9.162 — WRITE/sensitive eventNames (counts) =====

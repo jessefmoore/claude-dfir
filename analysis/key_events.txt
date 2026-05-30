@@ -1,0 +1,134 @@
+###### DC01 ######
+DC01 1102 2026-03-04 04:22:41.347 subj= tgt= member= ip= | Event log cleared
+DC01 4738 2026-03-04 04:22:59.370 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:22:59.370 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:23:01.749 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:23:01.749 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:32.447 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:32.447 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:34.871 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:34.871 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:37.260 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:37.260 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:39.582 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:39.582 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:41.926 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:41.927 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:44.312 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:44.312 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-04 04:27:46.630 subj= tgt= member= ip= | A user account was changed
+DC01 4724 2026-03-04 04:27:46.631 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4720 2026-03-08 20:02:14.153 subj= tgt= member= ip= | A new account was created
+DC01 4722 2026-03-08 20:02:14.159 subj= tgt= member= ip= | A user account was enabled
+DC01 4724 2026-03-08 20:02:14.159 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC01 4738 2026-03-08 20:02:14.181 subj= tgt= member= ip= | A user account was changed
+DC01 4728 2026-03-08 20:03:05.887 subj= tgt= member= ip= | A member was added to a security-enabled
+DC01 4737 2026-03-08 20:03:05.889 subj= tgt= member= ip= | 
+DC01 4738 2026-03-08 21:01:00.416 subj= tgt= member= ip= | A user account was changed
+###### DC02 ######
+DC02 1102 2026-03-03 04:36:26.562 subj= tgt= member= ip= | Event log cleared
+DC02 4739 2026-03-03 04:36:27.171 subj= tgt= member= ip= | 
+DC02 4738 2026-03-03 04:36:27.194 subj= tgt= member= ip= | A user account was changed
+DC02 4724 2026-03-03 04:36:27.194 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4738 2026-03-03 04:36:27.199 subj= tgt= member= ip= | A user account was changed
+DC02 4739 2026-03-03 04:36:27.202 subj= tgt= member= ip= | 
+DC02 4739 2026-03-03 04:38:20.444 subj= tgt= member= ip= | 
+DC02 4738 2026-03-03 04:38:20.474 subj= tgt= member= ip= | A user account was changed
+DC02 4724 2026-03-03 04:38:20.474 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4739 2026-03-03 04:38:20.478 subj= tgt= member= ip= | 
+DC02 4739 2026-03-03 04:38:20.483 subj= tgt= member= ip= | 
+DC02 4738 2026-03-03 04:38:20.508 subj= tgt= member= ip= | A user account was changed
+DC02 4724 2026-03-03 04:38:20.508 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4739 2026-03-03 04:38:20.511 subj= tgt= member= ip= | 
+DC02 4735 2026-03-03 04:38:21.021 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.021 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.022 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.022 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.022 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.022 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.022 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.023 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.023 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.023 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.023 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.024 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.024 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.024 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.024 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.024 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.025 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.025 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.025 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.025 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.025 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.026 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.026 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.026 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.026 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.026 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.027 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.027 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.027 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.027 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.027 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.028 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.028 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.028 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.028 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.028 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.029 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.029 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.029 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.029 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.030 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.030 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.030 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.030 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.030 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.031 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.031 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.031 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.031 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4735 2026-03-03 04:38:21.031 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4738 2026-03-03 04:38:21.032 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.032 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.032 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.033 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.033 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.033 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.033 subj= tgt= member= ip= | A user account was changed
+DC02 4738 2026-03-03 04:38:21.034 subj= tgt= member= ip= | A user account was changed
+DC02 4737 2026-03-03 04:38:21.034 subj= tgt= member= ip= | 
+DC02 4737 2026-03-03 04:38:21.034 subj= tgt= member= ip= | 
+DC02 4739 2026-03-03 04:55:11.586 subj= tgt= member= ip= | 
+DC02 4732 2026-03-03 04:55:48.841 subj= tgt= member= ip= | A member was added to a security-enabled
+DC02 4732 2026-03-03 04:55:48.845 subj= tgt= member= ip= | A member was added to a security-enabled
+DC02 4731 2026-03-03 04:57:12.498 subj= tgt= member= ip= | A security-enabled local group was creat
+DC02 4735 2026-03-03 04:57:12.498 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4731 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was creat
+DC02 4735 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4731 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was creat
+DC02 4735 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4731 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was creat
+DC02 4735 2026-03-03 04:57:12.499 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4731 2026-03-03 04:57:12.500 subj= tgt= member= ip= | A security-enabled local group was creat
+DC02 4735 2026-03-03 04:57:12.500 subj= tgt= member= ip= | A security-enabled local group was chang
+DC02 4742 2026-03-03 04:57:12.512 subj= tgt= member= ip= | A computer account was changed
+DC02 4728 2026-03-03 04:57:12.538 subj= tgt= member= ip= | A member was added to a security-enabled
+DC02 4720 2026-03-03 04:57:12.539 subj= tgt= member= ip= | A new account was created
+DC02 4738 2026-03-03 04:57:12.541 subj= tgt= member= ip= | A user account was changed
+DC02 4742 2026-03-03 04:57:52.669 subj= tgt= member= ip= | A computer account was changed
+DC02 4722 2026-03-03 05:09:26.184 subj= tgt= member= ip= | A user account was enabled
+DC02 4724 2026-03-03 05:09:26.184 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4722 2026-03-03 05:16:07.881 subj= tgt= member= ip= | A user account was enabled
+DC02 4724 2026-03-03 05:16:07.881 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4722 2026-03-03 05:16:08.043 subj= tgt= member= ip= | A user account was enabled
+DC02 4724 2026-03-03 05:16:08.043 subj= tgt= member= ip= | An attempt was made to reset an account'
+DC02 4742 2026-03-03 05:16:44.185 subj= tgt= member= ip= | A computer account was changed
+DC02 4742 2026-03-03 05:16:44.187 subj= tgt= member= ip= | A computer account was changed
+DC02 4742 2026-03-03 05:16:59.543 subj= tgt= member= ip= | A computer account was changed
+DC02 4742 2026-03-03 05:16:59.545 subj= tgt= member= ip= | A computer account was changed
+DC02 4742 2026-03-03 05:27:31.355 subj= tgt= member= ip= | A computer account was changed
+DC02 4742 2026-03-03 05:27:31.449 subj= tgt= member= ip= | A computer account was changed
+DC02 4738 2026-03-06 04:48:08.278 subj= tgt= member= ip= | A user account was changed
+DC02 4724 2026-03-06 04:48:08.278 subj= tgt= member= ip= | An attempt was made to reset an account'

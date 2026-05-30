@@ -1,0 +1,8 @@
+{
+ "cloud_admin_events": 0,
+ "root_writes_total": 0,
+ "root_writes_0308": 0,
+ "root_write_0308_ips": {},
+ "root_write_0308_byhour": {},
+ "root_write_0308_top": {}
+}

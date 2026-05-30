@@ -1,0 +1,14 @@
+HOST DC01 DIR_EXISTS=yes
+  Microsoft-Windows-Sysmon%4Operational.evtx
+  Security.evtx
+  System.evtx
+HOST DC02 DIR_EXISTS=yes
+  Microsoft-Windows-Sysmon%4Operational.evtx
+  Security.evtx
+  System.evtx
+HOST SVR01 DIR_EXISTS=yes
+  Microsoft-Windows-Sysmon%4Operational.evtx
+  Security.evtx
+  System.evtx
+HOST WS01 DIR_EXISTS=NO
+HOST WS02 DIR_EXISTS=NO

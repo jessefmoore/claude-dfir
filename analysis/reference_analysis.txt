@@ -1,0 +1,1359 @@
+================================================================================
+REFERENCE CASEBOOK — FULL STRUCTURAL ANALYSIS
+Source: https://aleemladha.github.io/Jack-of-all-Hacks-DFIR-CTF---By-Null404-and-ArcLight6/
+File saved: /home/localuser/cases/JackofAllHacks/analysis/reference_casebook.html
+File size: 915,952 bytes / 9,941 lines
+Analysed by: Claude Code (DFIR Orchestrator)
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. OVERALL VISUAL STRUCTURE AND LAYOUT (sections in order)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The page is a single-file, single-page document (~9,941 lines of HTML). It has
+NO separate CSS or JS files — everything is inline in one <style> block and one
+<script> block. There is no server-side framework; it is a static GitHub Pages
+deployment.
+
+The document uses a full-viewport, scroll-based layout. There is no sidebar
+reservation — all content runs 100% width. A floating chapter-nav drawer sits
+in the top-right corner and overlays content when open.
+
+SECTION ORDER (matching nav data-num attributes):
+
+  [00]   HERO CASE FILE (#hero)
+           — full-viewport hero with masthead, h1, dossier card, stamp overlays,
+             scoreboard strip at bottom
+
+  [00.1] THE STORY (#sec-story)
+           — narrative prose section, story-stats strip, long multi-paragraph
+             article text
+
+  [00.2] EXECUTIVE BRIEFING (#sec-exec)
+           — severity banner, root-cause table, mitigation roadmap, residual note
+             (NOTE: nav shows this as "00.5" but section ID is sec-exec)
+
+  [00.02] C2 ATTRIBUTION — Adaptix RE (#sec-c2attrib)
+           — terminal panel showing step-by-step RE, side-by-side evidence table,
+             attribution verdict block
+             (styled with green accent border: border-top/bottom 2px solid rgba(0,255,156,.35))
+
+  [00.03] MASTER TIMELINE (#sec-master-timeline)
+           — Phase 0–4 tables with ~150 rows of UTC-timestamped events
+             (styled with cyan accent border: border-top/bottom 2px solid rgba(100,200,255,.35))
+
+  [01]   TECHNICAL OVERVIEW (#sec-overview)
+           — lede paragraph, HOST GRID (7 host cards)
+
+  [02]   ATTACK GRAPH (#sec-graph)
+           — interactive replay panel (3 layers), SVG attack graph (1200×720),
+             pro legend grid
+
+  [02.3] HOW WE PROVED IT (#sec-proof)
+           — 3-column recipe cards (red/amber/green bordered)
+
+  [02.5] EVTX ACTIVITY HEATMAP (#sec-heatmap)
+           — jump buttons, heatmap-wrap (JS-rendered grid), sigma narrative,
+             legend
+
+  [ACT I]   INGRESS & PRIVILEGE (#sec-act1) — act-card section
+  [03]      IIS CHAIN (#sec-iis) — event-list + terminal panel
+
+  [ACT II]  NTDS EXFILTRATION (#sec-act2) — act-card section
+  [04]      SECRETSDUMP 5-STAGE (#sec-secretsdump) — table + event-list + terminal
+
+  [ACT III] RDP / KALI LEAK (#sec-act3) — act-card section
+  [05]      KALI HOSTNAME LEAK (#sec-kali) — terminal + table
+
+  [ACT IV]  ARCHIVE / EXFIL (#sec-act4) — act-card section
+  [06]      EXFIL PROVENANCE (#sec-exfil) — terminal + event-list
+
+  [ACT V]   DETONATION & SHADOW WIPE (#sec-act5) — act-card section
+  [07]      RANSOMWARE PROCESS TREE (#sec-ptree) — ptree + tables
+
+  [ACT VI]  CLOUD FOLLOW-ON (#sec-act6) — act-card section
+  [08]      IMDSV2 CHAIN (#sec-imds) — terminal + cloud verdict table
+
+  [ACT VII] MEMORY RECKONING (#sec-act7) — act-card section
+  [09]      VOLATILITY 3 WALK (#sec-vol3) — terminal panel
+
+  [10]   ATT&CK MATRIX (#sec-ttp)
+           — 22-cell TTP grid
+
+  [11]   SOLVE BOARD / CASE BOARD (#sec-board)
+           — 13 chain cards with progress bars
+
+  [12]   BURNED ATTEMPTS / REJECTS (#sec-rejects)
+           — 7 reject cards
+
+  [13]   IOC LEDGER (#sec-ioc)
+           — 3 tables: network, file/path, credential/registry
+
+  [14]   Q&A LEDGER (#sec-ledger)
+           — searchable/filterable table, 71 answers, ledger-summary strip
+
+  [15]   FORENSIC APPENDIX / DEEP-DIVES (#sec-corrections)
+           — "4 findings where first pass is wrong" table, beacon-binary table,
+             very long prose addenda (DD2–DD34, A–Z)
+             (styled amber accent: border-top/bottom 1px solid rgba(255,184,0,.25))
+
+  [XX]   CLOSED (#sec-close)
+           — centred outro with big "CASE CLOSED" text, green glowing stamp,
+             classification footer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. ALL COLOR HEX VALUES USED IN CSS (from :root + inline styles)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CSS CUSTOM PROPERTIES (:root):
+  --bg:      #05070a   (near-black background)
+  --bg-1:    #0b0f14   (slightly lighter bg)
+  --bg-2:    #11161c   (panel secondary)
+  --panel:   #0e1319   (card/panel background)
+  --line:    #1f2833   (divider lines)
+  --line-2:  #2b3645   (stronger dividers, borders)
+  --text:    #e6edf3   (primary text — off-white)
+  --muted:   #8b949e   (secondary text — grey)
+  --dim:     #5a6472   (very muted / label text)
+  --green:   #00ff9c   (forensic phosphor accent — PRIMARY accent)
+  --green-d: #00b36b   (darker green for gradients/borders)
+  --red:     #ff3b3b   (alert/impact red)
+  --red-d:   #a81212   (darker red)
+  --amber:   #ffb800   (warning/lateral amber)
+  --cyan:    #58a6ff   (entry-point/tooling cyan)
+  --violet:  #c084fc   (victim/workstation violet/purple)
+
+ADDITIONAL COLORS (SVG inline / hardcoded):
+  #05090d   — terminal/graph background (very dark blue-black)
+  #0d1319   — term-head gradient top
+  #080b0f   — term-head gradient bottom
+  #131a22   — event hover background
+  #0a0f16   — heatmap cell idle
+  rgba(0,255,156,.03)   — very faint green tint
+  rgba(0,255,156,.04-.10) — various green tints for backgrounds
+  rgba(255,59,59,.04-.38) — red tints for danger/impact sections
+  rgba(88,166,255,.06-.18) — cyan tints
+  rgba(192,132,252,.1)  — violet tint
+  rgba(255,184,0,.04-.55) — amber tints
+
+BACKGROUND RADIAL GRADIENT (body::before — ambient light):
+  rgba(255,59,59,.10) at 90% -10%   (red top-right glow)
+  rgba(0,255,156,.06) at -10% 20%   (green left glow)
+  rgba(88,166,255,.06) at 50% 110%  (cyan bottom glow)
+
+GRID OVERLAY (body::after):
+  rgba(255,255,255,.02) — very faint white grid lines, 48px × 48px
+
+CRT SCANLINE OVERLAY (.crt div):
+  rgba(255,255,255,.018) — repeating scanline at every 4th pixel
+
+SVG NODE COLORS (graph):
+  .nd.entry stroke: #58a6ff  (IIS — cyan)
+  .nd.dc    stroke: #ff3b3b  (DCs — red)
+  .nd.piv   stroke: #ffb800  (SVR01 — amber)
+  .nd.vict  stroke: #c084fc  (workstations — violet)
+  .nd.cloud stroke: #00ff9c  (AWS — green)
+  .nd.ext   stroke: #ff3b3b, stroke-dasharray: 4 3  (external — dashed red)
+  .nd fill: #0e1319 (panel color)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. FONT FAMILIES USED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Loaded via Google Fonts link tag:
+  1. Fraunces — opsz,wght @ 9..144,400/500/600/700
+     Used for: h1, h2, h3, act titles, dossier values, score-cell values,
+               ec-t (replay time), chain names, host names, close .big,
+               terminal-font for .progress-count <b>, .ec-elapsed number.
+     font-variation-settings: "opsz" 144, "SOFT" 40  (on most headings)
+     font-variation-settings: "opsz" 144, "SOFT" 100 (on italic em in h2/act banner)
+     This is the DISPLAY/EDITORIAL font — used for all large decorative type.
+
+  2. Inter — wght @ 400/500/600/700
+     Used for: body text, .story-prose p, .ec-desc, .event .desc,
+               lede paragraphs, section prose
+     Fallback: -apple-system, system-ui, sans-serif
+     font-feature-settings: "cv11", "ss01", "ss03"  (better digits, a, l glyphs)
+     This is the BODY/UI font.
+
+  3. JetBrains Mono — wght @ 400/500/600/700
+     Loaded but NOT explicitly referenced in main CSS (may be used in JS-rendered
+     content or as a fallback; IBM Plex Mono is the primary mono).
+
+  4. IBM Plex Mono — wght @ 300/400/500/600/700
+     Used for: all monospace elements — code, pre, .mono, .section-tag,
+               masthead, .dossier labels, .event rows, .term, .tbl, .ledger-tbl,
+               chapter-nav, heatmap, sigma overlay, scrubber ticks, all tags/labels.
+     Fallback: ui-monospace, monospace
+     This is the PRIMARY MONOSPACE font.
+
+System fallbacks:
+  - Georgia, serif (fallback for Fraunces)
+  - -apple-system, system-ui, sans-serif (fallback for Inter)
+  - ui-monospace, monospace (fallback for IBM Plex Mono)
+
+External dependency: mermaid@10.9.1 (loaded from cdn.jsdelivr.net but not
+visibly used in the rendered sections — possibly reserved for future diagrams).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. NAVIGATION STRUCTURE — CHAPTER NAV (hamburger/drawer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STRUCTURE:
+  <div class="chapter-nav-backdrop" id="chapterNavBackdrop">
+    — Fixed overlay backdrop; dims/blurs page when nav open
+    — opacity: 0 (hidden) → 1 (open), backdrop-filter: blur(2px)
+    — background: rgba(3,5,8,.58)
+    — clicking backdrop closes the nav
+
+  <nav class="chapter-nav" id="chapterNav">
+    — position: fixed; top: 18px; right: 18px; z-index: 50
+    — Toggle button:
+        <button class="chapter-nav-toggle" id="chapterNavToggle">
+          <span class="chapter-nav-toggle-icon">☰</span>  (hamburger icon)
+          <span class="chapter-nav-toggle-label">CHAPTERS</span>  (shown when open)
+        </button>
+        — Size when closed: 44px × 36px
+        — Size when open: auto width with padding 0 14px
+        — "☰" icon always visible; label "CHAPTERS" only shows when open
+        — hover/open: color: var(--green); border-color: var(--green)
+        — background: rgba(5,7,10,.92) with backdrop-filter: blur(12px)
+        — box-shadow: 0 4px 18px rgba(0,0,0,.35)
+
+    <div class="chapter-nav-list" id="chapterNavList">
+      — Collapsed: max-height: 0, opacity: 0, pointer-events: none
+      — Open: max-height: 78vh, opacity: 1, overflow-y: auto
+      — width: 260px; position: absolute; top: 44px; right: 0
+      — background: rgba(5,7,10,.94); backdrop-filter: blur(14px)
+      — border: 1px solid var(--line-2); border-radius: 3px
+      — transition: max-height .28s ease, opacity .2s
+
+NAVIGATION LINKS (22 total):
+  All use pattern: <a href="#section-id" data-num="XX">Label</a>
+  data-num attribute is rendered as a ::before pseudo-element prefix (9.5px, grey)
+
+  data-num="00"     href="#hero"                Case File
+  data-num="00.1"   href="#sec-c2attrib"        C2 · Adaptix RE
+  data-num="00.3"   href="#sec-master-timeline" Master Timeline
+  data-num="00.5"   href="#sec-exec"            Executive
+  data-num="01"     href="#sec-overview"        Overview
+  data-num="02"     href="#sec-graph"           Attack Graph
+  data-num="02.3"   href="#sec-proof"           How We Proved It
+  data-num="02.5"   href="#sec-heatmap"         Heatmap
+  data-num="I"      href="#sec-act1"            Ingress
+  data-num="03"     href="#sec-iis"             IIS Chain
+  data-num="II"     href="#sec-act2"            NTDS Exfil
+  data-num="04"     href="#sec-secretsdump"     5-Stage Dump
+  data-num="III"    href="#sec-act3"            Lateral
+  data-num="05"     href="#sec-kali"            Kali Leak
+  data-num="IV"     href="#sec-act4"            Exfiltration
+  data-num="06"     href="#sec-exfil"           Silk
+  data-num="V"      href="#sec-act5"            Impact
+  data-num="07"     href="#sec-ptree"           Process Tree
+  data-num="VI"     href="#sec-act6"            Cloud
+  data-num="08"     href="#sec-imds"            IMDSv2
+  data-num="VII"    href="#sec-act7"            Volatile
+  data-num="09"     href="#sec-vol3"            Vol3 Walk
+  data-num="10"     href="#sec-ttp"             ATT&CK
+  data-num="11"     href="#sec-board"           Solve Board
+  data-num="12"     href="#sec-rejects"         Rejects
+  data-num="13"     href="#sec-ioc"             IOCs
+  data-num="14"     href="#sec-ledger"          Q&A Ledger
+  data-num="15"     href="#sec-corrections"     Appendix · A–Z + DD2→DD25
+  data-num="XX"     href="#sec-close"           Closed
+
+ACTIVE STATE: .chapter-nav-list a.active
+  — color: var(--green); border-left: 2px solid var(--green)
+  — background: rgba(0,255,156,.07)
+  — JS uses IntersectionObserver to highlight active section
+
+BEHAVIOR:
+  — Toggle button click: toggles .open class on .chapter-nav
+  — Backdrop click: closes nav
+  — Keyboard: Escape key closes nav
+  — Touch coarse: minimum 40px touch targets
+  — Mobile (<600px): list width = calc(100vw - 36px), max 320px
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. HERO SECTION STRUCTURE AND CONTENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<section class="case-hero" id="hero">
+  min-height: 100vh
+  padding: 48px 7vw 60px
+  display: grid; grid-template-rows: auto 1fr auto
+  background: linear-gradient(180deg, rgba(0,255,156,.04), transparent 30%)
+              + repeating-linear-gradient horizontal lines (rgba(255,255,255,.015) 0 1px)
+
+  ROW 1 — MASTHEAD (font: IBM Plex Mono, 11px, letterspacing .2em, uppercase):
+    Left side:
+      — Green bar (28px × 2px, box-shadow: 0 0 8px green)
+      — "N404 // DFIR CASEBOOK" (bold, color var(--text))
+      — "CLASSIFICATION: TLP-AMBER" (color var(--muted))
+    Right side (flex, gap 22px):
+      — "CASE OPEN 2026-04-19"
+      — "ANALYST:  ARCLIGHT6 / verialabs"
+      — "SOURCE:  KAPE + CloudTrail + VOL3"
+      Each span has ::before "● " in var(--green)
+    border-bottom: 1px solid var(--line-2); padding-right: 70px
+
+  ROW 2 — BODY (2-column grid: 1.2fr 1fr, gap 64px, align-items center, padding 72px 0 48px):
+
+    LEFT COLUMN:
+      .section-tag — "Incident File // 2026-03-08 UTC"
+      <h1> with 3 spans:
+        .l1 "JACK OF" — color var(--text), has class="type" (typewriter animation)
+        .l2 "ALL HACKS" — gradient text: linear-gradient(90deg, var(--green) 0%, var(--cyan) 60%, var(--text) 100%)
+        .l3 "// N404-2026-0308" — color var(--text), opacity .14 (ghost/watermark effect)
+      font-size: clamp(54px, 9vw, 140px); line-height: .85; letter-spacing: -.035em; uppercase
+
+      .subhead (color var(--muted), font-size clamp(15px, 0.55vw + 13px, 17px), line-height 1.65):
+        — "Reconstruction of an enterprise intrusion at Legal Alliance Facility (LAF)."
+        — "Six Windows hosts, one AWS account, one memory image, one 164-minute kill chain..."
+        — "Adversary tracked as Saiyan Spider (in red). Entry via IIS OS-command injection."
+        — "Termination via IamBatman.exe encrypt C:\ across the estate."
+
+    RIGHT COLUMN — DOSSIER CARD (.dossier):
+      border: 1px solid var(--line-2)
+      background: linear-gradient(180deg, var(--panel), rgba(14,19,25,.5))
+      padding: 28px; font-family: IBM Plex Mono; font-size: 12px
+      box-shadow: 0 20px 60px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.02)
+      ::before label "CASE FILE" — absolute, translateY(-50%), green text, green border
+
+      ~18 rows (.dossier .row), each: grid 150px 1fr, gap 16px
+        .k = label (color var(--dim), uppercase, 10px, letterspacing .15em)
+        .v = value (color var(--text), 13px)
+        .v.red = var(--red) | .v.green = var(--green) | .v.amber = var(--amber)
+
+      Rows include:
+        Case ID, Engagement, Victim, Actor (red), Sophistication (amber),
+        Motivation, Origin, C2 Framework (green), Attribution confidence (green),
+        Initial Access, Pre-Attack Validation (amber), Crown Jewel,
+        Impact (red), MTTD (amber), Dwell, Timezone, Triage Corpus (green),
+        TTPs catalogued, IOC volume, Resolution (green)
+
+      TWO STAMPS (position: absolute, pointer-events: none):
+        .stamp.s1 — "CONFIDENTIAL"
+          top: 22%; right: 6%
+          border: 3px solid var(--red); color: var(--red)
+          font-family: Fraunces; font-size: 18px; padding: 8px 16px
+          transform: rotate(-12deg); opacity: .75; uppercase
+
+        .stamp.s2 — "FOR ANALYST EYES"
+          top: 80px; right: 6%
+          border-color: var(--amber); color: var(--amber)
+          transform: rotate(8deg); font-size: 11px; padding: 6px 12px
+
+  ROW 3 — SCOREBOARD (border-top 1px var(--line-2), padding-top 28px):
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 0
+    Each .score-cell:
+      padding: 14px 18px; border-right: 1px solid var(--line)
+      .k = label (10px, letterspacing .3em, var(--dim), uppercase)
+      .v = value (Fraunces, clamp(24px, 2.6vw, 38px); color var(--text))
+      .v.g = var(--green)
+      .d = descriptor (var(--muted), 11px)
+
+    6 cells:
+      Final Score: 475 (green) / "cap reached"
+      Solves: 72 / 72 / "all challenges"
+      Verified: 71 / 71 (green) / "SoloAgent oracle"
+      Chains: 13 / 13 / "families cleared"
+      Placement: 7th / "tied at cap"
+      Burned Attempts: 22 (red) / "logged as rejects"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. ALL SECTION TYPES PRESENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A. CASE-HERO (.case-hero)
+   Full-viewport opening section. See above.
+
+B. STANDARD SECTIONS (<section class="reveal">)
+   padding: 6vw 7vw; border-top: 1px solid var(--line)
+   — Used for: Story, Executive, C2 Attrib, Master Timeline, Overview, Graph,
+     Proof, Heatmap, IIS, Secretsdump, Kali, Exfil, Ptree, IMDS, Vol3, TTP,
+     Board, Rejects, IOC, Ledger, Corrections/Appendix.
+   — Some sections have special border/background overrides for visual emphasis:
+       C2 Attrib: border-top/bottom 2px solid rgba(0,255,156,.35), green bg gradient
+       Master Timeline: border-top/bottom 2px solid rgba(100,200,255,.35), cyan bg
+       Executive: background rgba(255,59,59,.04)
+       Appendix: border-top/bottom 1px solid rgba(255,184,0,.25), amber bg
+
+C. ACT CARDS (.act-card)
+   padding: 10vw 7vw 4vw (deliberately taller top padding)
+   border-top: 1px solid var(--line)
+   background: linear-gradient(180deg, rgba(0,255,156,.03), transparent 30%)
+   Used for: Act I, II, III, IV, V, VI, VII
+   Contains:
+     .num — "ACT N // HH:MM:SS — HH:MM:SS UTC" (IBM Plex Mono, 12px, green)
+     .title — h2-like (Fraunces, clamp(48px, 8vw, 110px), line-height .9)
+       One word in .title span is colored var(--green)
+     .timecode — time elapsed + host path + TTPs (IBM Plex Mono, 13px, muted)
+     .description — prose paragraph (muted, 15-17px, line-height 1.65)
+
+D. EXECUTIVE / SEVERITY SECTIONS
+   .sev-banner — 2-column grid (280px left, 1fr right):
+     Left (.sev-lvl): red gradient background, SEVERITY + CRITICAL label + sub
+     Right (.sev-grid): 3×2 grid of stat cells (dwell, hosts, recoverability, etc.)
+   .roadmap — 3-column Gantt-style (P0/P1/P2 phases with color-coded bottom bars)
+   .residual-note — amber left-border callout box
+
+E. STORY SECTION
+   .story-stats — horizontal strip of 6 stat cells (Fraunces numbers, IBM mono labels)
+     Some cells have .red class (red number + gradient top bar)
+   .story-prose — full-width article with Inter paragraphs, inline <code>, <b>
+     .p.end — terminal-style paragraph with border-top, IBM Plex Mono
+
+F. HOST GRID (.host-grid)
+   display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px
+   Each .host card:
+     background: var(--panel); border: 1px solid var(--line-2); padding: 18px
+     transition: transform .25s, border-color .25s
+     ::before — 2px top accent bar (color determined by class):
+       .host.entry::before — var(--cyan)
+       .host.dc::before    — var(--red)
+       .host.piv::before   — var(--amber)
+       .host.vict::before  — var(--violet)
+       .host.cloud::before — var(--green)
+     .name — Fraunces 18px, flex justify-content space-between
+       .ip — IBM Plex Mono 11px, var(--cyan)
+     .role — IBM Plex Mono 10px, var(--dim), uppercase, letterspacing .25em
+     .verdict — 13px, var(--muted), line-height 1.55
+
+G. ATTACK GRAPH SECTION
+   Three-layer replay panel (.replay-panel):
+     Layer 1 (.rp-bar) — thin context strip: "KILL-CHAIN REPLAY · 2026-03-08 · Saiyan Spider"
+       + act label (right-aligned, .rp-act, changes color/content during play)
+     Layer 2 (.event-card) — hero event row showing current event:
+       .ec-time — Fraunces 30px timestamp + IBM Plex Mono elapsed
+       .ec-body — host badge + description text
+       .ec-tags — tag pills (TTP/EID/amber/red)
+       4px left border changes color per act (cyan=I, violet=II, amber=III/IV, red=V, green=VI)
+     Layer 2b (.ec-chain) — chain breadcrumb trail (last 3 events → current, clickable)
+     Scrubber (.replay-scrubber, height 54px):
+       — gradient fill bar that advances left→right
+       — tick marks and phase segment labels (amber dashed lines)
+       — event marker blips (amber dots, green=fired, red=impact)
+       — scrubber-fill has cyan→amber→red gradient matching threat escalation
+     Layer 3 (footer .rp-ctrl):
+       — Transport buttons: ⟲ prev ▶PLAY next (44px height)
+       — Speed picker: 1× 60× 240× 900× (active = green background, black text)
+       — Progress count: "N / 39 events"
+
+   SVG Attack Graph (1200×720 viewBox):
+     3 dashed-border zones: EXTERNAL (left), LAF INTERNAL (center), AWS (right)
+     Impact zone (red dashed): IMPACT // 22:08 – 22:10 UTC (bottom-center)
+     Nodes: rect 3px border-radius, colored stroke by type
+     Edges: curved paths with colored arrows and hover-reveal labels
+     Traveling packet: animated circle that moves along edges during replay
+     Detonation overlay: .graph-detonate (red radial wash) + .graph-shock (screen-tint)
+     Act banner (.graph-act-banner): drops in Fraunces serif text at act transitions
+     Ransomed flicker: .host-ransomed applies red stroke + flicker animation to hosts
+
+   Pro Legend (.graph-legend-pro):
+     3-column grid (1fr 1fr 1fr):
+       Col 1: Host Types (icon + label + desc for each node type)
+       Col 2: Attack Lanes (color swatches + labels)
+       Col 3: Interactions (play, click, hover, command flash, Esc)
+     Each .gl-row: 40×40px icon box + label + desc
+
+H. EVENT LIST (.event-list)
+   display: grid; gap: 2px; border: 1px solid var(--line)
+   padding-left: 28px; position: relative
+   ::before — vertical timeline bar: 1px solid var(--line-2), left: 10px
+
+   Each .event row:
+     display: grid; grid-template-columns: 120px 80px 160px 1fr
+     padding: 14px 18px; background: var(--panel); font: IBM Plex Mono 12px
+     ::before — timeline node dot: 10px circle, left: -22px, top: 20px
+       Color/glow by act class:
+         .act1 — cyan (IIS entry)
+         .act2 — amber (privesc)
+         .act3 — violet (lateral)
+         .act4 — red (filled red dot, impact)
+         .act5 — green (cloud)
+     .t — green timestamp
+     .host — cyan badge (background rgba(88,166,255,.08), padding 2px 8px)
+     .eid — amber badge (border 1px rgba(255,184,0,.25), background rgba(255,184,0,.04))
+     .desc — var(--muted) 14px Inter, inline <code> in green-tinted boxes, <b> in white
+
+I. TERMINAL PANELS (.term)
+   background: #05090d; border: 1px solid var(--line-2); border-radius: 4px
+   box-shadow: 0 8px 32px rgba(0,0,0,.5)
+
+   .term-head:
+     background: linear-gradient(180deg, #0d1319, #080b0f)
+     padding: 8px 14px; border-bottom: 1px solid var(--line-2)
+     Left: .dots — 3 circles (red=close, amber=min, green=max), gap 6px
+     Title text: IBM Plex Mono 11px, var(--muted)
+
+   .term-body:
+     padding: 14px 16px; IBM Plex Mono 12.5px; white-space: pre-wrap
+     .prompt — var(--green) "$ " or "PS> "
+     .cmd — var(--text) (the command typed)
+     .out — var(--muted) (command output)
+     .hit — var(--amber) (highlighted matches / findings)
+     .ok — var(--green) (successful/expected output)
+     .bad — var(--red) (errors / malicious items)
+     .meta — var(--cyan) (metadata)
+     .comment — var(--dim), font-style: italic
+
+J. TTP GRID (.ttp-grid)
+   display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+   gap: 1px; background: var(--line); border: 1px solid var(--line)
+
+   Each .ttp cell:
+     background: var(--panel); padding: 14px 16px
+     .tactic — IBM Plex Mono 10px, var(--green), uppercase, letterspacing .3em
+     .tech — Fraunces 14px, font-weight 600, margin 6px 0 2px, letterspacing .02em
+     .tech-id — IBM Plex Mono, var(--amber), 11px
+     .ev — 12px, var(--muted), line-height 1.45; inline <code> in green-tinted boxes
+     .ttp.clickable — hover: green left border, green bg tint
+     Click triggers TTP cross-reference + flash animation (flashHighlight)
+
+K. CHAIN GRID / SOLVE BOARD (.chain-grid)
+   display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px
+
+   Each .chain card:
+     background: var(--panel); border: 1px solid var(--line-2); padding: 16px 18px
+     ::before — 3px left accent bar: var(--green) (default) or var(--amber) (.partial)
+     .n — Fraunces 15px, flex space-between, uppercase
+       .p — progress score (IBM Plex Mono 12px, green or amber)
+     .s — summary text (12.5px, var(--muted), line-height 1.55)
+     .bar — progress bar container (3px height, var(--line) bg)
+       .bar > i — filled portion (green gradient or amber gradient)
+
+L. REJECT CARDS (.reject)
+   border-left: 3px solid var(--red)
+   background: linear-gradient(90deg, rgba(255,59,59,.05), transparent 60%)
+   padding: 14px 18px; margin: 10px 0; IBM Plex Mono 12.5px
+
+   .cid — var(--amber) 11px (challenge ID and question)
+   .bad — var(--red) font-weight 600 (wrong answer)
+   .ok — var(--green) (accepted answer)
+   .why — var(--muted) 12px, line-height 1.5 (explanation)
+
+M. ANSWER LEDGER SECTION
+   .ledger-controls:
+     Search input (IBM Plex Mono, focus: green border + glow)
+     Filter pills (.ledger-filter-pills): category buttons
+       Default: transparent bg, muted color
+       Hover: green border + text
+       Active: green bg, black text, font-weight 700
+
+   .ledger-tbl:
+     width 100%; IBM Plex Mono 12.5px; border 1px solid var(--line-2)
+     Header: var(--panel) bg, green text, 10px uppercase, letterspacing .25em
+     Rows: hover rgba(0,255,156,.04)
+     Columns with classes:
+       .num — var(--dim), 54px wide, 11px
+       .fam — var(--cyan), 160px, 10.5px uppercase
+       .q — var(--muted), 230px, 11.5px
+       .ans — #fff, font-weight 600 (answers in white)
+         .ans code — green-tinted, green border, green text
+       .host — var(--amber), 84px, 10px uppercase
+       .evi — var(--muted), 200px, 10.5px
+     .ledger-hidden — display:none (used by JS filter)
+
+   .ledger-summary:
+     Grid of stat cells: Total/Families/Showing/Hosts/Artifact-backed
+     Fraunces 18px values in green (or red with .r class)
+
+N. PROCESS TREE (.ptree)
+   background: #05090d; border: 1px solid var(--line-2)
+   padding: 18px 22px; IBM Plex Mono 12.5px; line-height 1.75; overflow-x: auto
+   .pid — var(--amber)
+   .img — var(--green)
+   .cmd — var(--muted)
+   .bad — var(--red), font-weight 600
+   .user — var(--cyan)
+
+O. HEATMAP SECTION
+   .heatmap-wrap: background: #05090d; border: 1px solid var(--line-2)
+   .heatmap-grid: CSS grid, 90px label + 1fr cells, min-width 900px
+   Cell intensities (data-i attribute):
+     data-i="1" — rgba(0,255,156,.15) — 1 event (background)
+     data-i="2" — rgba(0,255,156,.32) — 2 events (minor)
+     data-i="3" — rgba(255,184,0,.55) — 3 events (active)
+     data-i="4" — rgba(255,59,59,.7)  — 4 events (heavy)
+     data-i="5" — rgba(255,59,59,1) + box-shadow  — 5 events (extreme/detonation)
+   Phase bars (top of grid):
+     .p1 cyan, .p2 amber, .p3 violet, .p4 green, .p5 red
+   Key-event markers: amber dots on hover-to-tooltip
+   Sigma row: green/amber pulsing circle markers
+   Jump buttons (.heatmap-jump): IBM Plex Mono, border-hover green
+   Hover tooltip (.heatmap-tip): fixed positioned, green border, IBM Plex Mono
+   Legend: color swatches + Sigma mark + interactive hint
+
+P. SEVERITY BANNER (.sev-banner)
+   2-column: 280px red side + 1fr grid side
+   Left: SEVERITY / CRITICAL / subtitle
+   Right: 3×2 grid of metrics (dwell, hosts, recoverability, cloud, data, regulatory)
+
+Q. MITIGATION ROADMAP (.roadmap)
+   .rm-track: 3-column P0/P1/P2 (red/amber/green), each with 2px bottom accent bar
+   .rm-body: 3-column, each .rm-col has UL with items
+
+R. CLOSE SECTION (.close)
+   padding: 10vw 7vw 6vw; text-align: center
+   background: radial-gradient(800px 400px at 50% 0%, rgba(0,255,156,.1), transparent 60%)
+   .big — Fraunces clamp(40px, 7vw, 92px), uppercase, span inside in var(--green)
+   .caption — IBM Plex Mono 12px, var(--muted), letterspacing .2em
+   .closed-stamp:
+     display: inline-block; margin-top: 28px
+     border: 3px solid var(--green); color: var(--green)
+     padding: 14px 28px; Fraunces; letterspacing .2em; uppercase
+     transform: rotate(-3deg)
+     box-shadow: 0 0 40px rgba(0,255,156,.25)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. INTERACTIVE ELEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A. KILL-CHAIN REPLAY ENGINE (JavaScript):
+   — Play/Pause button (▶ PLAY / ⏸ PAUSE)
+   — Reset button (⟲)
+   — Previous event button (⏮)
+   — Next event button (⏭)
+   — Speed selector: 1× / 60× / 240× / 900× (default: 60×)
+   — Scrubber timeline (click to seek)
+   — 39 events total in EVENTS array
+   — Event card updates with current event's time, elapsed, host, description, tags
+   — Chain breadcrumbs show last 3 events → current (clickable to seek)
+   — SVG edges activate (dim → live → fire) as events fire in time order
+   — Traveling packet animation (circle moves from src to dst node)
+   — Command flash overlays pop up at 8 key events
+   — Act banner (Fraunces italic text) fades in/out at act transitions
+   — Detonation: red radial wash + screen-tint shock animation at 22:09:46
+   — Ransomed flicker: WS01/WS02 get red stroke + flicker CSS animation post-detonation
+
+   Key flash events:
+     18:51:41 — WEBSHELL DROP (cyan)
+     19:38:02 — SYSTEM · C2 CALLBACK (amber)
+     19:59:00 — ADMIN$ SERVICE EXEC (violet)
+     20:08:53 — IMPACKET --use-vss (red)
+     20:09:03 — NTDS COPIED (red)
+     20:30:26 — SFTP EXFIL (amber)
+     21:42:11 — IAM HIJACK (green)
+     22:09:46 — DETONATION (red, impact=true → DETONATION banner)
+
+B. HOST EVIDENCE DRAWER (right-slide panel):
+   — Click any SVG node or host card → slides in from right
+   — .host-drawer (width min(540px, 96vw))
+   — transform: translateX(100%) → 0; transition .35s cubic-bezier(.2,.8,.2,1)
+   — .drawer-overlay darkens rest of page (rgba(0,0,0,.55), blur 4px)
+   — Header: host name, IP, role, close button (× → red on hover)
+   — Body populated with JS-driven event lists from DRAWER_DATA
+   — Scrollable; sticky header
+   — Close: X button, overlay click, Esc key
+
+C. SVG GRAPH FOCUS MODE:
+   — Click any host node → focuses its connected edges (others dim to 8% opacity)
+   — Focused edges get pulse animation (lanePulse keyframe)
+   — .host-focus class = full opacity + stroke glow
+   — .edge-focus class = full opacity + animated dashes
+   — "Clear focus" button appears when focused
+   — Esc key clears focus
+   — Click same host again to clear
+
+D. HEATMAP INTERACTIVITY:
+   — Hover any cell → tooltip with timestamp + event description
+   — Click any cell → seeks scrubber to that minute
+   — Jump buttons → presets for 4 key moments (19:38, 20:09, 21:42, 22:09)
+   — Sigma markers (pulsing circles) → cursor: help
+
+E. ANSWER LEDGER FILTER/SEARCH:
+   — Text input: live search across all visible columns
+   — Filter pills: 13 challenge family buttons (ALL + 12 families)
+   — Active pill: green background / black text
+   — ledger-hidden class toggles row visibility
+   — Showing count updates dynamically
+   — On mobile: horizontally scrollable table
+
+F. TTP CROSS-LINKING:
+   — .ttp-link and .eid-link: dashed underline links in body text
+   — Click → scrolls to corresponding TTP or event-list entry
+   — Target gets .flash class → green glow animation (1.8s)
+   — flashHighlight keyframe: box-shadow + background-color fade
+
+G. SCROLL ANIMATIONS (.reveal):
+   — body gets .js-fade class on DOMContentLoaded
+   — IntersectionObserver watches all .reveal elements
+   — Threshold 0.1 (10% visible)
+   — When visible: adds .in class → opacity 1, translateY(0)
+   — Initial hidden state: opacity 0, translateY(20px)
+   — Transition: .8s ease
+   — Failsafe: without JS, all content visible at opacity 1, transform none
+
+H. TYPEWRITER ANIMATION (.type class on h1 .l1):
+   — "JACK OF" types out from 0 width to 100%
+   — animation: type 3s steps(50, end) 0.4s both
+   — Caret blinks: border-right 2px solid var(--green)
+   — caret keyframe: 50% { border-color: transparent }
+
+I. SECTION-TAG BLINK:
+   — Green dot in .section-tag has blink animation
+   — keyframe: 0%/100% opacity 1, 50% opacity .25, period 1.6s
+
+J. HEATMAP SIGMA PULSE ANIMATIONS:
+   — Standard: sigmaPulse (scale 1→1.15, glow 0→.8, 2s)
+   — Novel rules: sigmaPulseNovel (amber ring + green dot, scale 1→1.2, 1.8s)
+
+K. HOST HOVER (SVG):
+   — host-clickable:hover → drop-shadow(0 0 10px var(--green))
+   — .host-active > rect → stroke-width 3, drop-shadow glow
+   — .host-dim → opacity .45
+
+L. EDGE HOVER (SVG):
+   — edge-g:hover → opacity 1, stroke-width 2.6, drop-shadow
+   — edge-g:hover text → opacity 1 (labels appear)
+   — edge-dim → opacity 0.12
+
+M. .xref INLINE CROSS-REFERENCES:
+   — pill-style links in text: "Addendum X" etc.
+   — green background, green border, IBM Plex Mono
+   — Hover: slightly deeper green bg
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. FINDING CARD STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+There are multiple "card" types, each for a different finding context:
+
+A. REJECT / BURNED-ATTEMPT CARD (.reject):
+   border-left: 3px solid var(--red)
+   background: linear-gradient(90deg, rgba(255,59,59,.05), transparent 60%)
+   padding: 14px 18px
+
+   Content pattern:
+     .cid  — "FAMILY · N (challenge-id) · question text" [amber, 11px]
+     <b class="bad">rejected:</b> wrong answer text
+     → separator
+     <b class="ok">accepted:</b> correct answer [green]
+     .why — explanation paragraph [muted, 12px]
+
+B. CHAIN / SOLVE BOARD CARD (.chain):
+   border: 1px solid var(--line-2); background: var(--panel)
+   padding: 16px 18px; position: relative
+   ::before — 3px left bar (green=complete, amber=partial)
+
+   Content:
+     .n — chain name (Fraunces 15px uppercase) + .p score badge (IBM Plex Mono)
+     .s — solve summary text (12.5px muted)
+     .bar > i — progress fill (green gradient, or amber if .partial)
+
+C. HOST CARD (.host in host-grid):
+   background: var(--panel); border: 1px solid var(--line-2); padding: 18px
+   ::before — 2px top accent bar (color by type: entry=cyan, dc=red, piv=amber, vict=violet, cloud=green)
+   hover: translateY(-3px), border-color var(--green-d)
+
+   Content:
+     .name — hostname (Fraunces 18px) + .ip (IBM Plex Mono 11px cyan) [flex space-between]
+     .role — role label (IBM Plex Mono 10px, dim, uppercase)
+     .verdict — description text (13px muted, line-height 1.55)
+
+D. TTP GRID CELL (.ttp):
+   background: var(--panel); padding: 14px 16px
+   (cells separated by 1px var(--line) gaps between them)
+
+   Content:
+     .tactic — category (IBM Plex Mono 10px, green, uppercase)
+     .tech — technique name (Fraunces 14px, font-weight 600)
+     .tech-id — "T1190" etc. (IBM Plex Mono, amber, 11px)
+     .ev — evidence description (12px muted, may include code spans)
+   Clickable: hover shows green left border + green tint
+
+E. PROOF RECIPE CARDS (3 inline cards in sec-proof):
+   display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px
+   Each card:
+     border: 1px solid rgba(COLOR,.35) (red/amber/green per recipe)
+     background: linear-gradient(180deg, rgba(COLOR,.05), transparent)
+     padding: 18px 20px; border-radius: 3px
+
+   Content:
+     label — IBM Plex Mono 10px, color, uppercase, font-weight 700
+     h3 — Fraunces 22px, font-weight 500 (lighter than other h3s), has <em>
+     p — body text 13px
+     <pre><code> — dark background terminal block
+     p — evidence note (muted 12px)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. UNIQUE VISUAL ELEMENTS NOT IN A TYPICAL REPORT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A. CRT SCANLINE OVERLAY
+   — Fixed div .crt covers the entire viewport
+   — repeating-linear-gradient: every 4th pixel has rgba(255,255,255,.018) line
+   — Creates a faint CRT monitor effect across the whole page
+   — pointer-events: none; z-index: 2
+
+B. AMBIENT RADIAL GLOWS (body::before)
+   — Three large radial gradients at corners:
+     Red top-right, green left, cyan bottom
+   — Fixed overlay, creates colored light-leak atmosphere
+
+C. GRID OVERLAY (body::after)
+   — 48px × 48px white grid lines at 2% opacity
+   — Masked to be more visible at center, transparent at edges
+   — Gives the impression of graph paper / lab grid
+
+D. TYPEWRITER ANIMATION ON HERO H1
+   — "JACK OF" types out character by character
+   — Cursor blink (green right-border)
+
+E. STAMPS ON DOSSIER CARD
+   — "CONFIDENTIAL" — red, rotated -12deg, opacity .75
+   — "FOR ANALYST EYES" — amber, rotated +8deg
+   — Both are positioned absolute over the card
+
+F. SECTION TAGS WITH PULSING DOT
+   — Every section has a .section-tag with // prefix
+   — Small green dot pulses at 1.6s interval (blink animation)
+   — Styled like classification/ID labels
+
+G. PHOSPHOR GREEN PRIMARY ACCENT
+   — #00ff9c — described in code comments as "forensic phosphor"
+   — Reminiscent of CRT phosphor display / night-vision green
+   — Used for all primary interactive/active/highlighted states
+
+H. ACT CARDS WITH MASSIVE TYPOGRAPHY
+   — Act number in IBM Plex Mono 12px
+   — Title in Fraunces up to 110px, line-height .9 (very tight)
+   — One word in title always in var(--green)
+
+I. GHOST WATERMARK IN HERO H1
+   — .l3 "// N404-2026-0308" at opacity .14
+   — Creates a faded case number watermark effect
+
+J. GRADIENT HERO TITLE
+   — .l2 "ALL HACKS" has text gradient:
+     green (0%) → cyan (60%) → white (100%)
+   — Uses -webkit-background-clip text technique
+
+K. DOSSIER CARD "CASE FILE" LABEL
+   — Floating label above the card's top border
+   — White background pill with green text and border
+   — translateY(-50%) to sit on the border line
+
+L. GLOWING GREEN DOT IN MASTHEAD
+   — 28×2px green bar with glow shadow
+   — Immediately precedes the "N404 // DFIR CASEBOOK" label
+
+M. TRAVELING PACKET ANIMATION (SVG)
+   — A circle physically moves from source node to destination node
+   — Colored to match the edge's lane color
+   — filter: drop-shadow(0 0 10px currentColor)
+   — Only visible (.travel class) during replay
+
+N. DETONATION SEQUENCE (CSS + JS)
+   — .graph-detonate: red radial wash covering graph-wrap
+   — .graph-shock: mix-blend-mode:screen red screen-tint
+   — keyframes: graphDetonate (2.2s), graphShock (1.8s)
+   — .impact-banner: "IamBatman · DETONATION" red gradient banner
+     flies in with scale animation (.4 → 1.15 → 1), fades out
+   — WS01/WS02 nodes get .host-ransomed: red stroke + flicker
+
+O. HOST RANSOMED FLICKER
+   — ransomFlicker keyframe: 0%/100% opacity 1, 50% opacity .25
+   — Runs 6 times (.34s × 6 = ~2s total)
+   — Applied to rect element of SVG node (stroke turns red, glows)
+
+P. GLOWING SIGMA MARKS
+   — Circular markers on the heatmap sigma row
+   — Pulse animation with scale + glow
+   — Novel rules: amber outer ring + green inner dot
+   — cursor: help (suggest hover for info)
+
+Q. SCRUBBER THREAT GRADIENT
+   — The replay scrubber fill changes from cyan (early) → amber (middle) → red (end)
+   — Visually shows threat escalation over time
+   — !important overrides to ensure it applies
+
+R. GRAPH EDGE TRAIL
+   — Behind each edge path: a blurred, wide stroke (stroke-width:10, blur:3px)
+   — Persists after edge fires (becomes glowing trail)
+   — Different opacity states: base, edge-fire, edge-focus
+
+S. CHAIN BREADCRUMBS
+   — Below the event card in replay panel
+   — Shows last 3 events leading to current, with time deltas
+   — Current event has a downward triangle pointer
+   — Clickable to seek to any past event
+
+T. ACT BANNER OVERLAY
+   — During replay, when a new act starts, a Fraunces serif banner
+     fades in at top-left of the graph area
+   — Shows act title + italic subtitle + IBM Plex Mono monospace sub-label
+   — Auto-hides after 3.4s
+
+U. COMMAND FLASH OVERLAY
+   — At 8 key events during replay, a popup card appears near the relevant node
+   — Dark background with colored border matching the event's severity
+   — Label (uppercase tag) + command text (white, may include <code>)
+   — Scales in (.85 → 1, .3s) and scales out (1 → 1.08, .5s delayed by 1.9s)
+   — box-shadow: 0 0 28px currentColor (colored glow)
+
+V. XREF INLINE PILLS
+   — Inline cross-reference links styled as pill badges
+   — Green background/border, IBM Plex Mono font
+   — Used throughout for "Addendum AA", "DD23.6", etc.
+
+W. FLOW ANIMATION ON SVG EDGES
+   — .flow class: stroke-dasharray 6 8, animated to slide
+   — Creates impression of data flowing along network connections
+   — Used on particularly active routes
+
+X. FOCUS MODE DIMMING
+   — Clicking a node adds .host-focus + .edge-focus to related elements
+   — .graph-focused SVG dims all non-focused edges to 8% opacity
+   — Non-focused hosts dim to 25% opacity
+   — Creates investigative spotlight effect
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. FULL CSS CLASSES AND KEY STYLES (SUMMARY)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LAYOUT / GLOBAL:
+  html, body — margin:0; bg: --bg; font: Inter; smooth scroll; overflow-x:hidden
+               font-size: clamp(17px, 0.6vw+15px, 20px); line-height: 1.72
+               font-feature-settings: "cv11","ss01","ss03"
+  .crt — fixed full-viewport scanline overlay (z-index:2)
+  body::before — fixed ambient radial glows (z-index:0)
+  body::after — fixed grid overlay (z-index:1)
+  main — position:relative; z-index:3; width:100%
+  code, pre, .mono — IBM Plex Mono
+  section — padding: 6vw 7vw; border-top: 1px solid --line; position:relative
+
+TYPOGRAPHY:
+  .section-tag — inline-flex; IBM Plex Mono 10px; letterspacing .35em; green; uppercase
+                 padding: 6px 12px; border: 1px solid --green-d; bg rgba(0,255,156,.03)
+                 ::before pulsing green dot
+  h2 — Fraunces 600; clamp(30px,4.4vw,62px); margin:0 0 10px; line-height:.95; uppercase
+  h2 .q — green gradient text (inline-block, -webkit-background-clip)
+  h2 em, .sec-title em — italic; font-weight 500; color var(--red)
+  h3 — Fraunces 600; clamp(18px,2vw,24px); uppercase; letterspacing .03em; margin 28px 0 12px
+  .lede — color: --muted; width:100%; line-height:1.7; clamp(15px,0.7vw+12px,17.5px); mb:40px
+
+HERO:
+  .case-hero — min-height:100vh; grid-template-rows: auto 1fr auto
+  .masthead — flex space-between; IBM Plex Mono 11px; border-bottom; padding-right 70px
+  .masthead .left — flex gap 28px
+  .masthead .left .bar — 28×2px green bar with glow
+  .masthead .right span::before — "● " green prefix
+  .case-hero .body — grid 1.2fr 1fr; gap 64px; padding 72px 0 48px; align-items center
+  .case-hero h1 — Fraunces 600; clamp(54px,9vw,140px); line-height .85; uppercase
+  .case-hero h1 .l1 — color --text (with .type typewriter class)
+  .case-hero h1 .l2 — green→cyan→text gradient text
+  .case-hero h1 .l3 — color --text; opacity .14
+  .case-hero .subhead — mt 28px; --muted; clamp(15px,0.55vw+13px,17px); line-height 1.65
+  .dossier — border --line-2; bg gradient panel; padding 28px; IBM Plex Mono 12px
+  .dossier::before — "CASE FILE" floating label (green, absolute, translateY -50%)
+  .dossier .row — grid 150px 1fr; gap 16px; padding 8px 0; border-bottom 1px dashed --line
+  .dossier .k — --dim; uppercase; 10px; letterspacing .15em
+  .dossier .v — --text; 13px
+  .dossier .v.red/green/amber — colored values
+  .stamp — absolute; pointer-events:none; Fraunces 600; uppercase; border 3px solid color
+  .stamp.s1 — red; rotate(-12deg); top:22%; right:6%; font-size:18px; opacity:.75
+  .stamp.s2 — amber; rotate(8deg); top:80px; right:6%; font-size:11px
+  .scoreboard — grid repeat(6,1fr); border-top --line-2; padding-top 28px
+  .score-cell — padding 14px 18px; border-right --line; IBM Plex Mono
+  .score-cell .k — 10px; letterspacing .3em; --dim; uppercase
+  .score-cell .v — Fraunces; clamp(24px,2.6vw,38px)
+  .score-cell .v.g — var(--green)
+  .score-cell .d — --muted; 11px
+
+ACT CARDS:
+  .act-card — padding 10vw 7vw 4vw; border-top 1px --line; bg rgba(0,255,156,.03) gradient
+  .act-card .num — IBM Plex Mono 12px; letterspacing .4em; green; uppercase; mb 14px
+  .act-card .title — Fraunces 600; clamp(48px,8vw,110px); line-height .9; letterspacing -.025em; uppercase
+  .act-card .title span — var(--green)
+  .act-card .timecode — IBM Plex Mono; --muted; 13px; mt 18px; letterspacing .15em
+  .act-card .description — mt 22px; --muted; clamp(15px,0.55vw+13px,17px); line-height 1.65
+
+EVENT LIST:
+  .event-list — grid gap:2px; border 1px --line; bg rgba(0,0,0,.2)
+                padding-left:28px; position:relative
+                ::before — vertical timeline bar (top:18px bottom:18px left:10px)
+  .event — grid 120px 80px 160px 1fr; padding 14px 18px; bg --panel; IBM Plex Mono 12px
+            position:relative; border-left:none; transition bg .2s border .2s
+            ::before — dot at left:-22px; top:20px; 10px circle; z-index:2
+  .event:hover::before — scale(1.3)
+  .event.act1::before — cyan border + cyan glow
+  .event.act2::before — amber border + amber glow
+  .event.act3::before — violet border + violet glow
+  .event.act4::before — red, filled red, red glow
+  .event.act5::before — green border + green glow
+  .event .t — var(--green); font-weight 600
+  .event .host — cyan; IBM Plex Mono 700; padding 2px 8px; bg rgba(88,166,255,.08)
+  .event .eid — amber; 10.5px; border rgba(255,184,0,.25); bg rgba(255,184,0,.04)
+  .event .desc — Inter 14px; --muted
+  .event .desc code — IBM Plex Mono 12px; green-tinted bg + border
+
+TERMINAL:
+  .term — bg #05090d; border --line-2; border-radius 4px; box-shadow 0 8px 32px rgba(0,0,0,.5)
+  .term-head — bg linear-gradient(#0d1319,#080b0f); padding 8px 14px; border-bottom --line-2
+  .term-head .dots b — 10px circles (red/amber/green)
+  .term-body — padding 14px 16px; IBM Plex Mono 12.5px; white-space pre-wrap; line-height 1.65
+  .term-body .prompt — --green
+  .term-body .cmd — --text
+  .term-body .out — --muted
+  .term-body .hit — --amber
+  .term-body .ok — --green
+  .term-body .bad — --red
+  .term-body .meta — --cyan
+  .term-body .comment — --dim; font-style italic
+
+HOST GRID:
+  .host-grid — grid auto-fit minmax(260px,1fr); gap 14px
+  .host — bg --panel; border --line-2; padding 18px; position relative; transition
+  .host:hover — translateY(-3px); border-color --green-d
+  .host::before — 2px top accent bar (color by type)
+  .host.entry::before — --cyan
+  .host.dc::before — --red
+  .host.piv::before — --amber
+  .host.vict::before — --violet
+  .host.cloud::before — --green
+
+ATTACK GRAPH:
+  .graph-wrap — border --line-2; bg radial-gradient+#05090d; padding 24px; overflow-x auto
+                position:relative (for absolute overlays)
+  .graph-legend — flex gap 24px; IBM Plex Mono 13px; border --line-2; bg rgba(5,9,13,.6)
+  .graph-legend-pro — grid 1fr 1fr 1fr; border --line-2; bg rgba(5,9,13,.7)
+  .gl-col — padding 20px 24px; border-right --line
+  .gl-col h4 — IBM Plex Mono 12px; green; pb 10px; border-bottom --line-2
+  .gl-row — flex; gap 14px; IBM Plex Mono 13px; padding 8px 0
+  .gl-row .gl-icon — 40×40px; border --line-2; border-radius 3px; bg rgba(255,255,255,.02)
+  .gl-row .gl-sw — 40×4px color swatch
+  .graph-detonate — absolute; inset 0; z-index 4; animation on .show
+  .graph-shock — absolute; inset 0; mix-blend-mode screen; z-index 5
+  .graph-act-banner — absolute; top 22px; left 30px; Fraunces; clamp(32px,3.6vw,48px)
+  .impact-banner — absolute; centered; red gradient; Fraunces 600; 28px; letterspacing .2em
+  .graph-focus-hint — IBM Plex Mono 10px; --dim; uppercase; flex space-between
+
+REPLAY PANEL:
+  .replay-panel — border --line-2; bg #05090d; padding 22px 28px; grid gap 16px; border-radius 4px
+  .rp-bar — flex; IBM Plex Mono 10px; letterspacing .25em; uppercase; --dim; pb 8px; border-bottom --line
+  .event-card — bg linear-gradient(135deg, rgba(0,255,156,.03), transparent); padding 22px 28px
+                grid 170px 1fr auto; gap 26px; border-left 4px --line-2; min-height 80px
+  .event-card.act-I — border-left: --cyan
+  .event-card.act-II — border-left: --violet
+  .event-card.act-III/.act-IV — border-left: --amber
+  .event-card.act-V — border-left: --red
+  .event-card.act-VI — border-left: --green
+  .event-card.fired — bg rgba(0,255,156,.08)
+  .ec-time — flex-column; border-right 1px --line; pr 24px
+  .ec-t — Fraunces 600; 30px; line-height 1
+  .ec-elapsed — IBM Plex Mono 10.5px; --dim; uppercase; letterspacing .22em
+  .ec-host — IBM Plex Mono 11px; padding 4px 10px; border-radius 2px; border --line-2
+             data-host-color attr controls cyan/red/amber/violet/green variants
+  .ec-desc — Inter 18px; --text; line-height 1.5; font-weight 500
+  .ec-tag — IBM Plex Mono 9.5px; padding 3px 7px; border-radius 2px
+            .ttp — red tint
+            .eid — green tint
+            default — amber tint
+            .next — transparent, dim text
+  .ec-chain — flex; IBM Plex Mono; pb 2px; overflow-x auto; transition opacity .3s
+  .ec-chain .crumb — inline-flex; border --line-2; padding 6px 11px; cursor pointer
+  .ec-chain .crumb.current::after — downward triangle pointer
+  .ec-chain .link::before "— " ::after " →"
+  .replay-scrubber — height 54px; cursor pointer; border --line-2; border-radius 3px; overflow hidden
+  .scrubber-fill — absolute; green gradient fill + green right border + glow
+                   (overridden to cyan→amber→red threat-escalation gradient)
+  .scrubber-tick — absolute; IBM Plex Mono 9px; --dim; ::before 1px×8px tick mark
+  .scrubber-phase — absolute; border-left dashed rgba(255,184,0,.25)
+  .scrubber-event — absolute; 2px×14px; amber (fired=green, impact=red)
+  .rp-ctrl — grid auto 1fr auto; gap 20px
+  .transport — inline-flex; gap 6px
+  .replay-btn — 44px height; min-width 44px; IBM Plex Mono 15px; border --line-2; border-radius 3px
+               hover: green border + color + rgba(0,255,156,.04) bg
+  .replay-btn.primary — green border + bg + Fraunces 13px; letterspacing .22em; uppercase; min-width 120px
+  .speed-pick — inline-flex; border --line-2; border-radius 2px
+  .speed-pick .sp-label — padding 0 16px; --dim; 11px; letterspacing .28em; uppercase; border-right
+  .speed-pick button — transparent; --muted; 42px height; 13px; letterspacing .05em
+  .speed-pick button.active — bg var(--green); color #000; font-weight 700
+  .progress-count — IBM Plex Mono 11px; --dim; flex; gap 8px
+  .progress-count b — Fraunces 13px; --text
+
+TTP GRID:
+  .ttp-grid — grid auto-fit minmax(220px,1fr); gap 1px; bg --line; border --line
+  .ttp — bg --panel; padding 14px 16px
+  .ttp .tactic — IBM Plex Mono 10px; --green; uppercase; letterspacing .3em
+  .ttp .tech — Fraunces 600; 14px; margin 6px 0 2px; letterspacing .02em; line-height 1.15
+  .ttp .tech-id — IBM Plex Mono; --amber; 11px
+  .ttp .ev — 12px; --muted; mt 8px; line-height 1.45
+  .ttp.clickable:hover — green left border; green bg tint
+
+CHAIN GRID:
+  .chain-grid — grid auto-fit minmax(280px,1fr); gap 10px
+  .chain — bg --panel; border --line-2; padding 16px 18px; position relative
+  .chain::before — 3px left bar; bg --green
+  .chain.partial::before — bg --amber
+  .chain .n — Fraunces 600; 15px; flex space-between; uppercase
+  .chain .n .p — IBM Plex Mono 12px; --green (or --amber if .partial)
+  .chain .s — mt 8px; 12.5px; --muted; line-height 1.55
+  .chain .bar — mt 12px; 3px; bg rgba(255,255,255,.04); overflow hidden
+  .chain .bar > i — display block; height 100%; green gradient (or amber if .partial)
+
+REJECT CARDS:
+  .reject — border-left 3px --red; bg linear-gradient(90deg, rgba(255,59,59,.05),transparent)
+            padding 14px 18px; margin 10px 0; IBM Plex Mono 12.5px
+  .reject .cid — --amber; 11px; letterspacing .15em
+  .reject .bad — --red; font-weight 600
+  .reject .ok — --green
+  .reject .why — mt 6px; --muted; 12px; line-height 1.5
+
+TABLES:
+  .tbl — width 100%; border-collapse collapse; IBM Plex Mono 12.5px; border --line-2
+  .tbl th — bg --panel; padding 12px 14px; text-align left; border-bottom --line-2
+            color --green; 10px; letterspacing .2em; uppercase; font-weight 500
+  .tbl td — padding 10px 14px; border-bottom --line; --text; vertical-align top
+  .tbl tr:hover td — bg rgba(0,255,156,.02)
+  .tbl td.m/g/a/r/c — --muted/--green/--amber/--red/--cyan colored cells
+
+HEATMAP:
+  .heatmap-wrap — border --line-2; bg #05090d; padding 24px 26px; overflow-x auto
+  .heatmap-grid — grid 90px 1fr; gap 2px 8px; IBM Plex Mono 11px; min-width 900px
+  .heatmap-cell — bg #0a0f16; transition bg .2s; cursor crosshair; min-width 3px
+  .heatmap-cell:hover — outline 1px --green; z-index 2
+  .heatmap-phase-bar — height 20px; color-coded by phase
+  .heatmap-tip — position fixed; IBM Plex Mono 11.5px; border --green-d; bg --panel
+  .heatmap-jump — inline-flex; border --line-2; IBM Plex Mono 11px; hover green
+  .heatmap-jumps — flex gap 8px; flex-wrap wrap; mb 16px
+  .sigma-narrative — border rgba(0,255,156,.25); bg rgba(0,255,156,.04); IBM Plex Mono 12px
+  .hm-sigma-mark::after — 14px circle; border 2px --green; pulse animation
+  .hm-sigma-mark.novel::after — 16px; amber outer ring; green inner dot
+
+SEVERITY BANNER:
+  .sev-banner — grid 280px 1fr; border --line-2; overflow hidden; border-radius 3px
+  .sev-lvl — bg linear-gradient(135deg, rgba(255,59,59,.18), rgba(168,18,18,.28))
+             border-right --red-d; padding 24px 26px
+  .sev-lvl .lab — IBM Plex Mono 10px; --red; uppercase; letterspacing .3em
+  .sev-lvl .val — Fraunces 600; clamp(32px,3.5vw,46px); #fff; uppercase; line-height 1
+  .sev-lvl .sub — IBM Plex Mono 11px; rgba(255,255,255,.75); mt 10px; letterspacing .1em
+  .sev-grid — grid 3×1fr; bg --panel
+  .sev-grid .sg — padding 16px 20px; border-right --line; border-bottom --line
+  .sev-grid .sg .k — IBM Plex Mono 9.5px; --dim; uppercase; letterspacing .28em
+  .sev-grid .sg .v — Fraunces 600; 17px; --text (or .red=--red / .amber=--amber)
+  .sev-grid .sg .d — 11px; --muted; IBM Plex Mono; line-height 1.45
+
+ROADMAP:
+  .roadmap — border --line-2; border-radius 3px; overflow hidden
+  .rm-track — grid 1fr 1fr 1fr; bg --panel
+  .rm-phase — padding 16px 22px; border-right --line; position relative
+              ::after — 2px bottom accent bar (red/amber/green per phase)
+  .rm-phase.p0 — red tint bg + red ::after + red .rm-when
+  .rm-phase.p1 — amber tint bg + amber ::after + amber .rm-when
+  .rm-phase.p2 — green tint bg + green ::after + green .rm-when
+  .rm-phase .rm-when — IBM Plex Mono 10px; uppercase; letterspacing .3em; display block
+  .rm-phase .rm-title — Fraunces 600; 18px; uppercase; display block; mt 4px
+  .rm-body — grid 1fr 1fr 1fr
+  .rm-col — padding 18px 22px; border-right --line; bg rgba(0,0,0,.15)
+  .rm-col .rm-h — IBM Plex Mono 10px; --dim; uppercase; letterspacing .28em; mb 12px
+  .rm-col ul — margin 0; padding-left 18px; --text; 13px; line-height 1.7
+  .residual-note — border-left 3px --amber; bg rgba(255,184,0,.04); IBM Plex Mono 12.5px; line-height 1.65
+
+ANSWER LEDGER:
+  .ledger-controls — flex gap 14px; mb 20px; flex-wrap wrap
+  .ledger-controls input — flex 1; min-width 260px; bg --bg-1; border --line-2; --text
+                           padding 10px 14px; border-radius 3px; IBM Plex Mono 13px
+                           focus: green border + shadow + tint bg
+  .ledger-filter-pills button — transparent; border --line-2; --muted; padding 7px 12px
+                                IBM Plex Mono 11px; border-radius 2px; transition
+                                hover: green border + color + rgba(0,255,156,.03) bg
+                                active: bg --green; color #000; font-weight 700
+  .ledger-tbl — IBM Plex Mono 12.5px; border --line-2; border-radius 3px; table-layout auto
+  .ledger-tbl thead — bg --panel
+  .ledger-tbl th — padding 12px 14px; --green; 10px; letterspacing .25em; uppercase; fw 600
+  .ledger-tbl tbody tr:hover — bg rgba(0,255,156,.04)
+  .ledger-tbl td.num — --dim; 54px; 11px
+  .ledger-tbl td.fam — --cyan; fw 600; letterspacing .08em; 10.5px; uppercase; 160px
+  .ledger-tbl td.q — --muted; 11.5px; 230px
+  .ledger-tbl td.ans — #fff; fw 600
+  .ledger-tbl td.ans code — IBM Plex Mono 11.5px; rgba(0,255,156,.06) bg; --green; border
+  .ledger-tbl td.host — --amber; fw 700; 10px; uppercase; 84px
+  .ledger-tbl td.evi — --muted; 10.5px; 200px
+  .ledger-summary — grid auto-fit minmax(160px,1fr); border --line; mt 18px
+  .ledger-summary .ls — padding 12px 16px; border-right --line; bg --panel; IBM Plex Mono
+  .ledger-summary .ls .k — 9.5px; letterspacing .28em; --dim; uppercase
+  .ledger-summary .ls .v — Fraunces 600; 18px; --green (or .r = --red)
+
+CLOSE SECTION:
+  .close — padding 10vw 7vw 6vw; text-align center; border-top --line
+           bg radial-gradient(800px 400px at 50% 0%, rgba(0,255,156,.1), transparent 60%)
+  .close .big — Fraunces 600; clamp(40px,7vw,92px); line-height .95; letterspacing -.03em; uppercase; --text
+  .close .big span — --green
+  .close .caption — --muted; mt 18px; IBM Plex Mono 12px; letterspacing .2em
+  .close .closed-stamp — inline-block; mt 28px; border 3px --green; color --green
+                         padding 14px 28px; Fraunces 600; letterspacing .2em; uppercase
+                         transform rotate(-3deg); box-shadow 0 0 40px rgba(0,255,156,.25)
+
+ANIMATIONS / KEYFRAMES:
+  blink — section-tag dot: 0%/100% opacity 1, 50% opacity .25; 1.6s infinite
+  type — typewriter: 0 to 100% width; 3s steps(50) 0.4s both
+  caret — cursor: 50% border-color transparent; .8s steps(1) infinite
+  dash — SVG edge flow: stroke-dashoffset animation; 1.6s linear infinite
+  packetTravel — stroke-dashoffset 60→0; .8s linear
+  lanePulse — stroke-dashoffset 26→0; 1.4s/1.1s linear infinite
+  flashIn — scale .85→1, opacity 0→1; .3s ease-out
+  flashOut — scale 1→1.08, opacity 1→0; .5s ease-in (1.9s delay)
+  graphDetonate — opacity 0→1→0; 2.2s ease-out
+  graphShock — opacity+red overlay 0→.65→0; 1.8s ease-out
+  ransomFlicker — opacity 1→.25→1; .34s, 6 iterations
+  detonate — impact-banner: scale .4→1.15→1→1.1, opacity 0→1→0; 2.2s
+  sigmaPulse — scale 1→1.15, glow increase; 2s infinite
+  sigmaPulseNovel — scale 1→1.2, amber glow; 1.8s infinite
+  flashHighlight — TTP click: green box-shadow+bg fade; 1.8s ease-out
+  reveal/.in — opacity 0→1, translateY(20px→0); .8s ease (IntersectionObserver)
+
+RESPONSIVE BREAKPOINTS:
+  max-width 1024px:
+    section padding 8vw 6vw
+    case-hero body: 1-column (stacked)
+    masthead: column layout
+    scoreboard: 3×2 grid
+    adversary grid: 1 column
+    event rows: 2-column
+    TTP/chain/host grids: smaller minmax
+  max-width 900px:
+    sev-banner: stacked
+    sev-grid: 2×3
+    rm-track/body: stacked
+    graph-legend-pro: stacked
+    ledger-tbl: scrollable
+  max-width 760px:
+    body: 14px base
+    section: 10vw 5vw
+    h2: clamp(26px,8vw,42px)
+    hero h1: clamp(44px,14vw,78px)
+    scoreboard: 2×3 (odd cells have right border)
+    dossier: stacked rows
+    stamp.s2: display:none
+    replay panel: stacked layout
+    event-card: 2-column reflow
+    scrubber ticks: hide even ones
+    graph SVG: min-width 900px (scroll)
+    events: 1-column
+    ptree/term: smaller font
+    tbl: scrollable block
+    ttp/chain/host grids: 1 column
+    heatmap: scrollable
+    close: 14vw padding
+    host-drawer: 100vw
+  max-width 600px:
+    chapter-nav: list width 100vw-36px, max 320px
+  max-width 480px:
+    hero h1: clamp(38px,13vw,60px)
+    act-card title: clamp(32px,11vw,54px)
+    scoreboard: 2×3
+    replay-btn: 34px min
+  coarse pointer (touch):
+    replay-btn/speed-pick button: min-height 40px
+    chapter-nav-toggle: 48px×40px
+    heatmap-cell: min-width 4px
+
+HOST DRAWER:
+  .drawer-overlay — fixed; full-viewport; rgba(0,0,0,.55); blur(4px); z-index 100
+  .host-drawer — fixed; top 0; right 0; height 100vh; width min(540px,96vw); z-index 101
+                 bg linear-gradient(--bg-1, --bg); border-left 1px --green-d
+                 box-shadow -20px 0 60px rgba(0,0,0,.6) + inset rgba(0,255,156,.15)
+                 transform translateX(100%) → translateX(0) on .open
+                 transition .35s cubic-bezier(.2,.8,.2,1)
+  .host-drawer .head — sticky top; bg gradient; border-bottom --line-2; flex space-between
+  .host-drawer .head .name — Fraunces 600; 22px; uppercase
+  .host-drawer .head .ip — 12px; --cyan
+  .host-drawer .head .role — 10px; --dim; uppercase; letterspacing .25em
+  .host-drawer .close-btn — 32×32px; border --line-2; --muted; hover: red
+  .host-drawer .body — padding 20px 24px 80px; IBM Plex Mono; 12.5px; line-height 1.65
+  .host-drawer h4 — IBM Plex Mono 10px; letterspacing .3em; --green; uppercase; mt 20px mb 10px
+  .host-drawer .evt — grid 90px 1fr; padding 8px 0; border-bottom 1px dashed --line; 11.5px
+  .host-drawer .evt .t — --green; fw 600
+  .host-drawer .evt .d — --muted (b = --text)
+  .host-drawer .path — bg rgba(0,255,156,.04); border-left 2px --green-d; --text; 11.5px
+
+MISC:
+  .xref, a.xref — inline; padding 1px 8px; margin 0 2px; bg rgba(0,255,156,.08)
+                  border rgba(0,255,156,.25); border-radius 2px; --green; no-underline
+                  IBM Plex Mono .86em; letterspacing .04em; white-space nowrap
+  .cmd-flash — absolute; IBM Plex Mono 12.5px; bg rgba(5,9,13,.96); border 1.5px currentColor
+               box-shadow 0 0 28px currentColor+drop-shadows; border-radius 3px
+               flash in/out keyframes; max-width 520px
+  .cmd-flash .cf-label — 10px; letterspacing .3em; uppercase; fw 700; mb 6px; opacity .85
+  .cmd-flash .cf-cmd — #fff; fw 500
+  .graph-focus-hint .clear — IBM Plex Mono 10px; border --line-2; --muted; hover: green
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. JAVASCRIPT — KEY BEHAVIORS SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All JS is inline in a single <script> block at end of <body>.
+
+EVENTS ARRAY (39 entries):
+  Each event: { t: "HH:MM:SS", sec: <seconds from 18:38>, act: "I"–"VI",
+                edge: "eg-edge-id", host: "IIS|SVR01|DC01|DC02|WS01|WS02|ROLE|etc",
+                desc: "rich text with <b><code> markup" }
+
+REPLAY ENGINE:
+  — tick() called on requestAnimationFrame loop
+  — replaySec advances by speed multiplier × real elapsed time
+  — setScrubber(sec) seeks to a specific time
+  — applyEventsForTime(sec) fires all events up to that time
+  — currentEventIdx tracks current position
+  — Speed multiplier: 1×/60×/240×/900× (default 60×)
+  — Play/Pause toggles the tick loop
+  — Reset clears all state (edge classes, host classes, currentEventIdx)
+
+CHAPTER NAV:
+  — IntersectionObserver with threshold 0.1 marks sections as active
+  — Active section's nav link gets .active class
+  — Toggle button: aria-expanded, class .open on .chapter-nav
+
+HEATMAP:
+  — JS generates heatmap-grid content (rows for hosts × columns for minutes)
+  — Phase bars and key-event markers injected by JS
+  — Cell data built from embedded HEATMAP_DATA object
+  — Hover: shows .heatmap-tip with timestamp and event description
+  — Cell click: calls setScrubber() to sync with replay
+
+DRAWER:
+  — DRAWER_DATA object maps host IDs to event lists
+  — Host node click (SVG) or host card click opens drawer
+  — Populates #drawerBody with formatted event rows
+
+SCROLL FADE:
+  — body.js-fade class added on DOMContentLoaded
+  — IntersectionObserver adds .in class to .reveal elements when 10% visible
+
+TTP LINKING:
+  — .ttp-link and .eid-link clicks → scroll to + flash target element
+  — .flash class added → flashHighlight animation → class removed after 1.8s
+
+LEDGER FILTER:
+  — Pills: set activeFam filter, toggle .active class
+  — Search input: filter by textContent.includes(query)
+  — Both apply() simultaneously; update #ledgerShowing count
+
+COMMAND FLASH:
+  — FLASH_EVENTS dict maps timestamp strings to flash config
+  — On replay advance: if current event.t matches, call spawnFlash()
+  — spawnFlash: creates .cmd-flash div, positions near source SVG node,
+    appends to graph-wrap, removes after 2.4s
+  — Impact events also spawn .impact-banner
+  — svgToDOM() converts SVG viewBox coordinates to DOM pixels
+
+PACKET ANIMATION:
+  — PACKET_ROUTES dict maps event timestamps to { from, to, lane }
+  — animatePacket(from, to, lane): moves .replay-packet SVG circle
+    along a path from source node center to dest node center
+    using linear interpolation over 800ms via requestAnimationFrame
+
+HOST FOCUS (SVG):
+  — Click on .host-clickable: collect connected edge-g elements
+  — Add .host-focus / .edge-focus to related nodes/edges
+  — Add .graph-focused to SVG element (triggers CSS dimming)
+  — Click again or Esc: clear all focus classes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+END OF ANALYSIS
+File: /home/localuser/cases/JackofAllHacks/analysis/reference_casebook.html (915,952 bytes)
+Analysis written: /home/localuser/cases/JackofAllHacks/analysis/reference_analysis.txt
+================================================================================

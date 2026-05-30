@@ -1,0 +1,2 @@
+PowerShell_transcript.IIS-SERV-PROD.xeASVx5U.20260303052157.txt :   CMD> whoami
+PowerShell_transcript.IIS-SERV-PROD.xeASVx5U.20260303052157.txt :   CMD> net user /domain

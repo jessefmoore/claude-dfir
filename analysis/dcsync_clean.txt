@@ -1,0 +1,7 @@
+###### DC01 ######
+Non-machine SubjectUserName performing DS-Replication-Get-Changes(-All):
+(machine/blank replication events skipped = 114)
+Incident-window (2026-03-01) DCSync by NON-machine user:
+   ...total window non-machine DCSync events = 0
+###### DC02 ######
+(machine/blank replication events skipped = 0)

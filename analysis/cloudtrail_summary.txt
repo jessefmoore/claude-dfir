@@ -1,0 +1,94 @@
+TOTAL EVENTS: 36938
+TIME RANGE: 2026-02-23T08:44:40Z -> 2026-03-08T22:15:27Z
+
+=== TOP ACTORS ===
+ 21191  arn:aws:iam::464381121764:root
+  8719  AWSService
+  2677  resource-explorer-2
+  2557  i-00779ebad43b2470d
+  1442  i-0021b6bd98662458e
+   341  GuardDutyAssumeRole
+     8  ?
+     3  onboarding
+
+=== TOP SOURCE IPs ===
+ 21191  216.82.9.162
+  5754  cloudtrail.amazonaws.com
+  4834  resource-explorer-2.amazonaws.com
+  2375  3.137.170.225
+  1442  3.143.113.57
+   746  guardduty.amazonaws.com
+   392  ec2.amazonaws.com
+   182  212.8.249.213
+    13  fas.s3.amazonaws.com
+     3  kraken.amazonaws.com
+     3  44.208.114.231
+     3  s3.amazonaws.com
+
+=== TOP USER AGENTS ===
+ 17820  [aws-cli/2.34.4 md/awscrt#0.31.2 ua/2.1 os/windows
+  5754  cloudtrail.amazonaws.com
+  4834  resource-explorer-2.amazonaws.com
+  3817  aws-sdk-go/1.55.5 (go1.24.11; windows; amd64) exec
+  3505  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.0
+   746  guardduty.amazonaws.com
+   392  ec2.amazonaws.com
+    33  [Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.
+    15  aws-cli/2.34.4 md/awscrt#0.31.2 ua/2.1 os/windows#
+    13  fas.s3.amazonaws.com
+     3  kraken.amazonaws.com
+     3  s3.amazonaws.com
+     2  aws-sdk-java/2.41.29 md/io#sync md/http#Apache md/
+     1  aws-sdk-java/2.42.4 md/io#sync md/http#Apache md/i
+
+=== ERROR CODES ===
+   237  AccessDenied
+    11  ResourceNotFoundException
+     6  GeneralServiceException
+     2  InternalFailure
+     2  NoSuchPublicAccessBlockConfiguration
+     2  NoSuchTagSet
+     1  LimitExceededException
+     1  NoSuchBucketPolicy
+
+=== TOP EVENT NAMES ===
+ 17787  GetObject
+  5717  PutObject
+  2899  AssumeRole
+  2670  UpdateInstanceInformation
+  1758  ListManagedNotificationEvents
+  1146  ListInstanceAssociations
+   939  DescribeMetricFilters
+   336  ListBuckets
+   261  ListResources
+   108  DescribeInstanceTypes
+    59  ListClusters
+    57  GetBucketAcl
+    45  DescribeSecurityGroupRules
+    42  GetAccountPlanState
+    42  ListIndices
+    42  ListObjects
+    37  DescribeInstances
+    37  ListAttachedRolePolicies
+    37  ListRolePolicies
+    36  GetResource
+    36  GetRole
+    35  DescribeInstanceStatus
+    33  HeadBucket
+    30  GetDatabases
+    29  DescribeLoadBalancers
+    28  GetAccountColor
+    28  GetOutcomes
+    27  GetFeatureOptInStatus
+    25  DescribeNetworkInterfaces
+    25  DescribeInstanceInformation
+    25  ListDomains
+    23  DescribeAlarms
+    23  ListEnvironments
+    23  GetModels
+    22  DescribeSecurityGroups
+    22  ListApplications
+    22  ListWorkspaces
+    21  DescribeSubnets
+    21  DescribeInstanceAttribute
+    21  DescribeImages
