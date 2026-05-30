@@ -300,9 +300,26 @@ ok(f"Case title: {case_name}")
 ok(f"Client:     {client}")
 
 # ---------------------------------------------------------------------------
-# STEP 7 — Verify sections
+# STEP 7 — Redact credentials for publication (prevents GitHub secret scanning blocks)
+# Evidence files retain originals; HTML output uses clearly-redacted placeholders.
 # ---------------------------------------------------------------------------
-log("Step 7: Verifying section completeness...")
+log("Step 7: Redacting credentials for public publication...")
+
+# AWS Access Key IDs: AKIA[16 uppercase alphanumeric]
+html, n_key = re.subn(r'\bAKIA[A-Z0-9]{16}\b', 'AKIA[REDACTED-FOR-PUBLICATION]', html)
+# AWS Secret Access Keys: 40-char base64-like strings following "SecretAccessKey"
+html, n_secret = re.subn(
+    r'(SecretAccessKey\s*[:\s]+)[A-Za-z0-9+/]{40}',
+    r'\1[REDACTED-FOR-PUBLICATION]',
+    html
+)
+
+ok(f"Redacted {n_key} AWS key IDs and {n_secret} secret keys")
+
+# ---------------------------------------------------------------------------
+# STEP 8 — Verify sections
+# ---------------------------------------------------------------------------
+log("Step 8: Verifying section completeness...")
 
 ref_html     = read(REF_HTML)
 ref_sections = set(re.findall(r'id="(sec-[^"]*)"', ref_html))
@@ -319,9 +336,9 @@ else:
     ok("All expected sections preserved")
 
 # ---------------------------------------------------------------------------
-# STEP 8 — Write output
+# STEP 9 — Write output
 # ---------------------------------------------------------------------------
-log(f"Step 8: Writing {out_path}...")
+log(f"Step 9: Writing {out_path}...")
 os.makedirs(os.path.dirname(out_path) if os.path.dirname(out_path) else ".", exist_ok=True)
 with open(out_path, "w", encoding="utf-8") as f:
     f.write(html)
