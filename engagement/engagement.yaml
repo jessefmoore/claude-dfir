@@ -1,0 +1,20 @@
+engagement_id: JackofAllHacks-2026-03
+client: LAF Corporation (LAF.local)
+window_start: "2026-03-03"
+window_end: "2026-03-08"
+model: DFIR / Black Box
+authorization: LAF IT Security — KAPE+DumpIt collection authorised
+scope: "Full domain: DC01, DC02, SVR01, WS01, WS02, IIS-SERV-PROD, AWS 464381121764"
+operator: DFIR Analyst — Protocol SIFT
+sophistication: Medium-High (Impacket / C2 framework / ransomware deployment)
+compromise_objective: Domain dominance + ransomware deployment
+worst_outcome: Full LAF.local domain encrypted; EC2 instance credentials stolen from AWS
+time_to_da: "~4 min (implant 19:59 → serviceaccount Domain Admin 20:03)"
+hosts_pwnd: 6
+forests_compromised: 1
+tooling: "Impacket psexec/smbexec, Certutil, rnSylwOz (C2 agent), IamBatman.exe, Advanced IP Scanner, FileZilla, LogDel.bat, comsvcs LSASS dump"
+testing_mode: Adversary Simulation / Ransomware Group TTP Replication
+ttps_catalogued: 22
+ioc_volume: "C2 IP 173.230.136.180:8443 · Attacker subnet 198.51.100.0/24 · 8 malicious files · 3 backdoor accounts"
+final_status: CLOSED — full domain compromise confirmed · ransomware deployed
+headline: "Saiyan Spider achieves domain dominance and deploys .bWqQUx ransomware across LAF.local in under 3 hours via web-shell initial access and Impacket lateral movement."

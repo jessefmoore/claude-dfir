@@ -1,0 +1,50 @@
+# ── Raw KAPE evidence (too large, chain-of-custody) ──────────────────────────
+DC01/
+DC02/
+SVR01/
+WS01/
+WS02/
+IIS/
+cloud/
+
+# ── Parsed CSVs (multi-GB EvtxECmd / MFTECmd output) ────────────────────────
+exports/*.csv
+exports/*.json
+
+# ── Large analysis outputs / intermediate files ───────────────────────────────
+analysis/cloudtrail_all_events.json
+analysis/*.err
+analysis/vaddump/              # contains real shellcode bytes from memory dump
+analysis/svr01_*.txt
+analysis/_*.txt
+analysis/dc01_*.txt
+analysis/dc02_*.txt
+analysis/ws_*.txt
+analysis/*_evtx*.log
+analysis/*_run.log
+analysis/mft_verify.txt
+analysis/n_cmd.txt
+analysis/n_tree.txt
+analysis/n_tcp.txt
+analysis/n_netscan.txt
+analysis/_consolidated.txt
+analysis/_volhelp.txt
+analysis/gd_*.txt
+analysis/s3_*.txt
+analysis/guardduty_*.txt
+
+# ── Python cache ──────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+
+# ── OS noise ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Claude Code session files (never commit) ─────────────────────────────────
+.claude/
+*.claude-session
+
+# Raw evidence transcripts
+engagement/evidence/

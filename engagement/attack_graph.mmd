@@ -1,0 +1,32 @@
+flowchart LR
+    A["🌐 Internet\n172.236.127.251"] -->|"GET /CheckStatus.aspx\nOS Command Injection"| B["IIS-SERV-PROD\nCheckStatus.aspx"]
+    B -->|"certutil → so.aspx\nwebshell upload"| B2["so.aspx Webshell\ncurl/8.5.0"]
+    B2 -->|"SolarwindsTFTP\nunquoted path hijack"| C["SYSTEM on IIS\nSolarwinds.exe"]
+    C -->|"IMDS theft\niam_role_iisserver"| D["☁ AWS\n212.8.249.213\n164× S3 GetObject"]
+    C -->|"Impacket psexec\nADMIN$ service"| E["LAF-SVR01\nrnSylwOz.exe\nPID 9112"]
+    E -->|"C2 beacon\ninjected explorer"| F["C2 173.230.136.180:8443"]
+    E -->|"net user serviceaccount\nP@ssw0RD1! /add /domain"| G["LAF-DC01\nDA backdoor"]
+    G -->|"VSS shadow copy\nntds.dit → ZIFylmKF.tmp"| G2["NTDS.dit exfil"]
+    E -->|"RDP lateral\n22:06"| H["LAF-DC02\nPS profile shellcode"]
+    E -->|"SMB\nLAFAdmin"| I["LAF-WS01 (Donny)\naws_backup.exe IFEO"]
+    E -->|"SMB\nLAFAdmin"| J["LAF-WS02 (Dalton)"]
+    G -->|"sysAV.bat\nOlgyLYbd sched task"| K["🔴 RANSOMWARE\nIamBatman.exe\n.bWqQUx · 22:08 UTC"]
+    K --> I
+    K --> J
+    K --> E
+    K --> G
+    K --> H
+
+    style A fill:#1a2744,stroke:#58a6ff,color:#58a6ff
+    style B fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style B2 fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style C fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style D fill:#001a2a,stroke:#00ff9c,color:#00ff9c
+    style E fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style F fill:#1a0028,stroke:#c084fc,color:#c084fc
+    style G fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style G2 fill:#1a0028,stroke:#c084fc,color:#c084fc
+    style H fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b
+    style I fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style J fill:#2a1a00,stroke:#ffb800,color:#ffb800
+    style K fill:#2a0000,stroke:#ff3b3b,color:#ff3b3b,font-weight:bold

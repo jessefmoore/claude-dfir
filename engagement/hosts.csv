@@ -1,0 +1,8 @@
+host,ip,role,finding_id,proto,port,verdict
+IIS-SERV-PROD,?,entry,F01,tcp,80,Pwn3d
+LAF-SVR01,10.3.10.12,pivot,F02,tcp,445,Pwn3d
+LAF-DC01,10.3.10.10,DC,F03,tcp,445,Pwn3d
+LAF-DC02,10.3.10.11,DC,F04,tcp,3389,Pwn3d
+LAF-WS01,10.3.10.13,victim,F05,tcp,445,Pwn3d
+LAF-WS02,10.3.10.14,victim,F05,tcp,445,Pwn3d
+AWS-464381121764,cloud,cloud,F04,tcp,443,Compromised
