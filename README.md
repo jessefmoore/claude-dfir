@@ -37,7 +37,7 @@ On 2026-03-08, threat actor **Saiyan Spider** exploited an OS command injection 
 `casebook_JackofAllHacks.html` is a self-contained interactive HTML report. Open it in any browser to get:
 
 - **Kill-chain replay** — animated attack timeline with play/pause and 1×/60×/240×/900× speed
-- **SVG attack graph** — color-coded forensic edges, host nodes that pulse as they fall
+- **SVG attack graph** — color-coded forensic edges, host nodes that pulse as they fall; each event fires a popup tooltip near the active node showing the timestamp and description
 - **Scrubber bar** — 15-minute ticks, event markers, and phase separators
 - **Event log** — real-time event card updating during replay
 - **28 forensic sections** — executive summary, act-by-act narrative, TTPs, IOCs, Volatility output, IIS artifacts, NTDS exfil, cloud pivot, memory analysis, evidence ledger, and appendices
@@ -68,8 +68,10 @@ python3 generate_dfir_casebook.py --case /path/to/new-case
 The generator automatically:
 - Removes the C2 RE-attribution section (requires separate binary analysis not in standard triage)
 - Replaces all tool-specific attribution text with evidence-grounded language
-- Redacts AWS key IDs and secret keys for safe publication
+- Redacts AWS AKIA and ASIA (STS) key IDs and secret keys for safe publication
 - Injects the case timeline into the interactive replay engine
+- **Builds a `HOST_NORM` map from `hosts.csv`** — translates timeline host names (e.g. `IIS-SERV-PROD`, `LAF-SVR01`) to the short SVG node IDs (`IIS`, `SVR01`) the attack graph uses, so host nodes pulse correctly during replay
+- **Injects `flashNode()`** — positions a popup tooltip near the active SVG host node each time an event fires, showing the UTC timestamp and event description
 - Reports an evidence integrity check (0 unsupported attribution claims)
 
 ## Repository Contents
