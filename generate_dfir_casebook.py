@@ -419,11 +419,14 @@ html = re.sub(
     html
 )
 
-# Scoreboard widget: Final Score 475 "cap reached"
+# Scoreboard widget: Final Score 475 "cap reached" — remove entirely (score requires
+# live CTF participation; cannot be determined from post-CTF analysis alone)
 html = re.sub(
-    r'(<div class="k">Final Score</div>\s*<div class="v[^"]*">)\s*475\s*(<\/div>\s*<div class="d">)\s*cap reached',
-    rf'\g<1>{ctf_answered}\2of {ctf_total} verified',
-    html
+    r'<div class="score-cell">\s*<div class="k">Final Score</div>.*?</div>\s*</div>',
+    '',
+    html,
+    flags=re.DOTALL,
+    count=1
 )
 
 # Scoreboard widget: Placement "7th" "tied at cap" — remove entirely (no CTF submission)
@@ -435,10 +438,11 @@ html = re.sub(
     count=1
 )
 
-# Scoreboard widget: Burned Attempts "22" "logged as rejects" — not applicable post-CTF
+# Scoreboard widget: Burned Attempts "22" "logged as rejects" — remove entirely
+# (only meaningful for live CTF submissions; not applicable for post-CTF analysis)
 html = re.sub(
     r'<div class="score-cell">\s*<div class="k">Burned Attempts</div>.*?</div>\s*</div>',
-    '<div class="score-cell"><div class="k">Burned Attempts</div><div class="v">0</div><div class="d">not submitted to live CTF</div></div>',
+    '',
     html,
     flags=re.DOTALL,
     count=1
@@ -452,6 +456,9 @@ html = re.sub(
 )
 # Fallback for plain-text variant
 html = re.sub(r'Artifact-backed\s+71\s*/\s*71', 'Artifact-backed — / —', html)
+
+# HTML comment above sec-rejects
+html = re.sub(r'<!--\s*=+\s*BURNED ATTEMPTS\s*=+\s*-->', '<!-- FORENSIC JUDGEMENT CALLS -->', html, flags=re.IGNORECASE)
 
 # sec-rejects section tag: "// 12 burned attempts · forensic judgement calls"
 html = re.sub(
