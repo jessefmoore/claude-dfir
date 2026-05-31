@@ -305,8 +305,10 @@ ok(f"Client:     {client}")
 # ---------------------------------------------------------------------------
 log("Step 7: Redacting credentials for public publication...")
 
-# AWS Access Key IDs: AKIA[16 uppercase alphanumeric]
+# AWS Access Key IDs: AKIA[16 uppercase alphanumeric] (long-term)
 html, n_key = re.subn(r'\bAKIA[A-Z0-9]{16}\b', 'AKIA[REDACTED-FOR-PUBLICATION]', html)
+# AWS STS temporary key IDs: ASIA[16 uppercase alphanumeric]
+html, n_sts = re.subn(r'\bASIA[A-Z0-9]{16}\b', 'ASIA[REDACTED-FOR-PUBLICATION]', html)
 # AWS Secret Access Keys: 40-char base64-like strings following "SecretAccessKey"
 html, n_secret = re.subn(
     r'(SecretAccessKey\s*[:\s]+)[A-Za-z0-9+/]{40}',
@@ -314,7 +316,7 @@ html, n_secret = re.subn(
     html
 )
 
-ok(f"Redacted {n_key} AWS key IDs and {n_secret} secret keys")
+ok(f"Redacted {n_key} AKIA key IDs, {n_sts} ASIA STS key IDs, and {n_secret} secret keys")
 
 # ---------------------------------------------------------------------------
 # STEP 8 — Verify sections

