@@ -77,6 +77,7 @@ if not html:
 eng_yaml    = read(os.path.join(ENG_DIR, "engagement.yaml"))
 timeline_md = read(os.path.join(ENG_DIR, "timeline.md"))
 report_md   = read(os.path.join(ENG_DIR, "report.md"))
+hosts_csv   = read(os.path.join(ENG_DIR, "hosts.csv"))
 
 ok(f"Template:   {REF_HTML} ({len(html):,} bytes)")
 ok(f"Engagement: {ENG_DIR}")
@@ -248,6 +249,27 @@ for evt in events:
 # ---------------------------------------------------------------------------
 log("Step 5: Building EVENTS JavaScript array...")
 
+# Map timeline host names → SVG node short IDs (data-host attributes on <g> nodes).
+# The reference template SVG uses short IDs: IIS, SVR01, DC01, DC02, WS01, WS02,
+# OP, TOOL, ROLE, S3, SINK.  Timeline host names vary by case (e.g. IIS-SERV-PROD,
+# LAF-SVR01).  Build a normalization map from hosts.csv (host column → SVG id).
+HOST_NORM_MAP = {}
+for line in hosts_csv.split('\n')[1:]:  # skip header
+    cols = [c.strip() for c in line.split(',')]
+    if len(cols) >= 1 and cols[0]:
+        full = cols[0]                          # e.g. IIS-SERV-PROD
+        # Derive short ID: strip common prefixes, take last component
+        short = re.sub(r'^(?:LAF|laf)-', '', full, flags=re.IGNORECASE)  # LAF-SVR01 → SVR01
+        short = re.sub(r'-SERV-PROD$', '', short, flags=re.IGNORECASE)   # IIS-SERV-PROD → IIS
+        short = re.sub(r'^AWS-\d+$', 'S3', short, flags=re.IGNORECASE)   # AWS-464... → S3
+        HOST_NORM_MAP[full] = short
+
+def norm_host(h):
+    return HOST_NORM_MAP.get(h, h)
+
+# Collect unique timeline host names and their normalized SVG IDs for HOST_NORM JS
+unique_hosts = {e['host']: norm_host(e['host']) for e in events}
+
 js_lines = ["const EVENTS = ["]
 for i, evt in enumerate(events):
     desc = evt['desc'].replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ")
@@ -258,17 +280,77 @@ for i, evt in enumerate(events):
     )
 js_lines.append("];")
 js_lines.append("EVENTS.forEach(e => e.sec = toSec(e.t));")
+
+# Build HOST_NORM JS map so the replay engine can resolve timeline host names
+# to SVG node data-host IDs.  Injected immediately after the EVENTS array.
+norm_entries = ", ".join(f"'{k}':'{v}'" for k, v in sorted(unique_hosts.items()) if k != v)
+js_lines.append(f"// Host name normalization: timeline names → SVG data-host IDs")
+js_lines.append(f"const HOST_NORM = {{ {norm_entries} }};")
+js_lines.append("function normHost(h) { return HOST_NORM[h] || h; }")
+
+# Inject flashNode() — positions a cmd-flash popup near the active SVG host node
+js_lines.append("""
+// Flash popup near SVG host node when an event fires
+let _graphWrap = null;
+function flashNode(svgId, label, desc, colorCls) {
+  if (!_graphWrap) _graphWrap = document.querySelector('.graph-wrap');
+  if (!_graphWrap) return;
+  const node = document.getElementById('n-' + svgId);
+  if (!node) return;
+  const wrapRect = _graphWrap.getBoundingClientRect();
+  const nodeRect = node.getBoundingClientRect();
+  if (!wrapRect.width) return;
+  const left = (nodeRect.left + nodeRect.width / 2) - wrapRect.left;
+  const top  = (nodeRect.top  + nodeRect.height / 2) - wrapRect.top;
+  _graphWrap.querySelectorAll('.cmd-flash[data-node="' + svgId + '"]').forEach(el => el.remove());
+  const div = document.createElement('div');
+  div.className = 'cmd-flash ' + (colorCls || 'green');
+  div.dataset.node = svgId;
+  div.style.left = left + 'px';
+  div.style.top  = top  + 'px';
+  const shortDesc = desc.length > 120 ? desc.slice(0, 117) + '\\u2026' : desc;
+  div.innerHTML = '<span class="cf-label">' + label + '</span><span class="cf-cmd">' + shortDesc + '</span>';
+  _graphWrap.appendChild(div);
+  setTimeout(() => { if (div.parentNode) div.remove(); }, 2700);
+}
+""")
+
 events_js = "\n".join(js_lines) + "\n"
 
 ok(f"EVENTS array: {len(events)} entries")
+ok(f"HOST_NORM:    {len([k for k,v in unique_hosts.items() if k != v])} mappings ({', '.join(f'{k}→{v}' for k,v in sorted(unique_hosts.items()) if k != v)})")
 
-# Replace in template
+# Replace EVENTS array in template (pattern matches through EVENTS.forEach line)
 events_pattern = r'const EVENTS = \[.*?\];.*?EVENTS\.forEach\(e => e\.sec = toSec\(e\.t\)\);'
 html, n = re.subn(events_pattern, lambda _: events_js, html, flags=re.DOTALL, count=1)
 if n:
-    ok("EVENTS array replaced in template")
+    ok("EVENTS array + HOST_NORM + flashNode() replaced in template")
 else:
     warn("EVENTS pattern not found — array may not have been replaced")
+
+# Patch applyEventsForTime to use normHost() for hostSet and host-active detection.
+# This ensures SVG nodes pulse even when event host names don't exactly match
+# the short data-host IDs on the SVG <g> elements.
+old_hostset = "hostSet.add(ev.host);"
+new_hostset = "hostSet.add(normHost(ev.host));"
+if old_hostset in html:
+    html = html.replace(old_hostset, new_hostset, 1)
+    ok("Patched hostSet.add() to use normHost()")
+
+old_active = "e.host === h && e.sec <= sec && sec - e.sec < 5"
+new_active  = "normHost(e.host) === h && e.sec <= sec && sec - e.sec < 8"
+if old_active in html:
+    html = html.replace(old_active, new_active, 1)
+    ok("Patched host-active detection to use normHost() + 8s window")
+
+# Wire flashNode() call into the event card update block
+old_card = "const ev = EVENTS[latestIdx];\n      const nxt = EVENTS[latestIdx + 1];"
+new_card  = ("const ev = EVENTS[latestIdx];\n"
+             "      flashNode(normHost(ev.host), ev.t + ' · ' + (HOST_LABEL[normHost(ev.host)] || ev.host), ev.desc, HOST_COLOR[normHost(ev.host)] || 'green');\n"
+             "      const nxt = EVENTS[latestIdx + 1];")
+if old_card in html:
+    html = html.replace(old_card, new_card, 1)
+    ok("Wired flashNode() into event card update")
 
 # ---------------------------------------------------------------------------
 # STEP 6 — Case metadata substitutions
