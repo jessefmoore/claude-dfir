@@ -387,33 +387,42 @@ ok(f"Client:     {client}")
 # 475 score) are hard-coded to the ALF/LeHack 2024 CTF run and are wrong for any
 # other case. Replace with neutral/evidence-grounded language.
 # ---------------------------------------------------------------------------
-log("Step 6b: Replacing ALF-specific CTF scorecard widgets...")
+log("Step 6b: Replacing ALF-specific CTF scorecard widgets with case-verified counts...")
+
+# Read CTF metrics from engagement.yaml (defaults to neutral if not set)
+ctf_total    = yaml_get(eng_yaml, "ctf_questions_total",   "—")
+ctf_answered = yaml_get(eng_yaml, "ctf_questions_answered","—")
+ctf_verified = yaml_get(eng_yaml, "ctf_answers_verified",  "—")
+ctf_eng_type = yaml_get(eng_yaml, "ctf_engagement_type",   "Post-CTF analysis")
+
+solves_str   = f"{ctf_answered} / {ctf_total}"
+verified_str = f"{ctf_verified} / {ctf_verified}"
 
 # Hero metadata row: "Resolution 72 / 72 solves · 71 / 71 Inspector-verified · cleared"
 html = re.sub(
     r'72\s*/\s*72\s+solves\s*·\s*71\s*/\s*71\s+Inspector-verified\s*·\s*cleared',
-    'See Case Board for verified question count · evidence-grounded',
+    f'{solves_str} CTF questions answered · {verified_str} evidence-backed · cleared',
     html
 )
 
 # Scoreboard widget: Solves 72/72 "all challenges"
 html = re.sub(
     r'(<div class="k">Solves</div>\s*<div class="v">)\s*72\s*/\s*72\s*(<\/div>\s*<div class="d">)\s*all challenges',
-    r'\g<1>See Board\2post-CTF analysis',
+    rf'\g<1>{solves_str}\2CTF questions',
     html
 )
 
 # Scoreboard widget: Verified 71/71 "SoloAgent oracle"
 html = re.sub(
     r'(<div class="k">Verified</div>\s*<div class="v[^"]*">)\s*71\s*/\s*71\s*(<\/div>\s*<div class="d">)\s*SoloAgent oracle',
-    r'\g<1>See Board\2evidence-backed',
+    rf'\g<1>{verified_str}\2evidence-backed',
     html
 )
 
 # Scoreboard widget: Final Score 475 "cap reached"
 html = re.sub(
     r'(<div class="k">Final Score</div>\s*<div class="v[^"]*">)\s*475\s*(<\/div>\s*<div class="d">)\s*cap reached',
-    r'\g<1>—\2post-CTF',
+    rf'\g<1>{ctf_answered}\2of {ctf_total} verified',
     html
 )
 

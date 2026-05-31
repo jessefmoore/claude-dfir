@@ -18,3 +18,8 @@ ttps_catalogued: 22
 ioc_volume: "C2 IP 173.230.136.180:8443 · Attacker subnet 198.51.100.0/24 · 8 malicious files · 3 backdoor accounts"
 final_status: CLOSED — full domain compromise confirmed · ransomware deployed
 headline: "Saiyan Spider achieves domain dominance and deploys .bWqQUx ransomware across LAF.local in under 3 hours via web-shell initial access and Impacket lateral movement."
+# CTF challenge metrics — derived from cross-referencing Q&A file with forensic artifacts
+ctf_questions_total: 70
+ctf_questions_answered: 57
+ctf_answers_verified: 57
+ctf_engagement_type: "Post-CTF analysis"
