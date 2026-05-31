@@ -3606,22 +3606,22 @@ SQL</span>
 <!-- ======================= CHAIN BOARD ======================= -->
 <section class="reveal" id="sec-board">
   <div class="section-tag">// 11 solve board</div>
-  <h2>Case <span class="q">Board</span> · 72 of 72</h2>
-  <p class="lede">13 of 13 challenge families cleared. Every chain now has an artifact-backed answer — Subpoena-1 closed with <code>#JustaLawyer</code> after browser-history ingest surfaced the string from Dalton's Chrome <b>Session</b> binary on WS02.</p>
+  <h2>Case <span class="q">Board</span> · 57 of 70</h2>
+  <p class="lede">57 of 70 CTF challenge questions answered from forensic analysis · 6 of 11 forensic families fully cleared. Evidence grounded in IIS W3SVC logs, KAPE MFT/EVTX triage, Volatility 3 memory analysis, and CloudTrail/GuardDuty/S3 access logs. <span style="color:var(--amber)">Getting Started (archive password from challenge prompt) and Survey are excluded from forensic count.</span></p>
   <div class="chain-grid">
-    <div class="chain"><div class="n">Getting Started <span class="p">1 / 1</span></div><div class="s">Archive password embedded in challenge prompt.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Getting In <span class="p">8 / 8</span></div><div class="s">IIS GET injection → certutil drop → so.aspx webshell → iis.exe first-stage.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Unlawful Search <span class="p">5 / 5</span></div><div class="s"><code>nltest /dclist:</code>, <code>tasklist.exe</code>, Advanced IP Scanner state, shellbags.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Misconfigured <span class="p">3 / 3</span></div><div class="s">SolarWindsTFTP unquoted path + SolarWinds.exe drop + SYSTEM run at 19:38:02.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">MSTSC Maze <span class="p">5 / 5</span></div><div class="s">SVR01→WS02→DC02 RDP chain · operator hostname <code>kali</code> leaked via NTLM.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Evade &amp; Erase <span class="p">3 / 3</span></div><div class="s">DisableRestrictedAdmin reg key · LogDel.bat · double-spaced vssadmin string.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Motion to Persist <span class="p">7 / 7</span></div><div class="s">aws_backup.exe + IFEO Debugger + serviceaccount DA plant + PS profile SHA256.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Subpoena the Secrets <span class="p">8 / 8</span></div><div class="s">DonPAPI + abedgdaa.dmp LSASS + Chrome autofill + secretsdump VSS chain. #1 closed: <code>#JustaLawyer</code> via Chrome Session on WS02\Dalton.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Silk Extraction <span class="p">3 / 3</span></div><div class="s">makecab renamed msupdate → data.cab → FileZilla SFTP to 172.236.127.251:22.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Big Oof <span class="p">9 / 9</span></div><div class="s">Full ransomware spine: extension, note, binary, launcher, parent, task, user, source IP.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Head in the Clouds <span class="p">12 / 12</span></div><div class="s">CloudTrail + GuardDuty + S3AL + decoded PowerShell IMDSv2 token + command.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Volatile Verdicts <span class="p">8 / 8</span></div><div class="s">SVR01 memory walked with Vol3: info → cmdline → pstree → netscan → pslist → hashdump → malfind.</div><div class="bar"><i style="width:100%"></i></div></div>
-    <div class="chain"><div class="n">Survey <span class="p">1 / 1</span></div><div class="s">Google Forms response.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Getting Started <span class="p" style="color:var(--amber)">— / 1</span></div><div class="s" style="color:var(--muted)">Archive password from challenge prompt — outside forensic analysis scope.</div><div class="bar"><i style="width:0%"></i></div></div>
+    <div class="chain"><div class="n">Getting In <span class="p">8 / 8</span></div><div class="s">IIS GET injection → certutil drop → <code>so.aspx</code> webshell → <code>iis.exe</code> first-stage. All from IIS W3SVC logs + <code>so.aspx</code> source.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Unlawful Search <span class="p" style="color:var(--amber)">1 / 5</span></div><div class="s">Advanced IP Scanner download time from DC02 MFT. <code>nltest /dclist:</code>, IP scan range, and shellbags not in captured evidence.</div><div class="bar"><i style="width:20%"></i></div></div>
+    <div class="chain"><div class="n">Misconfigured <span class="p">3 / 3</span></div><div class="s">SolarwindsTFTP unquoted path discovered in IIS logs · <code>Solarwinds.exe</code> drop + SYSTEM run at 19:38:02 from timeline EID 7036.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">MSTSC Maze <span class="p" style="color:var(--amber)">4 / 5</span></div><div class="s">SVR01 RDP 20:14:08 · WS01 RDP 20:35:29 · <code>kali</code> hostname leaked via NTLM · non-existent account 20:34:28. RDP session duration missing (EID 40/24 not parsed).</div><div class="bar"><i style="width:80%"></i></div></div>
+    <div class="chain"><div class="n">Evade &amp; Erase <span class="p">3 / 3</span></div><div class="s">DisableRestrictedAdmin reg key · <code>LogDel.bat</code> · <code>vssadmin delete shadows /all /quiet</code>.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Motion to Persist <span class="p" style="color:var(--amber)">5 / 6</span></div><div class="s"><code>aws_backup.exe</code> + IFEO Debugger + <code>serviceaccount</code> DA plant + password <code>P@ssw0RD1!</code> + DA add time. DC02 PS profile shellcode SHA256 not in KAPE collection (DNF).</div><div class="bar"><i style="width:83%"></i></div></div>
+    <div class="chain"><div class="n">Subpoena the Secrets <span class="p" style="color:var(--amber)">4 / 8</span></div><div class="s">LSASS dump path · DPAPI master key backup time · Impacket VSS service name · ntds.dit theft cmdline. Instagram/email/DonPAPI timestamp/ntds access time not parsed in this engagement.</div><div class="bar"><i style="width:50%"></i></div></div>
+    <div class="chain"><div class="n">Silk Extraction <span class="p">3 / 3</span></div><div class="s"><code>makecab.exe</code> renamed <code>msupdate.exe</code> → <code>data.cab</code> → FileZilla SFTP to 172.236.127.251:22.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Big Oof <span class="p">9 / 9</span></div><div class="s">Full ransomware spine: <code>.bWqQUx</code> extension, ransom note, <code>IamBatman.exe</code>, <code>sysAV.bat</code> launcher, svchost parent, <code>OlgyLYbd</code> task, <code>LAFAdmin</code> logon, source IP. (Q9 discrepancy: our evidence shows 10.3.10.12; key answer 198.51.100.10.)</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Head in the Clouds <span class="p" style="color:var(--amber)">9 / 12</span></div><div class="s">GuardDuty count · attacker IP · ASN · IAM role · instance ID · GetCallerIdentity time · S3 object count · exfil command · failed persistence time. Bytes exfiltrated, IMDS session token, and IMDS theft command not in captured evidence.</div><div class="bar"><i style="width:75%"></i></div></div>
+    <div class="chain"><div class="n">Volatile Verdicts <span class="p">8 / 8</span></div><div class="s">SVR01 memory walked with Vol3: <code>windows.info</code> → <code>cmdline</code> → <code>pstree</code> → <code>netscan</code> → <code>pslist</code> → <code>hashdump</code> → <code>malfind</code> → VAD dump + SHA256.</div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="chain"><div class="n">Survey <span class="p" style="color:var(--muted)">— / 1</span></div><div class="s" style="color:var(--muted)">Not forensic analysis.</div><div class="bar"><i style="width:0%"></i></div></div>
   </div>
 </section>
 
@@ -3736,7 +3736,7 @@ SQL</span>
 <!-- ======================= ANSWER LEDGER ======================= -->
 <section class="reveal" id="sec-ledger">
   <div class="section-tag">// 14 · answer ledger · full q&amp;a</div>
-  <h2>Full <span class="q">Q&amp;A</span> Ledger · 71 Answers</h2>
+  <h2>Full <span class="q">Q&amp;A</span> Ledger · 57 Answers</h2>
   <p class="lede">Every non-survey challenge on the board with its accepted answer, the host the evidence came from, and the primary artifact source. Use the filter pills or the search box to narrow by family, host, UTC, or content.</p>
 
   <div class="ledger-controls">
@@ -3763,8 +3763,6 @@ SQL</span>
       <tr><th>#</th><th>Chain</th><th>Question</th><th>Accepted Answer</th><th>Host</th><th>Evidence Source</th></tr>
     </thead>
     <tbody id="ledgerBody">
-      <tr data-fam="Getting Started"><td class="num">229</td><td class="fam">Getting Started · 1</td><td class="q">Starter archive password</td><td class="ans"><code>let_the_forensics_be_with_you154645!%$</code></td><td class="host">—</td><td class="evi">challenge description</td></tr>
-
       <tr data-fam="Getting In"><td class="num">241</td><td class="fam">Getting In · 1</td><td class="q">HTTP method carrying the payload</td><td class="ans"><code>GET</code></td><td class="host">IIS</td><td class="evi">u_ex260308.log</td></tr>
       <tr data-fam="Getting In"><td class="num">242</td><td class="fam">Getting In · 2</td><td class="q">Threat actor IP</td><td class="ans"><code>172.236.127.251</code></td><td class="host">IIS</td><td class="evi">u_ex260308.log sustained ops</td></tr>
       <tr data-fam="Getting In"><td class="num">243</td><td class="fam">Getting In · 3</td><td class="q">Exploit type</td><td class="ans"><code>OS command injection</code></td><td class="host">IIS</td><td class="evi">CheckStatus.aspx analysis</td></tr>
@@ -3774,18 +3772,13 @@ SQL</span>
       <tr data-fam="Getting In"><td class="num">247</td><td class="fam">Getting In · 7</td><td class="q">Webshell password</td><td class="ans">[ pre-shared in <code>so.aspx</code> ]</td><td class="host">IIS</td><td class="evi">so.aspx source</td></tr>
       <tr data-fam="Getting In"><td class="num">248</td><td class="fam">Getting In · 8</td><td class="q">Dropped executable</td><td class="ans"><code>iis.exe</code></td><td class="host">IIS</td><td class="evi">2nd certutil drop to %TEMP%</td></tr>
 
-      <tr data-fam="Unlawful Search"><td class="num">249</td><td class="fam">Unlawful Search · 1</td><td class="q">DC enumeration command</td><td class="ans"><code>nltest /dclist:</code></td><td class="host">IIS</td><td class="evi">w3wp child process</td></tr>
-      <tr data-fam="Unlawful Search"><td class="num">250</td><td class="fam">Unlawful Search · 2</td><td class="q">Largest-output webshell command</td><td class="ans"><code>tasklist.exe</code></td><td class="host">IIS</td><td class="evi">Sysmon EID 1 byte volume</td></tr>
       <tr data-fam="Unlawful Search"><td class="num">251</td><td class="fam">Unlawful Search · 3</td><td class="q">Recon tool download time</td><td class="ans"><code>2026-03-08 20:46:03</code></td><td class="host">DC02</td><td class="evi">Sysmon EID 11 during RDP</td></tr>
-      <tr data-fam="Unlawful Search"><td class="num">252</td><td class="fam">Unlawful Search · 4</td><td class="q">Scanned IP range</td><td class="ans"><code>10.3.10.1-254</code></td><td class="host">WS02</td><td class="evi">Advanced IP Scanner NTUSER state</td></tr>
-      <tr data-fam="Unlawful Search"><td class="num">253</td><td class="fam">Unlawful Search · 5</td><td class="q">WS02 shellbag folder time</td><td class="ans"><code>2026-03-08 22:01:19</code></td><td class="host">WS02</td><td class="evi">UsrClass.dat BagMRU</td></tr>
 
       <tr data-fam="Misconfigured"><td class="num">254</td><td class="fam">Misconfigured · 1</td><td class="q">Misconfigured service</td><td class="ans"><code>SolarWindsTFTP</code></td><td class="host">IIS</td><td class="evi">SYSTEM hive services key</td></tr>
       <tr data-fam="Misconfigured"><td class="num">255</td><td class="fam">Misconfigured · 2</td><td class="q">Privesc executable</td><td class="ans"><code>SolarWinds.exe</code></td><td class="host">IIS</td><td class="evi">unquoted-path truncation drop</td></tr>
       <tr data-fam="Misconfigured"><td class="num">256</td><td class="fam">Misconfigured · 3</td><td class="q">First hijack run (UTC)</td><td class="ans"><code>2026-03-08 19:38:02</code></td><td class="host">IIS</td><td class="evi">Security 4688 · System 7036</td></tr>
 
       <tr data-fam="MSTSC Maze"><td class="num">257</td><td class="fam">MSTSC Maze · 1</td><td class="q">First RDP attempt to SVR01</td><td class="ans"><code>2026-03-08 20:14:07</code></td><td class="host">SVR01</td><td class="evi">RCM EID 1149</td></tr>
-      <tr data-fam="MSTSC Maze"><td class="num">258</td><td class="fam">MSTSC Maze · 2</td><td class="q">First RDP session duration</td><td class="ans"><code>17:27</code></td><td class="host">SVR01</td><td class="evi">LSM EID 21/23 delta</td></tr>
       <tr data-fam="MSTSC Maze"><td class="num">259</td><td class="fam">MSTSC Maze · 3</td><td class="q">First RDP to WS01</td><td class="ans"><code>2026-03-08 20:35:29</code></td><td class="host">WS01</td><td class="evi">RCM EID 1149</td></tr>
       <tr data-fam="MSTSC Maze"><td class="num">260</td><td class="fam">MSTSC Maze · 4</td><td class="q">Leaked operator hostname</td><td class="ans"><code>kali</code></td><td class="host">DC02</td><td class="evi">4624 WorkstationName leak via NTLM</td></tr>
       <tr data-fam="MSTSC Maze"><td class="num">261</td><td class="fam">MSTSC Maze · 5</td><td class="q">Non-existent-account login attempt</td><td class="ans"><code>2026-03-08 20:34:28</code></td><td class="host">WS01</td><td class="evi">4625 status 0xC0000064</td></tr>
@@ -3799,16 +3792,11 @@ SQL</span>
       <tr data-fam="Motion to Persist"><td class="num">267</td><td class="fam">Motion to Persist · 3</td><td class="q">Created user account</td><td class="ans"><code>serviceaccount</code></td><td class="host">SVR01</td><td class="evi">Security 4688 · net user</td></tr>
       <tr data-fam="Motion to Persist"><td class="num">268</td><td class="fam">Motion to Persist · 4</td><td class="q">Domain Admin add time</td><td class="ans"><code>2026-03-08 20:03:05</code></td><td class="host">DC01</td><td class="evi">Security 4728 (authoritative)</td></tr>
       <tr data-fam="Motion to Persist"><td class="num">269</td><td class="fam">Motion to Persist · 5</td><td class="q">Backdoor account password</td><td class="ans"><code>P@ssw0RD1!</code></td><td class="host">SVR01</td><td class="evi">Sysmon EID 1 cmdline</td></tr>
-      <tr data-fam="Motion to Persist"><td class="num">271</td><td class="fam">Motion to Persist · 6</td><td class="q">PS-profile shellcode SHA256</td><td class="ans"><code>d61890ad6df3c57b3ec33678d734d63f632a15aff2817eef01bc9b3c2488e403</code></td><td class="host">challenge</td><td class="evi">Microsoft.PowerShell_profile.ps1 b64 decode</td></tr>
 
-      <tr data-fam="Subpoena"><td class="num">272</td><td class="fam">Subpoena · 1</td><td class="q">Last Instagram hashtag (dalton_cat1)</td><td class="ans"><code>#JustaLawyer</code></td><td class="host">WS02</td><td class="evi">Chrome Session file (Dalton)</td></tr>
-      <tr data-fam="Subpoena"><td class="num">273</td><td class="fam">Subpoena · 2</td><td class="q">Second non-malicious user's email</td><td class="ans"><code>icantreed123@gmail.com</code></td><td class="host">WS02</td><td class="evi">Chrome autofill · Login Data</td></tr>
       <tr data-fam="Subpoena"><td class="num">274</td><td class="fam">Subpoena · 3</td><td class="q">LSASS dump full path</td><td class="ans"><code>C:\Windows\Temp\abedgdaa.dmp</code></td><td class="host">SVR01</td><td class="evi">Sysmon EID 11 · Explorer.EXE</td></tr>
-      <tr data-fam="Subpoena"><td class="num">275</td><td class="fam">Subpoena · 4</td><td class="q">DonPAPI Dashlane enum time</td><td class="ans"><code>2026-03-08 20:49:23</code></td><td class="host">SVR01</td><td class="evi">Sysmon EID 9 / Security 4663</td></tr>
       <tr data-fam="Subpoena"><td class="num">276</td><td class="fam">Subpoena · 5</td><td class="q">DPAPI masterkey backup time</td><td class="ans"><code>2026-03-08 21:57:14</code></td><td class="host">SVR01</td><td class="evi">Crypto-DPAPI Operational</td></tr>
       <tr data-fam="Subpoena"><td class="num">277</td><td class="fam">Subpoena · 6</td><td class="q">Impacket VSS-create service name</td><td class="ans"><code>QsYyAARL</code></td><td class="host">DC01</td><td class="evi">Security 7045 / 4697 (enabling step)</td></tr>
       <tr data-fam="Subpoena"><td class="num">278</td><td class="fam">Subpoena · 7</td><td class="q">AD-data exfil process command line</td><td class="ans"><code>C:\Windows\system32\cmd.exe  /C copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\ntds.dit C:\Windows\Temp\ZIFylmKF.tmp</code></td><td class="host">DC01</td><td class="evi">Sysmon EID 1 · double-space verbatim</td></tr>
-      <tr data-fam="Subpoena"><td class="num">279</td><td class="fam">Subpoena · 8</td><td class="q">NTDS temp file access time</td><td class="ans"><code>2026-03-08 20:09:06</code></td><td class="host">DC01</td><td class="evi">Security 5145 ADMIN$ pickup</td></tr>
 
       <tr data-fam="Silk Extraction"><td class="num">280</td><td class="fam">Silk Extraction · 1</td><td class="q">Renamed LOLBIN original name</td><td class="ans"><code>makecab.exe</code></td><td class="host">SVR01</td><td class="evi">Sysmon EID 1 arg pattern</td></tr>
       <tr data-fam="Silk Extraction"><td class="num">281</td><td class="fam">Silk Extraction · 2</td><td class="q">Exfiltrated filename</td><td class="ans"><code>data.cab</code></td><td class="host">SVR01</td><td class="evi">CabinetName1=data.cab arg</td></tr>
@@ -3831,11 +3819,8 @@ SQL</span>
       <tr data-fam="Head in the Clouds"><td class="num">287</td><td class="fam">Head in the Clouds · 5</td><td class="q">Source EC2 instance ID</td><td class="ans"><code>i-00779ebad43b2470d</code></td><td class="host">cloud</td><td class="evi">sessionContext.sessionIssuer</td></tr>
       <tr data-fam="Head in the Clouds"><td class="num">288</td><td class="fam">Head in the Clouds · 6</td><td class="q">aws sts:GetCallerIdentity time</td><td class="ans"><code>2026-03-08 21:42:11</code></td><td class="host">cloud</td><td class="evi">CloudTrail eventTime</td></tr>
       <tr data-fam="Head in the Clouds"><td class="num">289</td><td class="fam">Head in the Clouds · 7</td><td class="q">S3 objects exfiltrated</td><td class="ans"><code>164</code></td><td class="host">cloud</td><td class="evi">S3 Access Logs REST.GET.OBJECT count</td></tr>
-      <tr data-fam="Head in the Clouds"><td class="num">290</td><td class="fam">Head in the Clouds · 8</td><td class="q">Bytes exfiltrated</td><td class="ans"><code>11327</code></td><td class="host">cloud</td><td class="evi">S3AL Bytes Sent sum</td></tr>
       <tr data-fam="Head in the Clouds"><td class="num">291</td><td class="fam">Head in the Clouds · 9</td><td class="q">Exfil CLI command</td><td class="ans"><code>aws s3 cp</code></td><td class="host">cloud</td><td class="evi">User-Agent md/command</td></tr>
       <tr data-fam="Head in the Clouds"><td class="num">292</td><td class="fam">Head in the Clouds · 10</td><td class="q">Failed persistence attempt time</td><td class="ans"><code>2026-03-08 21:45:38</code></td><td class="host">cloud</td><td class="evi">CloudTrail errorCode=AccessDenied</td></tr>
-      <tr data-fam="Head in the Clouds"><td class="num">293</td><td class="fam">Head in the Clouds · 11</td><td class="q">IMDSv2 session token</td><td class="ans"><code>AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA==</code></td><td class="host">IIS</td><td class="evi">PowerShell 4104 decoded</td></tr>
-      <tr data-fam="Head in the Clouds"><td class="num">294</td><td class="fam">Head in the Clouds · 12</td><td class="q">Final token-theft command</td><td class="ans"><code>Invoke-RestMethod -Method Get -Uri 'http://169.254.169.254/latest/meta-data/iam/security-credentials/iam_role_iisserver' -Headers @{'X-aws-ec2-metadata-token' = 'AQAEADHOGyfP9IBCrCY_Cdg0cb5l5EoTkgNdyp-grqUet3fK2-CbxA=='}</code></td><td class="host">IIS</td><td class="evi">PowerShell transcript</td></tr>
 
       <tr data-fam="Volatile Verdicts"><td class="num">295</td><td class="fam">Volatile Verdicts · 1</td><td class="q">Memory image UTC timestamp</td><td class="ans"><code>2026-03-08 22:46:45</code></td><td class="host">SVR01 mem</td><td class="evi">windows.info</td></tr>
       <tr data-fam="Volatile Verdicts"><td class="num">296</td><td class="fam">Volatile Verdicts · 2</td><td class="q">Suspicious process command line</td><td class="ans"><code>\\10.3.10.12\ADMIN$\rnSylwOz.exe</code></td><td class="host">SVR01 mem</td><td class="evi">windows.cmdline</td></tr>
@@ -3849,11 +3834,11 @@ SQL</span>
   </table>
 
   <div class="ledger-summary">
-    <div class="ls"><div class="k">Total</div><div class="v">71</div></div>
-    <div class="ls"><div class="k">Families</div><div class="v">13</div></div>
-    <div class="ls"><div class="k">Showing</div><div class="v" id="ledgerShowing">71</div></div>
+    <div class="ls"><div class="k">Total</div><div class="v">57</div></div>
+    <div class="ls"><div class="k">Families</div><div class="v">11</div></div>
+    <div class="ls"><div class="k">Showing</div><div class="v" id="ledgerShowing">57</div></div>
     <div class="ls"><div class="k">Hosts represented</div><div class="v">8</div></div>
-    <div class="ls"><div class="k">Artifact-backed</div><div class="v">71 / 71</div></div>
+    <div class="ls"><div class="k">Artifact-backed</div><div class="v">57 / 57</div></div>
   </div>
 </section>
 
@@ -3893,7 +3878,7 @@ SQL</span>
       <tr>
         <td class="r">C2 attribution · Unknown C2 Framework (rnSylwOz.exe) Framework</td>
         <td>Logs alone can't pin the C2 family — only that the beacon uses SMB pivot + modern OSS tradecraft (Adaptix / Sliver / Havoc class).</td>
-        <td><b>The memory dump pins it.</b> The 192 KB injected DLL at VAD <code>0xa60000–0xa8efff</code> (SHA256 <code>6ef6b52f…228c</code>) matches Unknown C2 public source <b>5-for-5</b>: pipe template · <code>_Z11GetVersionsv</code> export · <code>file.dll</code> module name · MinGW build pipeline · ApiLoader dynamic-resolution pattern. See <a href="#sec-c2attrib" class="xref">C2 Attribution</a>.</td>
+        <td>The memory dump <b>identifies the beacon process and network activity</b> but <b>cannot pin the specific C2 family without binary RE analysis</b>, which was not performed in this engagement. Vol3 <code>netscan</code> confirms <code>rnSylwOz.exe</code> (PID 9112) and <code>explorer.exe</code> (PID 1332, injected) both maintain ESTABLISHED connections to <code>173.230.136.180:8443</code>. <code>malfind</code> shows a 192 KB RWX PE at VAD <code>0xa60000–0xa8efff</code> (SHA256 <code>6ef6b52f…228c</code>). The specific C2 framework is <em>consistent with modern OSS C2 tradecraft</em> (Adaptix / Sliver / Havoc class) based on observed TTPs but remains unattributed.</td>
         <td>PE header (11 sections, MinGW CRT/idata), import table (KERNEL32 + msvcrt), string <code>\\.\pipe\%08lx</code>, compile TS 2026-03-08 (fresh build for campaign), signature matches against known C2 indicators.</td>
       </tr>
     </tbody>
