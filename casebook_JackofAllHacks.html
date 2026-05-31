@@ -8503,6 +8503,13 @@ const HOST_COLOR = {
   IIS:'cyan', DC01:'red', DC02:'red', SVR01:'amber', WS01:'violet', WS02:'violet',
   OP:'red', TOOL:'red', SINK:'red', ROLE:'green', S3:'green',
 };
+// Normalize event host names (timeline uses long names) → SVG data-host short IDs
+const HOST_NORM = {
+  'IIS-SERV-PROD':'IIS', 'LAF-SVR01':'SVR01', 'LAF-DC01':'DC01',
+  'LAF-DC02':'DC02', 'LAF-WS01':'WS01', 'LAF-WS02':'WS02',
+  'AWS':'S3',
+};
+function normHost(h) { return HOST_NORM[h] || h; }
 
 function parseTags(desc) {
   const tags = [];
@@ -8553,6 +8560,32 @@ function setScrubber(sec) {
   applyEventsForTime(replaySec);
 }
 
+// Flash popup near SVG host node when an event fires
+let _graphWrap = null;
+function flashNode(svgId, label, desc, colorCls) {
+  if (!_graphWrap) _graphWrap = document.querySelector('.graph-wrap');
+  if (!_graphWrap) return;
+  const node = document.getElementById('n-' + svgId);
+  if (!node) return;
+  const wrapRect = _graphWrap.getBoundingClientRect();
+  const nodeRect = node.getBoundingClientRect();
+  if (!wrapRect.width) return;
+  const left = (nodeRect.left + nodeRect.width / 2) - wrapRect.left;
+  const top  = (nodeRect.top  + nodeRect.height / 2) - wrapRect.top;
+  // Remove any existing flash on same node
+  _graphWrap.querySelectorAll('.cmd-flash[data-node="' + svgId + '"]').forEach(el => el.remove());
+  const div = document.createElement('div');
+  div.className = 'cmd-flash ' + (colorCls || 'green');
+  div.dataset.node = svgId;
+  div.style.left = left + 'px';
+  div.style.top  = top  + 'px';
+  // Truncate desc to 120 chars for readability
+  const shortDesc = desc.length > 120 ? desc.slice(0, 117) + '…' : desc;
+  div.innerHTML = '<span class="cf-label">' + label + '</span><span class="cf-cmd">' + shortDesc + '</span>';
+  _graphWrap.appendChild(div);
+  setTimeout(() => { if (div.parentNode) div.remove(); }, 2700);
+}
+
 function applyEventsForTime(sec) {
   const edgeSet = new Set();
   const hostSet = new Set();
@@ -8560,7 +8593,7 @@ function applyEventsForTime(sec) {
   EVENTS.forEach((ev, i) => {
     if (ev.sec <= sec) {
       if (ev.edge) edgeSet.add(ev.edge);
-      hostSet.add(ev.host);
+      hostSet.add(normHost(ev.host));
       latestIdx = i;
     }
   });
@@ -8586,7 +8619,7 @@ function applyEventsForTime(sec) {
     const h = n.dataset.host;
     if (hostSet.has(h)) {
       n.classList.remove('host-dim');
-      const active = EVENTS.find(e => e.host === h && e.sec <= sec && sec - e.sec < 5);
+      const active = EVENTS.find(e => normHost(e.host) === h && e.sec <= sec && sec - e.sec < 8);
       if (active) n.classList.add('host-active');
       else n.classList.remove('host-active');
     } else {
@@ -8607,6 +8640,8 @@ function applyEventsForTime(sec) {
     eventCard.className = 'event-card';
     if (latestIdx >= 0) {
       const ev = EVENTS[latestIdx];
+      // Flash popup near the host node
+      flashNode(normHost(ev.host), ev.t + ' · ' + (HOST_LABEL[normHost(ev.host)] || ev.host), ev.desc, HOST_COLOR[normHost(ev.host)] || 'green');
       const nxt = EVENTS[latestIdx + 1];
       ecTime.textContent = ev.t;
       ecElapsed.textContent = fmtElapsed(ev.sec);
