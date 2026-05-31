@@ -130,6 +130,10 @@ The generator automatically:
 
 T1190 · T1574.009 · T1059.001/003 · T1569.002 · T1136.002 · T1098 · T1055 · T1003.001/003 · T1552.004 · T1046 · T1021.001/002 · T1053.005 · T1547.012 · T1546.013 · T1560.001 · T1048 · T1486 · T1490 · T1070.003 · T1112
 
+## Attribution
+
+The interactive casebook format — phosphor-green CRT aesthetic, kill-chain replay engine, animated SVG attack graph, scrubber bar, and overall report structure — is based on the **LeHack 2024 DFIR casebook** by [aleemladha](https://github.com/aleemladha). `reference_casebook.html` is that original work, used here as the base template for `generate_dfir_casebook.py`.
+
 ---
 
 *Generated with [Claude Code](https://claude.ai/code) · Protocol SIFT skill · Evidence is read-only KAPE triage (not included in repo)*
