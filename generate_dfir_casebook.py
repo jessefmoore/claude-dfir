@@ -382,6 +382,86 @@ ok(f"Case title: {case_name}")
 ok(f"Client:     {client}")
 
 # ---------------------------------------------------------------------------
+# STEP 6b — Strip ALF-specific CTF scorecard widgets
+# These values (72/72 solves, 71/71 verified, 7th placement, 22 burned attempts,
+# 475 score) are hard-coded to the ALF/LeHack 2024 CTF run and are wrong for any
+# other case. Replace with neutral/evidence-grounded language.
+# ---------------------------------------------------------------------------
+log("Step 6b: Replacing ALF-specific CTF scorecard widgets...")
+
+# Hero metadata row: "Resolution 72 / 72 solves · 71 / 71 Inspector-verified · cleared"
+html = re.sub(
+    r'72\s*/\s*72\s+solves\s*·\s*71\s*/\s*71\s+Inspector-verified\s*·\s*cleared',
+    'See Case Board for verified question count · evidence-grounded',
+    html
+)
+
+# Scoreboard widget: Solves 72/72 "all challenges"
+html = re.sub(
+    r'(<div class="k">Solves</div>\s*<div class="v">)\s*72\s*/\s*72\s*(<\/div>\s*<div class="d">)\s*all challenges',
+    r'\g<1>See Board\2post-CTF analysis',
+    html
+)
+
+# Scoreboard widget: Verified 71/71 "SoloAgent oracle"
+html = re.sub(
+    r'(<div class="k">Verified</div>\s*<div class="v[^"]*">)\s*71\s*/\s*71\s*(<\/div>\s*<div class="d">)\s*SoloAgent oracle',
+    r'\g<1>See Board\2evidence-backed',
+    html
+)
+
+# Scoreboard widget: Final Score 475 "cap reached"
+html = re.sub(
+    r'(<div class="k">Final Score</div>\s*<div class="v[^"]*">)\s*475\s*(<\/div>\s*<div class="d">)\s*cap reached',
+    r'\g<1>—\2post-CTF',
+    html
+)
+
+# Scoreboard widget: Placement "7th" "tied at cap" — remove entirely (no CTF submission)
+html = re.sub(
+    r'<div class="score-cell">\s*<div class="k">Placement</div>.*?</div>\s*</div>',
+    '<div class="score-cell"><div class="k">Engagement</div><div class="v">Post-CTF</div><div class="d">analysis only</div></div>',
+    html,
+    flags=re.DOTALL,
+    count=1
+)
+
+# Scoreboard widget: Burned Attempts "22" "logged as rejects" — not applicable post-CTF
+html = re.sub(
+    r'<div class="score-cell">\s*<div class="k">Burned Attempts</div>.*?</div>\s*</div>',
+    '<div class="score-cell"><div class="k">Burned Attempts</div><div class="v">0</div><div class="d">not submitted to live CTF</div></div>',
+    html,
+    flags=re.DOTALL,
+    count=1
+)
+
+# Ledger artifact-backed count "71 / 71" — value is in a sibling <div class="v"> tag
+html = re.sub(
+    r'(Artifact-backed</div><div class="v">)\s*71\s*/\s*71',
+    r'\1— / —',
+    html
+)
+# Fallback for plain-text variant
+html = re.sub(r'Artifact-backed\s+71\s*/\s*71', 'Artifact-backed — / —', html)
+
+# sec-rejects section tag: "// 12 burned attempts · forensic judgement calls"
+html = re.sub(
+    r'//\s*12\s+burned\s+attempts\s*·\s*forensic\s+judgement\s+calls',
+    '// forensic judgement calls',
+    html,
+    flags=re.IGNORECASE
+)
+
+# sec-rejects section intro: remove CTF "burns attempts" framing
+html = re.sub(
+    r'The board burns attempts on wrong answers\.',
+    'These findings were identified during forensic analysis.',
+    html
+)
+
+ok("Scorecard widgets neutralised (72/72 solves, 71/71 verified, 7th placement, 22 burned attempts, 475 score)")
+
+# ---------------------------------------------------------------------------
 # STEP 7 — Redact credentials for publication (prevents GitHub secret scanning blocks)
 # Evidence files retain originals; HTML output uses clearly-redacted placeholders.
 # ---------------------------------------------------------------------------
