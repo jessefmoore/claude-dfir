@@ -1,0 +1,407 @@
+{
+  "name": "JackofAllHacks \u2014 Saiyan Spider TTPs",
+  "versions": {
+    "attack": "16",
+    "navigator": "5.0.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "MITRE ATT&CK technique coverage for the JackofAllHacks intrusion (2026-03-08). Threat actor: Saiyan Spider. Full domain compromise + ransomware deployment via OS command injection on IIS \u2192 Impacket lateral movement \u2192 .bWqQUx ransomware. Techniques verified from KAPE triage artifacts and Volatility 3 memory analysis.",
+  "filters": {
+    "platforms": [
+      "Windows",
+      "AWS"
+    ]
+  },
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "average",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false,
+    "expandedSubtechniques": "annotated"
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1003.001",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "LSASS Memory",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1003.003",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "NTDS",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1018",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Remote System Discovery",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.001",
+      "tactic": "lateral-movement",
+      "color": "#039be5",
+      "comment": "RDP",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.002",
+      "tactic": "lateral-movement",
+      "color": "#039be5",
+      "comment": "SMB/Admin Shares",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1036.003",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Rename System Utilities",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1048.002",
+      "tactic": "exfiltration",
+      "color": "#7cb342",
+      "comment": "Exfil via SFTP",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Scheduled Task",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1055",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Process Injection",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.003",
+      "tactic": "execution",
+      "color": "#f57c00",
+      "comment": "Windows Command Shell",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1070.001",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Clear Event Logs",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1087",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Account Discovery",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1098",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Account Manipulation",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1098.001",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Additional Cloud Credentials",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "color": "#6d4c41",
+      "comment": "Ingress Tool Transfer",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1112",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Modify Registry",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1136.002",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Create Domain Account",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1190",
+      "tactic": "initial-access",
+      "color": "#e53935",
+      "comment": "Exploit Public-Facing Application",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1482",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Domain Trust Discovery",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1486",
+      "tactic": "impact",
+      "color": "#37474f",
+      "comment": "Data Encrypted for Impact",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1490",
+      "tactic": "impact",
+      "color": "#37474f",
+      "comment": "Inhibit System Recovery",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1505.003",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Web Shell",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1530",
+      "tactic": "collection",
+      "color": "#43a047",
+      "comment": "Data from Cloud Storage",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1546.012",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "IFEO Injection",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1546.013",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "PowerShell Profile",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552.005",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "Cloud IMDS",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1555",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "Password Stores",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1560.001",
+      "tactic": "collection",
+      "color": "#43a047",
+      "comment": "Archive via Utility",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1569.002",
+      "tactic": "execution",
+      "color": "#f57c00",
+      "comment": "Service Execution",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1574.009",
+      "tactic": "privilege-escalation",
+      "color": "#8e24aa",
+      "comment": "Unquoted Service Path",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#ffffff",
+      "#ff6666"
+    ],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Initial Access",
+      "color": "#e53935"
+    },
+    {
+      "label": "Execution",
+      "color": "#f57c00"
+    },
+    {
+      "label": "Persistence",
+      "color": "#fb8c00"
+    },
+    {
+      "label": "Privilege Escalation",
+      "color": "#8e24aa"
+    },
+    {
+      "label": "Defense Evasion",
+      "color": "#1e88e5"
+    },
+    {
+      "label": "Credential Access",
+      "color": "#b71c1c"
+    },
+    {
+      "label": "Discovery",
+      "color": "#00897b"
+    },
+    {
+      "label": "Lateral Movement",
+      "color": "#039be5"
+    },
+    {
+      "label": "Collection",
+      "color": "#43a047"
+    },
+    {
+      "label": "Exfiltration",
+      "color": "#7cb342"
+    },
+    {
+      "label": "Impact",
+      "color": "#37474f"
+    },
+    {
+      "label": "Command & Control",
+      "color": "#6d4c41"
+    }
+  ],
+  "metadata": [
+    {
+      "name": "case",
+      "value": "JackofAllHacks-2026-03"
+    },
+    {
+      "name": "analyst",
+      "value": "Protocol SIFT"
+    },
+    {
+      "name": "date",
+      "value": "2026-03-08"
+    }
+  ],
+  "links": [],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#1a1f27",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubtechniquesWithParent": false,
+  "selectVisibleTechniques": false
+}
