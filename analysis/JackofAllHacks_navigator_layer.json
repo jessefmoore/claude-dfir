@@ -6,7 +6,7 @@
     "layer": "4.5"
   },
   "domain": "enterprise-attack",
-  "description": "MITRE ATT&CK technique coverage for JackofAllHacks-2026-03, mapped from master-timeline events.",
+  "description": "MITRE ATT&CK technique coverage for JackofAllHacks-2026-03, mapped from timeline.md events.",
   "filters": {
     "platforms": [
       "Windows",
@@ -70,18 +70,18 @@
       "showSubtechniques": true
     },
     {
-      "techniqueID": "T1036.003",
-      "tactic": "defense-evasion",
-      "color": "#1e88e5",
-      "comment": "Rename System Utilities",
+      "techniqueID": "T1033",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "System Owner/User Discovery",
       "enabled": true,
       "showSubtechniques": true
     },
     {
-      "techniqueID": "T1048.002",
-      "tactic": "exfiltration",
-      "color": "#7cb342",
-      "comment": "Exfil Over Asymmetric Encrypted Protocol",
+      "techniqueID": "T1036.003",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Rename System Utilities",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -110,6 +110,14 @@
       "showSubtechniques": true
     },
     {
+      "techniqueID": "T1069.003",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Cloud Groups Discovery",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
       "techniqueID": "T1070.001",
       "tactic": "defense-evasion",
       "color": "#1e88e5",
@@ -130,6 +138,14 @@
       "tactic": "discovery",
       "color": "#00897b",
       "comment": "Account Discovery",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1087.004",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Cloud Account Discovery",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -270,18 +286,18 @@
       "showSubtechniques": true
     },
     {
-      "techniqueID": "T1570",
-      "tactic": "lateral-movement",
-      "color": "#039be5",
-      "comment": "Lateral Tool Transfer",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
       "techniqueID": "T1574.009",
       "tactic": "privilege-escalation",
       "color": "#8e24aa",
       "comment": "Unquoted Service Path",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1619",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Cloud Storage Object Discovery",
       "enabled": true,
       "showSubtechniques": true
     }

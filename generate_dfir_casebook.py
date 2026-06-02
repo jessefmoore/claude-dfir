@@ -197,27 +197,37 @@ html = html.replace("Unknown C2 / Sliver / Havoc", "Adaptix/Sliver/Havoc")
 log("Step 4: Parsing timeline events from engagement/timeline.md...")
 
 events = []
-current_phase = None
+current_phase = None      # name only, e.g. "Unauthenticated Recon" (used for act mapping)
+current_phase_label = None  # full label, e.g. "Phase 0 · Unauthenticated Recon"
+phase_order = []          # preserves phase label order of first appearance
 
 for line in timeline_md.split('\n'):
     # Phase marker
     phase_match = re.match(r'^##\s+Phase\s+(\d+)\s+[·•]\s+(.+)', line)
     if phase_match:
         current_phase = phase_match.group(2).strip()
+        current_phase_label = f"Phase {phase_match.group(1)} · {current_phase}"
+        if current_phase_label not in phase_order:
+            phase_order.append(current_phase_label)
         continue
 
     # Event row: | 2026-03-08 HH:MM:SS | HOST | description | source |
     if re.match(r'^\|\s*\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}', line):
-        cells = [c.strip() for c in line.split('|')[1:-1]]
+        # Split on UNescaped pipes only — markdown cells may contain "\|" literals
+        # (e.g. `url=Google.com \| whoami`). Then unescape "\|" → "|" per cell.
+        raw = re.split(r'(?<!\\)\|', line)[1:-1]
+        cells = [c.strip().replace('\\|', '|') for c in raw]
         if len(cells) >= 3:
             time_match = re.search(r'(\d{2}:\d{2}:\d{2})', cells[0])
             if time_match:
                 events.append({
                     't':      time_match.group(1),
+                    'utc':    cells[0],                      # full "2026-03-08 HH:MM:SS"
                     'host':   cells[1],
                     'desc':   cells[2],
                     'source': cells[3] if len(cells) > 3 else "",
                     'phase':  current_phase or "—",
+                    'phase_label': current_phase_label or "—",
                 })
 
 ok(f"{len(events)} events from {len(set(e['phase'] for e in events))} phases")
@@ -479,13 +489,14 @@ html = re.sub(
 ok("Scorecard widgets neutralised (72/72 solves, 71/71 verified, 7th placement, 22 burned attempts, 475 score)")
 
 # ---------------------------------------------------------------------------
-# STEP 6c — Map MITRE ATT&CK techniques into the master-timeline phase tables
-# Adds an "ATT&CK" column to every phase table in sec-master-timeline, tagging
-# each event row by keyword. Baseline / infrastructure rows correctly show "—".
+# STEP 6c — Rebuild the master timeline from timeline.md, with MITRE ATT&CK column
+# Replaces the reference template's hardcoded (ALF-specific) phase tables with
+# tables generated directly from engagement/timeline.md — grouped by phase, each
+# row carrying its evidence source and keyword-mapped ATT&CK technique(s).
 # Also writes an ATT&CK Navigator layer JSON to ./analysis/ for import at
 # https://mitre-attack.github.io/attack-navigator/
 # ---------------------------------------------------------------------------
-log("Step 6c: Mapping MITRE ATT&CK techniques into master timeline...")
+log("Step 6c: Rebuilding master timeline from timeline.md (with ATT&CK column)...")
 
 # technique_id → (tactic_shortname, hex_color, display_name)
 ATTACK_TECH = {
@@ -513,11 +524,15 @@ ATTACK_TECH = {
     "T1555":    ("credential-access",    "#b71c1c", "Credentials from Password Stores"),
     "T1552.005":("credential-access",    "#b71c1c", "Cloud Instance Metadata API"),
     "T1018":    ("discovery",            "#00897b", "Remote System Discovery"),
+    "T1033":    ("discovery",            "#00897b", "System Owner/User Discovery"),
     "T1087":    ("discovery",            "#00897b", "Account Discovery"),
+    "T1087.004":("discovery",            "#00897b", "Cloud Account Discovery"),
     "T1082":    ("discovery",            "#00897b", "System Information Discovery"),
     "T1016":    ("discovery",            "#00897b", "System Network Config Discovery"),
     "T1049":    ("discovery",            "#00897b", "System Network Connections"),
     "T1482":    ("discovery",            "#00897b", "Domain Trust Discovery"),
+    "T1069.003":("discovery",            "#00897b", "Cloud Groups Discovery"),
+    "T1619":    ("discovery",            "#00897b", "Cloud Storage Object Discovery"),
     "T1560.001":("collection",           "#43a047", "Archive via Utility"),
     "T1530":    ("collection",           "#43a047", "Data from Cloud Storage"),
     "T1048.002":("exfiltration",         "#7cb342", "Exfil Over Asymmetric Encrypted Protocol"),
@@ -540,8 +555,14 @@ ATTACK_EVENT_MAP = [
     (r"serviceaccount.*Domain Admin|Domain Admin.*serviceaccount|group.*Domain Admins.*add|EID 4728", ["T1136.002", "T1098"]),
     (r'abedgdaa|LSASS.*dump|dump.*LSASS|opens LSASS',      ["T1003.001"]),
     (r'secretsdump|ntds\.dit|ZIFylmKF|shadow.copy.*ntds|impacket.*VSS|impacket smbexec|NTDS pickup', ["T1003.003", "T1569.002"]),
-    (r'DonPAPI|DPAPI.*[Mm]aster[Kk]ey|Dashlane|MasterKey backup', ["T1555"]),
-    (r'RDP.*session|RDP.*open|RDP.*logon|RDP.*SVR01|RDP.*WS|RDP from|RDP as|MSTSC', ["T1021.001"]),
+    (r'DonPAPI|DPAPI.*master.?key|Dashlane|master.?key backup', ["T1555"]),
+    (r'RDP.*session|RDP.*open|RDP.*logon|RDP.*SVR01|RDP.*WS|RDP from|RDP as|RDP to|MSTSC', ["T1021.001"]),
+    (r'Type.?3 logon|network logon|Type-3',                ["T1021.002"]),
+    (r'\bwhoami\b',                                         ["T1033"]),
+    # Cloud discovery (CloudTrail List*/Describe* enumeration)
+    (r'ListUsers',                                          ["T1087.004"]),
+    (r'ListRolePolicies|ListAttachedRolePolicies|IAM enumeration', ["T1069.003"]),
+    (r'ListBuckets|ListObjects|S3 target discovery',       ["T1619"]),
     (r'msupdate|data\.cab|makecab',                        ["T1560.001", "T1036.003"]),
     (r'aws_backup\.exe',                                   ["T1105"]),
     (r'FileZilla|fzsftp|SFTP.*172\.236|172\.236.*22|SFTP exfil', ["T1048.002"]),
@@ -557,7 +578,7 @@ ATTACK_EVENT_MAP = [
     (r'S3.*GetObject|GetObject.*S3|s3.*cp|aws s3',         ["T1530"]),
     (r'IamBatman.*SYSVOL|SYSVOL.*IamBatman|pulls.*SYSVOL|dropped to SYSVOL|DFSR replica', ["T1570"]),
     (r'vssadmin.*delete|delete.*shadow|bcdedit',           ["T1490"]),
-    (r'IamBatman|\.bWqQUx|encrypt C:|encrypted file|ransomware', ["T1486"]),
+    (r'IamBatman|\.bWqQUx|\bencrypt(?:ed|ion)?\b|ransomware', ["T1486"]),
 ]
 
 def attack_ttps_for(event_html):
@@ -583,44 +604,84 @@ def attack_cell(ttps):
         )
     return '<td style="white-space:nowrap;min-width:8em">' + ' '.join(badges) + '</td>'
 
+# Render a timeline.md cell (may contain `code` spans, markdown-escaped \| pipes,
+# and HTML-unsafe characters) into safe HTML.
+def render_cell(text):
+    text = text.replace('\\|', '|')
+    parts_out = []
+    for seg in re.split(r'(`[^`]*`)', text):
+        if len(seg) >= 2 and seg.startswith('`') and seg.endswith('`'):
+            inner = seg[1:-1].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            parts_out.append(f'<code>{inner}</code>')
+        else:
+            parts_out.append(seg.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'))
+    return ''.join(parts_out)
+
+observed = set()
 mt = re.search(r'(<section[^>]*id="sec-master-timeline"[^>]*>)(.*?)(</section>)', html, re.DOTALL)
-if mt:
-    mt_body = mt.group(2)
-    # Add ATT&CK header to every <thead> row that doesn't already have one
-    mt_body = re.sub(
-        r'(<thead>.*?<tr[^>]*>)(.*?)(</tr>.*?</thead>)',
-        lambda m: m.group(1) + m.group(2)
-                  + ('' if 'ATT&amp;CK' in m.group(2) else '<th>ATT&amp;CK</th>')
-                  + m.group(3),
-        mt_body, flags=re.DOTALL
+if mt and events:
+    # Group events by phase, preserving timeline.md phase order
+    rows_by_phase = {}
+    for e in events:
+        rows_by_phase.setdefault(e['phase_label'], []).append(e)
+
+    first_utc, last_utc = events[0]['utc'], events[-1]['utc']
+    n_phases = len([p for p in phase_order if rows_by_phase.get(p)])
+
+    parts = []
+    # Regenerated, evidence-grounded section header + lede (no reference bleed)
+    parts.append(
+        '\n  <div class="section-tag" style="color:var(--text)">'
+        '// 00.03 · master timeline · evidence-grounded · sourced from timeline.md</div>\n'
+        '  <h2>The full story, minute by minute — '
+        '<em>every row tied to a captured artifact</em></h2>\n'
+        '  <p class="lede" style="color:var(--text)">\n'
+        f'    {len(events)} events across {n_phases} phases, first to last '
+        f'<b>{first_utc} → {last_utc}</b> UTC. Each row is drawn directly from the '
+        'engagement timeline and carries its evidence source and mapped MITRE '
+        'ATT&amp;CK technique(s). No row without a cited artifact.\n'
+        '  </p>\n'
     )
-    # Add ATT&CK cell to every tbody data row (matches <tr ...><td ...>)
-    def _row_with_ttp(m):
-        row = m.group(0)
-        cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
-        event_text = cells[2] if len(cells) >= 3 else ""
-        return row.replace('</tr>', attack_cell(attack_ttps_for(event_text)) + '</tr>', 1)
-    mt_body = re.sub(r'<tr[^>]*>\s*<td.*?</tr>', _row_with_ttp, mt_body, flags=re.DOTALL)
 
-    html = html[:mt.start()] + mt.group(1) + mt_body + mt.group(3) + html[mt.end():]
+    tagged_rows = total_rows = 0
+    for phase_label in phase_order:
+        prows = rows_by_phase.get(phase_label, [])
+        if not prows:
+            continue
+        parts.append(f'  <h3 style="margin-top:.9rem">{render_cell(phase_label)}</h3>\n')
+        parts.append('  <table class="tbl" style="font-size:.87em"><thead><tr>'
+                     '<th>UTC</th><th>Host</th><th>Event</th><th>Evidence</th>'
+                     '<th>ATT&amp;CK</th></tr></thead><tbody>\n')
+        for e in prows:
+            ttps = attack_ttps_for(e['desc'])
+            observed.update(ttps)
+            total_rows += 1
+            if ttps:
+                tagged_rows += 1
+            parts.append(
+                '    <tr><td style="white-space:nowrap">' + render_cell(e['utc']) + '</td>'
+                '<td style="white-space:nowrap">' + render_cell(e['host']) + '</td>'
+                '<td>' + render_cell(e['desc']) + '</td>'
+                '<td>' + render_cell(e['source']) + '</td>'
+                + attack_cell(ttps) + '</tr>\n'
+            )
+        parts.append('  </tbody></table>\n')
 
-    # Count coverage
-    new_mt = re.search(r'<section[^>]*id="sec-master-timeline"[^>]*>(.*?)</section>', html, re.DOTALL).group(1)
-    rows = re.findall(r'<tr[^>]*>\s*<td.*?</tr>', new_mt, re.DOTALL)
-    tagged = sum(1 for r in rows if re.search(r'T1[\d.]+', r))
-    ok(f"ATT&CK column added to {len(rows)} rows ({tagged} tagged · {len(rows)-tagged} baseline/infra)")
+    html = html[:mt.start()] + mt.group(1) + ''.join(parts) + mt.group(3) + html[mt.end():]
+    ok(f"Master timeline rebuilt from timeline.md: {total_rows} rows across "
+       f"{n_phases} phases ({tagged_rows} ATT&CK-tagged)")
+elif mt:
+    warn("No timeline.md events parsed — master timeline left unchanged")
+else:
+    warn("sec-master-timeline not found — master timeline rebuild skipped")
 
-    # Build ATT&CK Navigator layer from observed techniques
-    observed = set()
-    for r in rows:
-        cs = re.findall(r'<td[^>]*>(.*?)</td>', r, re.DOTALL)
-        if len(cs) >= 3:
-            observed.update(attack_ttps_for(cs[2]))
+# Build ATT&CK Navigator layer from observed techniques
+if observed:
     nav_layer = {
         "name": f"{case_name} — ATT&CK Coverage",
         "versions": {"attack": "16", "navigator": "5.0.0", "layer": "4.5"},
         "domain": "enterprise-attack",
-        "description": f"MITRE ATT&CK technique coverage for {case_id}, mapped from master-timeline events.",
+        "description": f"MITRE ATT&CK technique coverage for {case_id}, mapped from timeline.md events.",
         "filters": {"platforms": ["Windows", "IaaS"]},
         "sorting": 0,
         "layout": {"layout": "side", "showID": True, "showName": True},
@@ -640,8 +701,6 @@ if mt:
     with open(nav_path, "w", encoding="utf-8") as f:
         json.dump(nav_layer, f, indent=2)
     ok(f"ATT&CK Navigator layer: {nav_path} ({len(nav_layer['techniques'])} techniques)")
-else:
-    warn("sec-master-timeline not found — ATT&CK column skipped")
 
 # ---------------------------------------------------------------------------
 # STEP 7 — Redact credentials for publication (prevents GitHub secret scanning blocks)
