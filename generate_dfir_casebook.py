@@ -27,6 +27,7 @@ The generator:
 """
 
 import argparse
+import json
 import os
 import re
 import sys
@@ -476,6 +477,171 @@ html = re.sub(
 )
 
 ok("Scorecard widgets neutralised (72/72 solves, 71/71 verified, 7th placement, 22 burned attempts, 475 score)")
+
+# ---------------------------------------------------------------------------
+# STEP 6c — Map MITRE ATT&CK techniques into the master-timeline phase tables
+# Adds an "ATT&CK" column to every phase table in sec-master-timeline, tagging
+# each event row by keyword. Baseline / infrastructure rows correctly show "—".
+# Also writes an ATT&CK Navigator layer JSON to ./analysis/ for import at
+# https://mitre-attack.github.io/attack-navigator/
+# ---------------------------------------------------------------------------
+log("Step 6c: Mapping MITRE ATT&CK techniques into master timeline...")
+
+# technique_id → (tactic_shortname, hex_color, display_name)
+ATTACK_TECH = {
+    "T1190":    ("initial-access",       "#e53935", "Exploit Public-Facing Application"),
+    "T1059.003":("execution",            "#f57c00", "Windows Command Shell"),
+    "T1569.002":("execution",            "#f57c00", "Service Execution"),
+    "T1105":    ("command-and-control",  "#6d4c41", "Ingress Tool Transfer"),
+    "T1505.003":("persistence",          "#fb8c00", "Web Shell"),
+    "T1136.002":("persistence",          "#fb8c00", "Create Domain Account"),
+    "T1098":    ("persistence",          "#fb8c00", "Account Manipulation"),
+    "T1098.001":("persistence",          "#fb8c00", "Additional Cloud Credentials"),
+    "T1053.005":("persistence",          "#fb8c00", "Scheduled Task"),
+    "T1546.012":("persistence",          "#fb8c00", "IFEO Injection"),
+    "T1546.013":("persistence",          "#fb8c00", "PowerShell Profile"),
+    "T1574.009":("privilege-escalation", "#8e24aa", "Unquoted Service Path"),
+    "T1055":    ("defense-evasion",      "#1e88e5", "Process Injection"),
+    "T1112":    ("defense-evasion",      "#1e88e5", "Modify Registry"),
+    "T1070.001":("defense-evasion",      "#1e88e5", "Clear Windows Event Logs"),
+    "T1036.003":("defense-evasion",      "#1e88e5", "Rename System Utilities"),
+    "T1021.001":("lateral-movement",     "#039be5", "Remote Desktop Protocol"),
+    "T1021.002":("lateral-movement",     "#039be5", "SMB/Windows Admin Shares"),
+    "T1570":    ("lateral-movement",     "#039be5", "Lateral Tool Transfer"),
+    "T1003.001":("credential-access",    "#b71c1c", "LSASS Memory"),
+    "T1003.003":("credential-access",    "#b71c1c", "NTDS"),
+    "T1555":    ("credential-access",    "#b71c1c", "Credentials from Password Stores"),
+    "T1552.005":("credential-access",    "#b71c1c", "Cloud Instance Metadata API"),
+    "T1018":    ("discovery",            "#00897b", "Remote System Discovery"),
+    "T1087":    ("discovery",            "#00897b", "Account Discovery"),
+    "T1082":    ("discovery",            "#00897b", "System Information Discovery"),
+    "T1016":    ("discovery",            "#00897b", "System Network Config Discovery"),
+    "T1049":    ("discovery",            "#00897b", "System Network Connections"),
+    "T1482":    ("discovery",            "#00897b", "Domain Trust Discovery"),
+    "T1560.001":("collection",           "#43a047", "Archive via Utility"),
+    "T1530":    ("collection",           "#43a047", "Data from Cloud Storage"),
+    "T1048.002":("exfiltration",         "#7cb342", "Exfil Over Asymmetric Encrypted Protocol"),
+    "T1486":    ("impact",               "#37474f", "Data Encrypted for Impact"),
+    "T1490":    ("impact",               "#37474f", "Inhibit System Recovery"),
+}
+
+# (regex on event text, [technique IDs]) — order independent, all matches accumulate
+ATTACK_EVENT_MAP = [
+    (r'url=.*(?:cat|ls|dir|type|whoami|&&|;)',            ["T1190"]),
+    (r'cmd.injection|CheckStatus|GET.injection',           ["T1190"]),
+    (r'certutil.*urlcache|certutil.*so\.aspx',             ["T1190", "T1105"]),
+    (r'certutil.*iis\.exe',                                ["T1105"]),
+    (r'POST.*so\.aspx|so\.aspx.*whoami|so\.aspx.*hostname',["T1505.003", "T1082", "T1016", "T1049", "T1087", "T1482"]),
+    (r'beacon.*TCP|TCP.*8443|:8443',                       ["T1105"]),
+    (r'SolarWinds.*TFTP|SolarWinds\.exe|unquoted.service', ["T1574.009"]),
+    (r'rnSylwOz.*ADMIN\$|ADMIN\$.*rnSylwOz|service.*rnSylwOz', ["T1569.002", "T1021.002"]),
+    (r'explorer.*inject|inject.*explorer|RWX PE|malfind|CreateRemoteThread', ["T1055"]),
+    (r'net user.*serviceaccount|serviceaccount.*add.*domain', ["T1136.002"]),
+    (r"serviceaccount.*Domain Admin|Domain Admin.*serviceaccount|group.*Domain Admins.*add|EID 4728", ["T1136.002", "T1098"]),
+    (r'abedgdaa|LSASS.*dump|dump.*LSASS|opens LSASS',      ["T1003.001"]),
+    (r'secretsdump|ntds\.dit|ZIFylmKF|shadow.copy.*ntds|impacket.*VSS|impacket smbexec|NTDS pickup', ["T1003.003", "T1569.002"]),
+    (r'DonPAPI|DPAPI.*[Mm]aster[Kk]ey|Dashlane|MasterKey backup', ["T1555"]),
+    (r'RDP.*session|RDP.*open|RDP.*logon|RDP.*SVR01|RDP.*WS|RDP from|RDP as|MSTSC', ["T1021.001"]),
+    (r'msupdate|data\.cab|makecab',                        ["T1560.001", "T1036.003"]),
+    (r'aws_backup\.exe',                                   ["T1105"]),
+    (r'FileZilla|fzsftp|SFTP.*172\.236|172\.236.*22|SFTP exfil', ["T1048.002"]),
+    (r'IFEO|Image File Execution|taskmgr.*Debugger',       ["T1546.012"]),
+    (r'PowerShell.profile|profile\.ps1|PS-profile',        ["T1546.013"]),
+    (r'OlgyLYbd|sysAV\.bat|[Ss]cheduled task|schtask',     ["T1053.005"]),
+    (r'Advanced IP Scanner|IP.scan|nmap|scans 10\.',       ["T1018"]),
+    (r'nltest|dclist',                                     ["T1482", "T1087"]),
+    (r'LogDel\.bat|wevtutil.*cl|event.log.*clear|wipes \d+ channels', ["T1070.001"]),
+    (r'DisableRestrictedAdmin|registry.*PtH|reg add.*Restricted', ["T1112"]),
+    (r'GetCallerIdentity|IMDS|iam.security-credentials|STS theft', ["T1552.005"]),
+    (r'CreateAccessKey',                                   ["T1098.001"]),
+    (r'S3.*GetObject|GetObject.*S3|s3.*cp|aws s3',         ["T1530"]),
+    (r'IamBatman.*SYSVOL|SYSVOL.*IamBatman|pulls.*SYSVOL|dropped to SYSVOL|DFSR replica', ["T1570"]),
+    (r'vssadmin.*delete|delete.*shadow|bcdedit',           ["T1490"]),
+    (r'IamBatman|\.bWqQUx|encrypt C:|encrypted file|ransomware', ["T1486"]),
+]
+
+def attack_ttps_for(event_html):
+    plain = re.sub(r'<[^>]+>', '', event_html)
+    found = []
+    for pattern, ttps in ATTACK_EVENT_MAP:
+        if re.search(pattern, plain, re.IGNORECASE):
+            for t in ttps:
+                if t not in found:
+                    found.append(t)
+    return found
+
+def attack_cell(ttps):
+    if not ttps:
+        return '<td style="color:var(--dim);font-size:.8em">—</td>'
+    badges = []
+    for t in ttps:
+        color = ATTACK_TECH.get(t, ("", "#888", ""))[1]
+        badges.append(
+            f'<code style="font-size:.75em;background:rgba(255,255,255,.06);'
+            f'border:1px solid {color}55;color:{color};padding:1px 5px;'
+            f'border-radius:2px;white-space:nowrap">{t}</code>'
+        )
+    return '<td style="white-space:nowrap;min-width:8em">' + ' '.join(badges) + '</td>'
+
+mt = re.search(r'(<section[^>]*id="sec-master-timeline"[^>]*>)(.*?)(</section>)', html, re.DOTALL)
+if mt:
+    mt_body = mt.group(2)
+    # Add ATT&CK header to every <thead> row that doesn't already have one
+    mt_body = re.sub(
+        r'(<thead>.*?<tr[^>]*>)(.*?)(</tr>.*?</thead>)',
+        lambda m: m.group(1) + m.group(2)
+                  + ('' if 'ATT&amp;CK' in m.group(2) else '<th>ATT&amp;CK</th>')
+                  + m.group(3),
+        mt_body, flags=re.DOTALL
+    )
+    # Add ATT&CK cell to every tbody data row (matches <tr ...><td ...>)
+    def _row_with_ttp(m):
+        row = m.group(0)
+        cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
+        event_text = cells[2] if len(cells) >= 3 else ""
+        return row.replace('</tr>', attack_cell(attack_ttps_for(event_text)) + '</tr>', 1)
+    mt_body = re.sub(r'<tr[^>]*>\s*<td.*?</tr>', _row_with_ttp, mt_body, flags=re.DOTALL)
+
+    html = html[:mt.start()] + mt.group(1) + mt_body + mt.group(3) + html[mt.end():]
+
+    # Count coverage
+    new_mt = re.search(r'<section[^>]*id="sec-master-timeline"[^>]*>(.*?)</section>', html, re.DOTALL).group(1)
+    rows = re.findall(r'<tr[^>]*>\s*<td.*?</tr>', new_mt, re.DOTALL)
+    tagged = sum(1 for r in rows if re.search(r'T1[\d.]+', r))
+    ok(f"ATT&CK column added to {len(rows)} rows ({tagged} tagged · {len(rows)-tagged} baseline/infra)")
+
+    # Build ATT&CK Navigator layer from observed techniques
+    observed = set()
+    for r in rows:
+        cs = re.findall(r'<td[^>]*>(.*?)</td>', r, re.DOTALL)
+        if len(cs) >= 3:
+            observed.update(attack_ttps_for(cs[2]))
+    nav_layer = {
+        "name": f"{case_name} — ATT&CK Coverage",
+        "versions": {"attack": "16", "navigator": "5.0.0", "layer": "4.5"},
+        "domain": "enterprise-attack",
+        "description": f"MITRE ATT&CK technique coverage for {case_id}, mapped from master-timeline events.",
+        "filters": {"platforms": ["Windows", "IaaS"]},
+        "sorting": 0,
+        "layout": {"layout": "side", "showID": True, "showName": True},
+        "hideDisabled": False,
+        "techniques": [
+            {"techniqueID": t, "tactic": ATTACK_TECH[t][0], "color": ATTACK_TECH[t][1],
+             "comment": ATTACK_TECH[t][2], "enabled": True, "showSubtechniques": True}
+            for t in sorted(observed) if t in ATTACK_TECH
+        ],
+        "gradient": {"colors": ["#ffffff", "#ff6666"], "minValue": 0, "maxValue": 100},
+        "metadata": [{"name": "case", "value": case_id}],
+        "showTacticRowBackground": True, "tacticRowBackground": "#1a1f27",
+    }
+    nav_dir = os.path.join(CASE_DIR, "analysis")
+    os.makedirs(nav_dir, exist_ok=True)
+    nav_path = os.path.join(nav_dir, f"{case_name}_navigator_layer.json")
+    with open(nav_path, "w", encoding="utf-8") as f:
+        json.dump(nav_layer, f, indent=2)
+    ok(f"ATT&CK Navigator layer: {nav_path} ({len(nav_layer['techniques'])} techniques)")
+else:
+    warn("sec-master-timeline not found — ATT&CK column skipped")
 
 # ---------------------------------------------------------------------------
 # STEP 7 — Redact credentials for publication (prevents GitHub secret scanning blocks)
