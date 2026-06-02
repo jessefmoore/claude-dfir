@@ -551,7 +551,8 @@ ATTACK_EVENT_MAP = [
     (r'SolarWinds.*TFTP|SolarWinds\.exe|unquoted.service', ["T1574.009"]),
     (r'rnSylwOz.*ADMIN\$|ADMIN\$.*rnSylwOz|service.*rnSylwOz', ["T1569.002", "T1021.002"]),
     (r'explorer.*inject|inject.*explorer|RWX PE|malfind|CreateRemoteThread', ["T1055"]),
-    (r'net user.*serviceaccount|serviceaccount.*add.*domain', ["T1136.002"]),
+    (r'net user.*serviceaccount|serviceaccount.*add.*domain', ["T1136.002", "T1059.003"]),
+    (r'\.bat\b',                                           ["T1059.003"]),
     (r"serviceaccount.*Domain Admin|Domain Admin.*serviceaccount|group.*Domain Admins.*add|EID 4728", ["T1136.002", "T1098"]),
     (r'abedgdaa|LSASS.*dump|dump.*LSASS|opens LSASS',      ["T1003.001"]),
     (r'secretsdump|ntds\.dit|ZIFylmKF|shadow.copy.*ntds|impacket.*VSS|impacket smbexec|NTDS pickup', ["T1003.003", "T1569.002"]),
@@ -681,12 +682,14 @@ else:
 # annotated sub-technique so all of them are visible the moment the layer loads.
 if observed:
     valid = [t for t in sorted(observed) if t in ATTACK_TECH]
+    SUBTECH_RED = "#ff3b3b"   # sub-techniques rendered bright red for easy spotting
     # entry keyed by (techniqueID, tactic) so multi-tactic techniques stay distinct
     entries = {}
     for t in valid:
         tactic, color, comment = ATTACK_TECH[t]
+        cell_color = SUBTECH_RED if "." in t else color   # subs red, top-level keep tactic colour
         entries[(t, tactic)] = {
-            "techniqueID": t, "tactic": tactic, "color": color,
+            "techniqueID": t, "tactic": tactic, "color": cell_color,
             "comment": comment, "enabled": True,
         }
     # Add / flag parent expander rows for each annotated sub-technique

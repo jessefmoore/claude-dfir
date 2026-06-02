@@ -46,6 +46,7 @@
 | 2026-03-08 20:16:23 | LAF-WS01 | LAFAdmin Type-3 logon from SVR01 (10.3.10.12) | WS01 Security 4624 |
 | 2026-03-08 20:16:46 | LAF-WS02 | LAFAdmin Type-3 logon from SVR01 (10.3.10.12) | WS02 Security 4624 |
 | 2026-03-08 20:20:13 | LAF-SVR01 | msupdate.exe (renamed Makecab.exe) — Data.cab collection begins | SVR01 MFT + Sysmon |
+| 2026-03-08 20:21:09 | LAF-SVR01 | Data.cab exfiltrated via FileZilla SFTP to 172.236.127.251:22 (user root) | FileZilla recentservers.xml + makecab Sysmon EID 1 |
 | 2026-03-08 20:35:29 | LAF-WS01 | RED1 interactive RDP logon as LAF\Donny (Type 10) | WS01 Security 4624 |
 | 2026-03-08 20:37:03 | LAF-WS01 | aws_backup.exe dropped to C:\ProgramData\ | WS01 MFT |
 | 2026-03-08 20:37:35 | LAF-WS01 | IFEO persistence: taskmgr.exe Debugger → aws_backup.exe | WS01 Sysmon EID 13 |

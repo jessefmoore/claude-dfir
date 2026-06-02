@@ -39,7 +39,7 @@
     {
       "techniqueID": "T1560.001",
       "tactic": "collection",
-      "color": "#43a047",
+      "color": "#ff3b3b",
       "comment": "Archive via Utility",
       "enabled": true
     },
@@ -59,14 +59,14 @@
     {
       "techniqueID": "T1003.001",
       "tactic": "credential-access",
-      "color": "#b71c1c",
+      "color": "#ff3b3b",
       "comment": "LSASS Memory",
       "enabled": true
     },
     {
       "techniqueID": "T1003.003",
       "tactic": "credential-access",
-      "color": "#b71c1c",
+      "color": "#ff3b3b",
       "comment": "NTDS",
       "enabled": true
     },
@@ -79,7 +79,7 @@
     {
       "techniqueID": "T1552.005",
       "tactic": "credential-access",
-      "color": "#b71c1c",
+      "color": "#ff3b3b",
       "comment": "Cloud Instance Metadata API",
       "enabled": true
     },
@@ -99,7 +99,7 @@
     {
       "techniqueID": "T1036.003",
       "tactic": "defense-evasion",
-      "color": "#1e88e5",
+      "color": "#ff3b3b",
       "comment": "Rename System Utilities",
       "enabled": true
     },
@@ -119,7 +119,7 @@
     {
       "techniqueID": "T1070.001",
       "tactic": "defense-evasion",
-      "color": "#1e88e5",
+      "color": "#ff3b3b",
       "comment": "Clear Windows Event Logs",
       "enabled": true
     },
@@ -167,7 +167,7 @@
     {
       "techniqueID": "T1069.003",
       "tactic": "discovery",
-      "color": "#00897b",
+      "color": "#ff3b3b",
       "comment": "Cloud Groups Discovery",
       "enabled": true
     },
@@ -189,7 +189,7 @@
     {
       "techniqueID": "T1087.004",
       "tactic": "discovery",
-      "color": "#00897b",
+      "color": "#ff3b3b",
       "comment": "Cloud Account Discovery",
       "enabled": true
     },
@@ -208,6 +208,19 @@
       "enabled": true
     },
     {
+      "techniqueID": "T1059",
+      "tactic": "execution",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1059.003",
+      "tactic": "execution",
+      "color": "#ff3b3b",
+      "comment": "Windows Command Shell",
+      "enabled": true
+    },
+    {
       "techniqueID": "T1569",
       "tactic": "execution",
       "enabled": true,
@@ -216,8 +229,21 @@
     {
       "techniqueID": "T1569.002",
       "tactic": "execution",
-      "color": "#f57c00",
+      "color": "#ff3b3b",
       "comment": "Service Execution",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1048",
+      "tactic": "exfiltration",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1048.002",
+      "tactic": "exfiltration",
+      "color": "#ff3b3b",
+      "comment": "Exfil Over Asymmetric Encrypted Protocol",
       "enabled": true
     },
     {
@@ -250,14 +276,14 @@
     {
       "techniqueID": "T1021.001",
       "tactic": "lateral-movement",
-      "color": "#039be5",
+      "color": "#ff3b3b",
       "comment": "Remote Desktop Protocol",
       "enabled": true
     },
     {
       "techniqueID": "T1021.002",
       "tactic": "lateral-movement",
-      "color": "#039be5",
+      "color": "#ff3b3b",
       "comment": "SMB/Windows Admin Shares",
       "enabled": true
     },
@@ -270,7 +296,7 @@
     {
       "techniqueID": "T1053.005",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "Scheduled Task",
       "enabled": true
     },
@@ -285,7 +311,7 @@
     {
       "techniqueID": "T1098.001",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "Additional Cloud Credentials",
       "enabled": true
     },
@@ -298,7 +324,7 @@
     {
       "techniqueID": "T1136.002",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "Create Domain Account",
       "enabled": true
     },
@@ -311,7 +337,7 @@
     {
       "techniqueID": "T1505.003",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "Web Shell",
       "enabled": true
     },
@@ -324,14 +350,14 @@
     {
       "techniqueID": "T1546.012",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "IFEO Injection",
       "enabled": true
     },
     {
       "techniqueID": "T1546.013",
       "tactic": "persistence",
-      "color": "#fb8c00",
+      "color": "#ff3b3b",
       "comment": "PowerShell Profile",
       "enabled": true
     },
@@ -344,7 +370,7 @@
     {
       "techniqueID": "T1574.009",
       "tactic": "privilege-escalation",
-      "color": "#8e24aa",
+      "color": "#ff3b3b",
       "comment": "Unquoted Service Path",
       "enabled": true
     }
