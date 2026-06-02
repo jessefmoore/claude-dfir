@@ -675,8 +675,36 @@ elif mt:
 else:
     warn("sec-master-timeline not found — master timeline rebuild skipped")
 
-# Build ATT&CK Navigator layer from observed techniques
+# Build ATT&CK Navigator layer from observed techniques.
+# Sub-techniques (e.g. T1003.001) only render in the Navigator if their PARENT
+# row is expanded. We emit a parent entry with showSubtechniques=true for every
+# annotated sub-technique so all of them are visible the moment the layer loads.
 if observed:
+    valid = [t for t in sorted(observed) if t in ATTACK_TECH]
+    # entry keyed by (techniqueID, tactic) so multi-tactic techniques stay distinct
+    entries = {}
+    for t in valid:
+        tactic, color, comment = ATTACK_TECH[t]
+        entries[(t, tactic)] = {
+            "techniqueID": t, "tactic": tactic, "color": color,
+            "comment": comment, "enabled": True,
+        }
+    # Add / flag parent expander rows for each annotated sub-technique
+    for t in valid:
+        if "." not in t:
+            continue
+        parent = t.split(".")[0]
+        tactic = ATTACK_TECH[t][0]
+        key = (parent, tactic)
+        if key in entries:
+            entries[key]["showSubtechniques"] = True          # parent also annotated
+        else:
+            entries[key] = {                                   # faint expander-only row
+                "techniqueID": parent, "tactic": tactic,
+                "enabled": True, "showSubtechniques": True,
+            }
+    technique_entries = sorted(entries.values(), key=lambda e: (e["tactic"], e["techniqueID"]))
+
     nav_layer = {
         "name": f"{case_name} — ATT&CK Coverage",
         "versions": {"attack": "16", "navigator": "5.0.0", "layer": "4.5"},
@@ -684,13 +712,10 @@ if observed:
         "description": f"MITRE ATT&CK technique coverage for {case_id}, mapped from timeline.md events.",
         "filters": {"platforms": ["Windows", "IaaS"]},
         "sorting": 0,
-        "layout": {"layout": "side", "showID": True, "showName": True},
+        "layout": {"layout": "side", "showID": True, "showName": True,
+                   "showAggregateScores": False, "expandedSubtechniques": "all"},
         "hideDisabled": False,
-        "techniques": [
-            {"techniqueID": t, "tactic": ATTACK_TECH[t][0], "color": ATTACK_TECH[t][1],
-             "comment": ATTACK_TECH[t][2], "enabled": True, "showSubtechniques": True}
-            for t in sorted(observed) if t in ATTACK_TECH
-        ],
+        "techniques": technique_entries,
         "gradient": {"colors": ["#ffffff", "#ff6666"], "minValue": 0, "maxValue": 100},
         "metadata": [{"name": "case", "value": case_id}],
         "showTacticRowBackground": True, "tacticRowBackground": "#1a1f27",
@@ -700,7 +725,10 @@ if observed:
     nav_path = os.path.join(nav_dir, f"{case_name}_navigator_layer.json")
     with open(nav_path, "w", encoding="utf-8") as f:
         json.dump(nav_layer, f, indent=2)
-    ok(f"ATT&CK Navigator layer: {nav_path} ({len(nav_layer['techniques'])} techniques)")
+    n_annot = len(valid)
+    n_expand = len(technique_entries) - n_annot
+    ok(f"ATT&CK Navigator layer: {nav_path} "
+       f"({n_annot} techniques annotated + {n_expand} parent expanders)")
 
 # ---------------------------------------------------------------------------
 # STEP 7 — Redact credentials for publication (prevents GitHub secret scanning blocks)

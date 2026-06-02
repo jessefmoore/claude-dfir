@@ -17,63 +17,82 @@
   "layout": {
     "layout": "side",
     "showID": true,
-    "showName": true
+    "showName": true,
+    "showAggregateScores": false,
+    "expandedSubtechniques": "all"
   },
   "hideDisabled": false,
   "techniques": [
+    {
+      "techniqueID": "T1530",
+      "tactic": "collection",
+      "color": "#43a047",
+      "comment": "Data from Cloud Storage",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1560",
+      "tactic": "collection",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1560.001",
+      "tactic": "collection",
+      "color": "#43a047",
+      "comment": "Archive via Utility",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "color": "#6d4c41",
+      "comment": "Ingress Tool Transfer",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1003",
+      "tactic": "credential-access",
+      "enabled": true,
+      "showSubtechniques": true
+    },
     {
       "techniqueID": "T1003.001",
       "tactic": "credential-access",
       "color": "#b71c1c",
       "comment": "LSASS Memory",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
       "techniqueID": "T1003.003",
       "tactic": "credential-access",
       "color": "#b71c1c",
       "comment": "NTDS",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1552",
+      "tactic": "credential-access",
       "enabled": true,
       "showSubtechniques": true
     },
     {
-      "techniqueID": "T1016",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "System Network Config Discovery",
-      "enabled": true,
-      "showSubtechniques": true
+      "techniqueID": "T1552.005",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "Cloud Instance Metadata API",
+      "enabled": true
     },
     {
-      "techniqueID": "T1018",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "Remote System Discovery",
-      "enabled": true,
-      "showSubtechniques": true
+      "techniqueID": "T1555",
+      "tactic": "credential-access",
+      "color": "#b71c1c",
+      "comment": "Credentials from Password Stores",
+      "enabled": true
     },
     {
-      "techniqueID": "T1021.001",
-      "tactic": "lateral-movement",
-      "color": "#039be5",
-      "comment": "Remote Desktop Protocol",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1021.002",
-      "tactic": "lateral-movement",
-      "color": "#039be5",
-      "comment": "SMB/Windows Admin Shares",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1033",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "System Owner/User Discovery",
+      "techniqueID": "T1036",
+      "tactic": "defense-evasion",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -82,38 +101,18 @@
       "tactic": "defense-evasion",
       "color": "#1e88e5",
       "comment": "Rename System Utilities",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1049",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "System Network Connections",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1053.005",
-      "tactic": "persistence",
-      "color": "#fb8c00",
-      "comment": "Scheduled Task",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
       "techniqueID": "T1055",
       "tactic": "defense-evasion",
       "color": "#1e88e5",
       "comment": "Process Injection",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
-      "techniqueID": "T1069.003",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "Cloud Groups Discovery",
+      "techniqueID": "T1070",
+      "tactic": "defense-evasion",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -122,16 +121,62 @@
       "tactic": "defense-evasion",
       "color": "#1e88e5",
       "comment": "Clear Windows Event Logs",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1112",
+      "tactic": "defense-evasion",
+      "color": "#1e88e5",
+      "comment": "Modify Registry",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1016",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "System Network Config Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1018",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Remote System Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1033",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "System Owner/User Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1049",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "System Network Connections",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1069",
+      "tactic": "discovery",
       "enabled": true,
       "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1069.003",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Cloud Groups Discovery",
+      "enabled": true
     },
     {
       "techniqueID": "T1082",
       "tactic": "discovery",
       "color": "#00897b",
       "comment": "System Information Discovery",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
       "techniqueID": "T1087",
@@ -146,8 +191,88 @@
       "tactic": "discovery",
       "color": "#00897b",
       "comment": "Cloud Account Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1482",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Domain Trust Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1619",
+      "tactic": "discovery",
+      "color": "#00897b",
+      "comment": "Cloud Storage Object Discovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1569",
+      "tactic": "execution",
       "enabled": true,
       "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1569.002",
+      "tactic": "execution",
+      "color": "#f57c00",
+      "comment": "Service Execution",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1486",
+      "tactic": "impact",
+      "color": "#37474f",
+      "comment": "Data Encrypted for Impact",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1490",
+      "tactic": "impact",
+      "color": "#37474f",
+      "comment": "Inhibit System Recovery",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1190",
+      "tactic": "initial-access",
+      "color": "#e53935",
+      "comment": "Exploit Public-Facing Application",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1021",
+      "tactic": "lateral-movement",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.001",
+      "tactic": "lateral-movement",
+      "color": "#039be5",
+      "comment": "Remote Desktop Protocol",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1021.002",
+      "tactic": "lateral-movement",
+      "color": "#039be5",
+      "comment": "SMB/Windows Admin Shares",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1053",
+      "tactic": "persistence",
+      "enabled": true,
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.005",
+      "tactic": "persistence",
+      "color": "#fb8c00",
+      "comment": "Scheduled Task",
+      "enabled": true
     },
     {
       "techniqueID": "T1098",
@@ -162,22 +287,11 @@
       "tactic": "persistence",
       "color": "#fb8c00",
       "comment": "Additional Cloud Credentials",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
-      "techniqueID": "T1105",
-      "tactic": "command-and-control",
-      "color": "#6d4c41",
-      "comment": "Ingress Tool Transfer",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1112",
-      "tactic": "defense-evasion",
-      "color": "#1e88e5",
-      "comment": "Modify Registry",
+      "techniqueID": "T1136",
+      "tactic": "persistence",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -186,38 +300,11 @@
       "tactic": "persistence",
       "color": "#fb8c00",
       "comment": "Create Domain Account",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
-      "techniqueID": "T1190",
-      "tactic": "initial-access",
-      "color": "#e53935",
-      "comment": "Exploit Public-Facing Application",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1482",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "Domain Trust Discovery",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1486",
-      "tactic": "impact",
-      "color": "#37474f",
-      "comment": "Data Encrypted for Impact",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1490",
-      "tactic": "impact",
-      "color": "#37474f",
-      "comment": "Inhibit System Recovery",
+      "techniqueID": "T1505",
+      "tactic": "persistence",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -226,14 +313,11 @@
       "tactic": "persistence",
       "color": "#fb8c00",
       "comment": "Web Shell",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
-      "techniqueID": "T1530",
-      "tactic": "collection",
-      "color": "#43a047",
-      "comment": "Data from Cloud Storage",
+      "techniqueID": "T1546",
+      "tactic": "persistence",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -242,46 +326,18 @@
       "tactic": "persistence",
       "color": "#fb8c00",
       "comment": "IFEO Injection",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
       "techniqueID": "T1546.013",
       "tactic": "persistence",
       "color": "#fb8c00",
       "comment": "PowerShell Profile",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     },
     {
-      "techniqueID": "T1552.005",
-      "tactic": "credential-access",
-      "color": "#b71c1c",
-      "comment": "Cloud Instance Metadata API",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1555",
-      "tactic": "credential-access",
-      "color": "#b71c1c",
-      "comment": "Credentials from Password Stores",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1560.001",
-      "tactic": "collection",
-      "color": "#43a047",
-      "comment": "Archive via Utility",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1569.002",
-      "tactic": "execution",
-      "color": "#f57c00",
-      "comment": "Service Execution",
+      "techniqueID": "T1574",
+      "tactic": "privilege-escalation",
       "enabled": true,
       "showSubtechniques": true
     },
@@ -290,16 +346,7 @@
       "tactic": "privilege-escalation",
       "color": "#8e24aa",
       "comment": "Unquoted Service Path",
-      "enabled": true,
-      "showSubtechniques": true
-    },
-    {
-      "techniqueID": "T1619",
-      "tactic": "discovery",
-      "color": "#00897b",
-      "comment": "Cloud Storage Object Discovery",
-      "enabled": true,
-      "showSubtechniques": true
+      "enabled": true
     }
   ],
   "gradient": {
